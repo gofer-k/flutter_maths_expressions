@@ -20,8 +20,8 @@ class _HomePageState extends State<HomePage> {
       child:
         BackgroundContainer(
           child: _pageContent(),
-          beginColor: Colors.grey.shade800,
-          endColor: Colors.grey.shade300),
+          beginColor: Colors.grey.shade200,
+          endColor: Colors.grey.shade700),
     );
   }
 
