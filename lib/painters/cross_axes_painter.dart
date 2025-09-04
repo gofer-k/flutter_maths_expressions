@@ -27,14 +27,22 @@ class CrossAxesPainter extends CustomPainter {
 
     // Transform this point to viewport coordinates
     final Offset viewportOrigin = MatrixUtils.transformPoint(canvasTransform, canvasOrigin);
+    final double currentScale = this.canvasTransform.getMaxScaleOnAxis();
+    final double currentPan = this.canvasTransform.getTranslation().length;
+    final double unitInPixels = 40.0 * currentScale - currentPan;
 
-    paintAxisY(canvas, axisPaint, unitMarkPaint, unitLabelStyle, viewportOrigin);
-    paintAxisX(canvas, axisPaint, unitMarkPaint, unitLabelStyle, viewportOrigin);
+    paintAxisY(canvas, axisPaint, unitMarkPaint, unitLabelStyle, viewportOrigin, unitInPixels);
+    paintAxisX(canvas, axisPaint, unitMarkPaint, unitLabelStyle, viewportOrigin, unitInPixels);
   }
 
-  void paintAxisY(Canvas canvas, Paint axisPaint, Paint unitMarkPaint, TextStyle unitLabelStyle, Offset viewportOrigin) {
+  void paintAxisY(
+    Canvas canvas,
+    Paint axisPaint,
+    Paint unitMarkPaint,
+    TextStyle unitLabelStyle,
+    Offset viewportOrigin,
+    double unitInPixels) {
     final double lineX = viewportOrigin.dx;
-    const double unitInPixels = 40.0; // 2 grid cells * 20 pixels/cell
     const double markLength = 8.0;   // Length of the small tick marks
 
     if (lineX >= 0 && lineX <= viewportSize.width) {
@@ -73,9 +81,14 @@ class CrossAxesPainter extends CustomPainter {
     }
   }
 
-  void paintAxisX(Canvas canvas, Paint axisPaint, Paint unitMarkPaint, TextStyle unitLabelStyle, Offset viewportOrigin) {
+  void paintAxisX(
+    Canvas canvas,
+    Paint axisPaint,
+    Paint unitMarkPaint,
+    TextStyle unitLabelStyle,
+    Offset viewportOrigin,
+    double unitInPixels) {
     final double lineY = viewportOrigin.dy;
-    const double unitInPixels = 40.0;
     const double markLength = 8.0;
 
     if (lineY >= 0 && lineY <= viewportSize.height) {
