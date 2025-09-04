@@ -75,24 +75,25 @@ class _PlanametryPageState extends State<PlanametryPage> {
 class CrossAxis extends CustomPainter {
   final Matrix4 canvasTransform;
   final Size viewportSize;
+  final Offset canvasOrigin;
 
-  CrossAxis({required this.canvasTransform, required this.viewportSize});
+  CrossAxis({required this.canvasTransform, required this.viewportSize}) :
+        canvasOrigin = Offset(viewportSize.width / 2, viewportSize.height / 2);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint linePaint = Paint()
+    final Paint axisPaint = Paint()
       ..color = Colors.blue
-      ..strokeWidth = 1.0;
-
-    // We want the line to be at X=0 in the *canvas* coordinate system.
-    // We need to find where X=0 of the canvas is on the viewport.
-
-    // Create a point representing (0, any_y) in canvas coordinates
-    final Offset canvasOrigin = Offset(0, 0);
+      ..strokeWidth = 2.0;
 
     // Transform this point to viewport coordinates
     final Offset viewportOrigin = MatrixUtils.transformPoint(canvasTransform, canvasOrigin);
 
+    paintAxisY(canvas, axisPaint, viewportOrigin);
+    paintAxisX(canvas, axisPaint, viewportOrigin);
+  }
+
+  void paintAxisY(Canvas canvas, Paint axisPaint, Offset viewportOrigin) {
     // The x-coordinate for our vertical line in viewport space
     final double lineX = viewportOrigin.dx;
 
@@ -102,10 +103,14 @@ class CrossAxis extends CustomPainter {
       canvas.drawLine(
         Offset(lineX, 0),                            // Start from top of viewport
         Offset(lineX, viewportSize.height),        // End at bottom of viewport
-        linePaint,
+        axisPaint,
       );
-    }
 
+      paintText(canvas, 'Y', Offset(lineX - 16, 10), axisPaint);
+    }
+  }
+
+  void paintAxisX(Canvas canvas, Paint axisPaint, Offset viewportOrigin) {
     // The x-coordinate for our vertical line in viewport space
     final double lineY = viewportOrigin.dy;
 
@@ -115,9 +120,25 @@ class CrossAxis extends CustomPainter {
       canvas.drawLine(
         Offset(0, lineY),                            // Start from top of viewport
         Offset(lineY, viewportSize.width),        // End at bottom of viewport
-        linePaint,
+        axisPaint,
       );
+      paintText(canvas, 'X', Offset(10, lineY + 16), axisPaint);
     }
+  }
+
+  void paintText(Canvas canvas, String text, Offset offset, Paint paint) {
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: text,
+        style: TextStyle(
+          color: paint.color,
+          fontSize: 16,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout(minWidth: 0, maxWidth: viewportSize.width);
+    textPainter.paint(canvas, offset);
   }
 
   @override
