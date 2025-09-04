@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/pages/planametry_page.dart';
+import 'package:flutter_maths_expressions/pages/trigonometry_page.dart';
 
 import '../widgets/background_container.dart';
 import 'logarithms_page.dart';
@@ -45,6 +47,14 @@ class _HomePageState extends State<HomePage> {
               navigatingCard(
                 context, Image.asset("assets/images/logarithms.png"), 'Logarithms',
                 LogarithmsPage(title: 'Logarithms'),
+              ),
+              navigatingCard(
+                context, Image.asset("assets/images/planametry.png"), 'Logarithms',
+                PlanametryPage(title: 'Planametry'),
+              ),
+              navigatingCard(
+                context, Image.asset("assets/images/trigonometry.png"), 'Logarithms',
+                TrigonometryPage(title: 'Trigonometry'),
               ),
             ],
           ),
