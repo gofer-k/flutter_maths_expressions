@@ -6,11 +6,12 @@ class CrossAxesPainter extends CustomPainter {
   final Matrix4 canvasTransform;
   final Size viewportSize;
   final Offset canvasOrigin;
-  final double originUnitInPixels = 40.0;
+  final double originUnitInPixels;
   late final double minUnitInPixels;
 
-  CrossAxesPainter({required this.canvasTransform, required this.viewportSize}) :
+  CrossAxesPainter({required this.canvasTransform, required this.viewportSize, required this.originUnitInPixels}) :
     canvasOrigin = Offset(viewportSize.width / 2, viewportSize.height / 2) {
+    // TODO: Refactor this property to base class
     minUnitInPixels = 0.25 * originUnitInPixels;
   }
 
@@ -32,8 +33,7 @@ class CrossAxesPainter extends CustomPainter {
     // Transform this point to viewport coordinates
     final Offset viewportOrigin = MatrixUtils.transformPoint(canvasTransform, canvasOrigin);
     final double currentScale = this.canvasTransform.getMaxScaleOnAxis();
-    final double currentPan = this.canvasTransform.getTranslation().length;
-    final double unitInPixels = originUnitInPixels * currentScale - currentPan;
+    final double unitInPixels = originUnitInPixels * currentScale;
 
     paintAxisY(canvas, axisPaint, unitMarkPaint, unitLabelStyle, viewportOrigin, unitInPixels);
     paintAxisX(canvas, axisPaint, unitMarkPaint, unitLabelStyle, viewportOrigin, unitInPixels);

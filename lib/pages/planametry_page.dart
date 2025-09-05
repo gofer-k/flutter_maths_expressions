@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_canvas/infinite_canvas.dart';
 
+import '../models/planametry/triangle.dart';
 import '../painters/cross_axes_painter.dart';
+import '../painters/triangle_painter.dart';
 import '../widgets/background_container.dart';
 
 class PlanametryPage extends StatefulWidget {
@@ -31,6 +33,9 @@ class _PlanametryPageState extends State<PlanametryPage> {
 
   @override
   Widget build(BuildContext context) {
+    const gridSize = Size.square(20);
+    final unitInPixels = 2* gridSize.width;
+
     return BackgroundContainer(
       beginColor: Colors.grey.shade300,
       // endColor: Colors.grey.shade800,
@@ -53,17 +58,25 @@ class _PlanametryPageState extends State<PlanametryPage> {
                 children: [
                   InfiniteCanvas(
                     controller: _controller,
-                    gridSize: const Size.square(20),
+                    gridSize: gridSize,
                     menuVisible: false,
                     canAddEdges: true,
-                    // edgesUseStraightLines: true,
                   ),
                   CustomPaint(
                     size: viewportSize,
                     painter: CrossAxesPainter(
                       canvasTransform: _controller.transform.value,
                       viewportSize: viewportSize,
+                      originUnitInPixels: unitInPixels, // Adjust as needed
                     ),
+                  ),
+                  CustomPaint(
+                    size: viewportSize,
+                    painter: TrianglePainter(
+                      triangle: Triangle(a: Offset(1, 1), b: Offset(3, 3), c: Offset(5, 3)),
+                      canvasTransform: _controller.transform.value,
+                      viewportSize: viewportSize, originUnitInPixels: unitInPixels,  // Adjust as needed
+                    )
                   ),
                 ]
               );
