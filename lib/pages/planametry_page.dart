@@ -73,7 +73,7 @@ class _PlanametryPageState extends State<PlanametryPage> {
                   CustomPaint(
                     size: viewportSize,
                     painter: TrianglePainter(
-                      triangle: Triangle(a: Offset(1, 1), b: Offset(3, 3), c: Offset(5, 3)),
+                      triangle: Triangle(a: Offset(1, 1), b: Offset(3, 3), c: Offset(5, 1)),
                       canvasTransform: _controller.transform.value,
                       viewportSize: viewportSize, originUnitInPixels: unitInPixels,  // Adjust as needed
                     )

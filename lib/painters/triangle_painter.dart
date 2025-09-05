@@ -25,26 +25,23 @@ class TrianglePainter extends FigurePainter {
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
 
-    final canvasOrigin = Offset(viewportSize.width / 2, viewportSize.height / 2);
+    canvas.save(); // 1. Save the current canvas state
 
-    // This is the scaling factor to apply to your triangle's coordinates.
-    // It's derived from how many pixels represent one unit (using the INSTANCE variable),
-    // adjusted by the current canvas scale.
-    // Use 'this.minUnitInPixels' here
-    final double effectiveScale = this.minUnitInPixels * this.canvasTransform.getMaxScaleOnAxis();
+    // 2. Apply the main canvas transformation (pan/zoom from gesture detector, etc.)
+    canvas.transform(canvasTransform.storage);
+
+    final canvasOrigin = Offset(viewportSize.width / 2, viewportSize.height / 2);
+    canvas.translate(canvasOrigin.dx, canvasOrigin.dy);
 
     Path path = Path();
 
-    // Apply the canvas transform to the canvas before drawing.
-    canvas.save(); // Save the current canvas state
-
-    canvas.transform(canvasTransform.storage); // Apply the Matrix4 transformation
-    canvas.translate(canvasOrigin.dy, canvasOrigin.dy);
-
-    // Scale the triangle points using their dx/dy properties and the effectiveScale
-    path.moveTo(triangle.a.dx * effectiveScale, triangle.a.dy * effectiveScale);
-    path.lineTo(triangle.b.dx * effectiveScale, triangle.b.dy * effectiveScale);
-    path.lineTo(triangle.c.dx * effectiveScale, triangle.c.dy * effectiveScale);
+    // 4. Convert local triangle coordinates to "scaled local" coordinates.
+    // These are the coordinates in pixels as if the zoom level was 1.0,
+    // relative to the origin set by canvas.translate (if any).
+    // y - coordinate is negative against local cartesian coordinates.
+    path.moveTo(triangle.a.dx * originUnitInPixels, -triangle.a.dy * originUnitInPixels);
+    path.lineTo(triangle.b.dx * originUnitInPixels, -triangle.b.dy * originUnitInPixels);
+    path.lineTo(triangle.c.dx * originUnitInPixels, -triangle.c.dy * originUnitInPixels);
     path.close();
     canvas.drawPath(path, paint);
 
