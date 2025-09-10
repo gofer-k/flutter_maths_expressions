@@ -3,6 +3,7 @@ import 'package:flutter_maths_expressions/pages/planimetry_page.dart';
 import 'package:flutter_maths_expressions/pages/trigonometry_page.dart';
 
 import '../widgets/background_container.dart';
+import 'block_shapes_page.dart';
 import 'logarithms_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,12 +50,16 @@ class _HomePageState extends State<HomePage> {
                 LogarithmsPage(title: 'Logarithms'),
               ),
               navigatingCard(
-                context, Image.asset("assets/images/planametry.png"), 'Logarithms',
-                PlanimetryPage(title: 'Planametry'),
+                context, Image.asset("assets/images/planimetry.png"), 'Planimetry',
+                PlanimetryPage(title: 'Planimetry'),
               ),
               navigatingCard(
-                context, Image.asset("assets/images/trigonometry.png"), 'Logarithms',
+                context, Image.asset("assets/images/trigonometry.png"), 'Trigonometry',
                 TrigonometryPage(title: 'Trigonometry'),
+              ),
+              navigatingCard(
+                context, Image.asset("assets/images/block_shapes.png"), 'Block shapes',
+                BlockShapesPage(title: 'Block shapes'),
               ),
             ],
           ),
