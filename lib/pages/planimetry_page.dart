@@ -6,15 +6,15 @@ import '../painters/cross_axes_painter.dart';
 import '../painters/triangle_painter.dart';
 import '../widgets/background_container.dart';
 
-class PlanametryPage extends StatefulWidget {
+class PlanimetryPage extends StatefulWidget {
   final String title;
-  const PlanametryPage({super.key, required this.title});
+  const PlanimetryPage({super.key, required this.title});
 
   @override
-  State<StatefulWidget> createState() => _PlanametryPageState();
+  State<StatefulWidget> createState() => _PlanimetryPageState();
 }
 
-class _PlanametryPageState extends State<PlanametryPage> {
+class _PlanimetryPageState extends State<PlanimetryPage> {
   late InfiniteCanvasController _controller;
 
   @override
