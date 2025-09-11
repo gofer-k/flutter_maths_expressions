@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/widgets/dropdown.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
@@ -41,25 +41,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
   void initState() {
     super.initState();
     _halfMargin3dView = _margin3dView / 2;
-
-    {
-      Sp3dObj obj = Ellipsoid.ellipsoid(100, 100, 200);
-      obj.materials.add(FSp3dMaterial.blue.deepCopy());
-      obj.fragments[0].faces[0].materialIndex = 1;
-      obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-        ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
-      obj.layerNum = -3;
-      _objs.add(obj);
-    }
-    // {
-    //   Sp3dObj obj = HyperboloidShell.hyperboloidShell(50, 50, 100, false, uBands: 20, vBands: 30, uMin: 1.0, uMax: -1.0);
-    //   obj.materials.add(FSp3dMaterial.red.deepCopy());
-    //   obj.fragments[0].faces[0].materialIndex = 1;
-    //   obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-    //     ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
-    //   obj.rotate(Sp3dV3D(1, 1, 0).nor(), 15 * pi / 180);
-    //   _objs.add(obj);
-    // }
+    _renderShape(ShapeType.ellipsoid);
     loadImage();
   }
 
@@ -120,31 +102,42 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
         ),
         body: Padding(
           padding: const EdgeInsets.only(top: 8.0, left: 2.0, right: 2.0),
-          child: Container(
-            constraints: BoxConstraints(
-              maxWidth: _renderSize.width,
-              maxHeight: _renderSize.height,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.black26,
-              border: Border.all(color: Colors.black87)),
-            margin: EdgeInsets.all(_margin3dView),
-            child:  Column(
-              children: [
-                Sp3dRenderer(
-                  _worldSize,
-                  Sp3dV2D(_worldSize.width / 2, _worldSize.height / 2), // canvas center = Origin world space (0, 0)
-                  _world,
-                  // If you want to reduce distortion, shoot from a distance at high magnification.
-                  _camera,
-                  Sp3dLight(Sp3dV3D(0, 0, 1), syncCam: true),
-                  rotationController: _camRCtrl,
-                  zoomController: _camZCtrl,
-                  useClipping: true
+          child: Column(
+            children: [
+              Container(
+                constraints: BoxConstraints(
+                  maxWidth: _renderSize.width,
+                  maxHeight: _renderSize.height,
                 ),
-              ],
-            ),
-          )
+                decoration: BoxDecoration(
+                    color: Colors.black26,
+                    border: Border.all(color: Colors.black87)),
+                margin: EdgeInsets.all(_margin3dView),
+                child:  Column(
+                  children: [
+                    Sp3dRenderer(
+                        _worldSize,
+                        Sp3dV2D(_worldSize.width / 2, _worldSize.height / 2), // canvas center = Origin world space (0, 0)
+                        _world,
+                        // If you want to reduce distortion, shoot from a distance at high magnification.
+                        _camera,
+                        Sp3dLight(Sp3dV3D(0, 0, 1), syncCam: true),
+                        rotationController: _camRCtrl,
+                        zoomController: _camZCtrl,
+                        useClipping: true
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child:Dropdown(shapeType: ShapeType.ellipsoid, onShapeSelected: (ShapeType selectedShape) {
+                  _renderShape(selectedShape);
+                },)
+              ),
+            ],
+          ),
         ),
       )
     );
@@ -163,5 +156,56 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
       });
     });
   }
+
+  void _renderShape(ShapeType selectedShape) {
+    switch (selectedShape) {
+      case ShapeType.ellipsoid:
+        _renderEllipsoid();
+      case ShapeType.hyperboloid:
+        _renderHyperboloid();
+      case ShapeType.torus:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case ShapeType.cylinder:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+    }
+  }
+
+  void _renderEllipsoid() {
+    Sp3dObj obj = Ellipsoid.ellipsoid(100, 100, 200);
+    obj.materials.add(FSp3dMaterial.blue.deepCopy());
+    obj.fragments[0].faces[0].materialIndex = 1;
+    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+      ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
+    obj.layerNum = -3;
+
+    if (_objs.isNotEmpty) {
+      // TODO: fix shares order
+      _objs.removeLast();
+      _objs.last = obj;
+    }
+    else
+      _objs.add(obj);
+  }
+
+  void _renderHyperboloid() {
+    Sp3dObj obj = HyperboloidShell.hyperboloidShell(50, 50, 100, false, uBands: 20, vBands: 30, uMin: 1.0, uMax: -1.0);
+    obj.materials.add(FSp3dMaterial.red.deepCopy());
+    obj.fragments[0].faces[0].materialIndex = 1;
+    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+      ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
+    obj.rotate(Sp3dV3D(1, 1, 0).nor(), 15 * pi / 180);
+
+    if (_objs.isNotEmpty) {
+      // TODO: fix shares order
+      _objs.removeLast();
+      _objs.last = obj;
+    }
+    else {
+      _objs.add(obj);
+    }
+  }
 }
+
 
