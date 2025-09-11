@@ -6,6 +6,8 @@ import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 
+import '../models/3d_shapes/ellipsoid.dart';
+import '../models/3d_shapes/hyperboloid_shell.dart';
 import '../widgets/background_container.dart';
 
 class BlockShapesPage extends StatefulWidget {
@@ -20,41 +22,89 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
   late Sp3dWorld _world;
   late final List<Sp3dObj> _objs = [];
   bool _isLoaded = false;
+  late Size _worldSize;
+  final _margin3dView = 4.0;
+  late double _halfMargin3dView;
+  late Size _renderSize;
 
   // Use the camera that best suits your needs.
   // This package allows you to customize various movements,
   // including camera rotation control, by extending the controller class.
-  final Sp3dCamera _camera = Sp3dCamera(Sp3dV3D(0, 0, 1000), 1000);
+  late Sp3dCamera _camera;
   // final Sp3dFreeLookCamera _camera = Sp3dFreeLookCamera(Sp3dV3D(0,0,1000), 1000);
   final Sp3dCameraRotationController _camRCtrl = Sp3dCameraRotationController();
   static const Sp3dCameraZoomController _camZCtrl = Sp3dCameraZoomController();
 
+  bool _dependenciesInitialized = false; // Flag to run logic only once
+
   @override
   void initState() {
     super.initState();
-    // {
-    //   Sp3dObj obj = Ellipsoid.ellipsoid(100, 100, 0);
-    //   obj.materials.add(FSp3dMaterial.blue.deepCopy());
-    //   obj.fragments[0].faces[0].materialIndex = 1;
-    //   obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-    //     ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
-    //   obj.rotate(Sp3dV3D(1, 1, 0).nor(), 30 * pi / 180);
-    //   _objs.add(obj);
-    // }
+    _halfMargin3dView = _margin3dView / 2;
+
     {
-      Sp3dObj obj = HyperboloidShell.hyperboloidShell(50, 50, 100, false, uBands: 20, vBands: 30, uMin: 1.0, uMax: -1.0);
-      obj.materials.add(FSp3dMaterial.red.deepCopy());
+      Sp3dObj obj = Ellipsoid.ellipsoid(100, 100, 200);
+      obj.materials.add(FSp3dMaterial.blue.deepCopy());
       obj.fragments[0].faces[0].materialIndex = 1;
       obj.materials[0] = FSp3dMaterial.grey.deepCopy()
         ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
-      obj.rotate(Sp3dV3D(1, 1, 0).nor(), 15 * pi / 180);
+      obj.layerNum = -3;
       _objs.add(obj);
     }
+    // {
+    //   Sp3dObj obj = HyperboloidShell.hyperboloidShell(50, 50, 100, false, uBands: 20, vBands: 30, uMin: 1.0, uMax: -1.0);
+    //   obj.materials.add(FSp3dMaterial.red.deepCopy());
+    //   obj.fragments[0].faces[0].materialIndex = 1;
+    //   obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+    //     ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
+    //   obj.rotate(Sp3dV3D(1, 1, 0).nor(), 15 * pi / 180);
+    //   _objs.add(obj);
+    // }
     loadImage();
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_dependenciesInitialized) {
+      final sizeView = MediaQuery.sizeOf(context);
+      double width = sizeView.width > 600 ? 600 : sizeView.width;
+      // Ensure height is not greater than the determined width, if that's the desired constraint
+      double height = sizeView.height > width ? width : sizeView.height;
+      _renderSize = Size(width, height);
+
+      _worldSize = Size(
+          _renderSize.width - _halfMargin3dView,
+          _renderSize.height - _halfMargin3dView);
+
+      _objs.addAll(UtilSp3dCommonParts.coordinateArrows(
+        _renderSize.shortestSide * 0.75,
+        materialX: FSp3dMaterial.redNonWire.deepCopy(),
+        materialY: FSp3dMaterial.greenNonWire.deepCopy(),
+        materialZ: FSp3dMaterial.blueNonWire.deepCopy(),
+        useArrowHead: false));
+
+      loadImage();
+
+      _dependenciesInitialized = true;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // If _dependenciesInitialized is false, it means didChangeDependencies hasn't run yet.
+    // You might want to show a loader or an empty container.
+    if (!_dependenciesInitialized) {
+      return const BackgroundContainer( // Or your preferred loading widget
+        beginColor: Colors.grey,
+        endColor: Colors.black,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
     return BackgroundContainer(
       beginColor: Colors.grey.shade300,
        endColor: Colors.grey.shade800,
@@ -69,210 +119,49 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-          child: Column(
-            children: [
-              Sp3dRenderer(
-                const Size(600, 600),
-                const Sp3dV2D(100, 100),
-                _world,
-                // If you want to reduce distortion, shoot from a distance at high magnification.
-                _camera,
-                Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
-                rotationController: _camRCtrl,
-                zoomController: _camZCtrl,
-              ),
-            ],
-          ),
+          padding: const EdgeInsets.only(top: 8.0, left: 2.0, right: 2.0),
+          child: Container(
+            constraints: BoxConstraints(
+              maxWidth: _renderSize.width,
+              maxHeight: _renderSize.height,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.black26,
+              border: Border.all(color: Colors.black87)),
+            margin: EdgeInsets.all(_margin3dView),
+            child:  Column(
+              children: [
+                Sp3dRenderer(
+                  _worldSize,
+                  Sp3dV2D(_worldSize.width / 2, _worldSize.height / 2), // canvas center = Origin world space (0, 0)
+                  _world,
+                  // If you want to reduce distortion, shoot from a distance at high magnification.
+                  _camera,
+                  Sp3dLight(Sp3dV3D(0, 0, 1), syncCam: true),
+                  rotationController: _camRCtrl,
+                  zoomController: _camZCtrl,
+                  useClipping: true
+                ),
+              ],
+            ),
+          )
         ),
       )
     );
   }
 
   void loadImage() async {
+    _camera = Sp3dCamera(Sp3dV3D(0, 0, _worldSize.shortestSide * 2),
+        _worldSize.shortestSide * 2,
+        radian: pi/6,
+        rotateAxis: Sp3dV3D(1, -1, 0)
+    );
     _world = Sp3dWorld(_objs);
     _world.initImages().then((List<Sp3dObj> errorObjs) {
       setState(() {
         _isLoaded = true;
       });
     });
-  }
-}
-
-extension Ellipsoid on UtilSp3dGeometry {
-  static List<Sp3dV3D> _ellipsoid(
-      double a, double b, double c,
-      int latitudeBands,
-      int longitudeBands) {
-    List<Sp3dV3D> vertices = [];
-
-    for (int latNumber = 0; latNumber <= latitudeBands; latNumber++) {
-      double theta = latNumber * pi / latitudeBands;
-      double sinTheta = sin(theta);
-      double cosTheta = cos(theta);
-
-      for (int longNumber = 0; longNumber <= longitudeBands; longNumber++) {
-        double phi = longNumber * 2 * pi / longitudeBands;
-        double sinPhi = sin(phi);
-        double cosPhi = cos(phi);
-
-        double x = a * cosPhi * sinTheta;
-        double y = b * sinPhi * sinTheta;
-        double z = c * cosTheta;
-        vertices.add(Sp3dV3D(x, y, z));
-      }
-    }
-    return vertices;
-  }
-
-  static Sp3dObj ellipsoid(double a, double b, double c,
-      { int latitudeBands = 30, int longitudeBands = 30, Sp3dMaterial? material}) {
-
-    List<Sp3dV3D> vertices = _ellipsoid(a, b, c, latitudeBands, longitudeBands);
-    List<Sp3dFragment> fragments = [];
-
-    for (int latNumber = 0; latNumber < latitudeBands; latNumber++) {
-      for (int longNumber = 0; longNumber < longitudeBands; longNumber++) {
-        int first = (latNumber * (longitudeBands + 1)) + longNumber;
-        int second = first + longitudeBands + 1;
-        // Define faces for each quad
-        // Each quad is made of two triangles
-        List<Sp3dFace> faces = [
-          Sp3dFace([first, second, first + 1], 0),
-          Sp3dFace([second, second + 1, first + 1], 0),
-        ];
-        fragments.add(Sp3dFragment(faces));
-      }
-    }
-
-    return Sp3dObj(
-      vertices,
-      fragments,
-      [material ?? FSp3dMaterial.grey.deepCopy()], // Ensure a default material
-      [],
-    );
-  }
-}
-
-extension HyperboloidShell on UtilSp3dGeometry {
-  // Helper for cosh and sinh if not available or for clarity
-  static double _cosh(double x) => (exp(x) + exp(-x)) / 2;
-  static double _sinh(double x) => (exp(x) - exp(-x)) / 2;
-
-  static List<Sp3dV3D> _generateHyperboloidVertices(
-      double a, // For one-sheet: throat radius. For two-sheets: scaling fa
-      double b, // For elliptical cross-sections. Use 'a' if circular.
-      double c, // Scaling factor for z.
-      bool twoSheet, // True for two-sheet hyperboloid, false for one-sheet
-      int uBands, // Number of bands along the 'u' parameter (height/stretch)
-      int vBands, // Number of bands along the 'v' parameter (around the axis)
-      double uMin,
-      double uMax) {
-    List<Sp3dV3D> vertices = [];
-
-    // TODO: For two sheets, u typically starts from 0 (or a small positive value to avoid singularity at the pole if c=0)
-    // and goes outwards. cosh(0)=1, sinh(0)=0.
-    // We should ensure uMin is appropriate for the chosen type.
-    // For two-sheets, u represents a radial-like parameter from the central axis for each nappe.
-    final nappeSign = twoSheet ? 1 : -1;
-    for (int i = 0; i <= uBands; i++) {
-      // 'u' parameter, controlling the "height" or extent along the hyperboloid axis
-      double u = uMin + (uMax - uMin) * (i / uBands);
-
-      for (int j = 0; j <= vBands; j++) {
-        // 'v' parameter, controlling the rotation around the main axis (usually z)
-        double v = j * 2 * pi / vBands;
-
-        double cosV = cos(v);
-        double sinV = sin(v);
-        double coshU = _cosh(u);
-        double sinhU = _sinh(u);
-
-        // Parametric equations for a hyperboloid of one sheet (axis along z)
-        // x = a * cosh(u) * cos(v)
-        // y = a * cosh(u) * sin(v) // Assuming b=a for a circular cross-section in x-y
-        // z = c * sinh(u)
-        double x, y, z;
-
-        if (twoSheet) {
-          // Hyperboloid of Two Sheets
-          // x = a * sinh(u) * cos(v)
-          // y = b * sinh(u) * sin(v)
-          // z = ±c * cosh(u)
-          x = a * sinhU * cosV;
-          y = b * sinhU * sinV;
-          z = nappeSign * c * coshU;
-        } else {
-          // Hyperboloid of One Sheet
-          // x = a * cosh(u) * cos(v)
-          // y = b * cosh(u) * sin(v)
-          // z = c * sinh(u)
-          x = a * coshU * cosV;
-          y = b * coshU * sinV;
-          z = c * sinhU;
-        }
-        vertices.add(Sp3dV3D(x, y, z));
-      }
-    }
-    return vertices;
-  }
-
-  static Sp3dObj hyperboloidShell(
-      double a, // Controls the "throat" radius (radius at z=0 for one-sheet)
-      double b, // If you want elliptical cross-sections, add this and use it for 'y'
-      double c, // Controls the curvature/steepness along the z-axis
-      bool twoSheet,
-      {
-        // bool inner = true, // Let's re-evaluate 'inner'. For one sheet, it's one continuous surface.
-        // For two sheets, it would select one of the two disconnected parts.
-        int uBands = 20, // Controls segments along the length
-        int vBands = 30, // Controls segments around the circumference
-        double uMin = -1.5, // Min 'u' value, controls how far the hyperboloid extends
-        double uMax = 1.5, // Max 'u' value
-        Sp3dMaterial? material,
-      }) {
-    // The 'b' parameter from your original signature isn't directly used here
-    // for a circular hyperboloid. If you need an elliptical base,
-    // you'd re-introduce 'b' into the y-component calculation in _generateHyperboloidVertices.
-    // For now, I'm assuming a circular cross-section (like a cooling tower shape).
-
-    double actualUMin, actualUMax;
-
-    if (twoSheet) {
-      actualUMin = uMin ?? 0.1; // Default for two sheets (avoid u=0 if a,b != 0)
-      actualUMax = uMax ?? 1.5;
-      if (actualUMin < 0) {
-        print("Warning: uMin for two-sheet hyperboloid should generally be >= 0.");
-        actualUMin = 0.1; // Correct if negative
-      }
-    } else {
-      actualUMin = uMin ?? -1.5; // Default for one sheet
-      actualUMax = uMax ?? 1.5;
-    }
-
-    List<Sp3dV3D> vertices = _generateHyperboloidVertices(
-      a, b, c, twoSheet, uBands, vBands, actualUMin, actualUMax);
-
-    List<Sp3dFragment> fragments = [];
-    for (int i = 0; i < uBands; i++) {
-      for (int j = 0; j < vBands; j++) {
-        int first = (i * (vBands + 1)) + j;
-        int second = first + vBands + 1;
-
-        List<Sp3dFace> faces = [
-          Sp3dFace([first, second, first + 1], 0),
-          Sp3dFace([second, second + 1, first + 1], 0),
-        ];
-        fragments.add(Sp3dFragment(faces));
-      }
-    }
-
-    return Sp3dObj(
-      vertices,
-      fragments,
-      [material ?? FSp3dMaterial.grey.deepCopy()],
-      [],
-    );
   }
 }
 
