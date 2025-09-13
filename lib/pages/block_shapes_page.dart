@@ -8,6 +8,7 @@ import 'package:util_simple_3d/util_simple_3d.dart';
 
 import '../models/3d_shapes/ellipsoid.dart';
 import '../models/3d_shapes/hyperboloid_shell.dart';
+import '../models/3d_shapes/shape_type.dart';
 import '../widgets/background_container.dart';
 
 class BlockShapesPage extends StatefulWidget {

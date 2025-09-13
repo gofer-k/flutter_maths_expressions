@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ShapeType {
-  ellipsoid(value: 'Ellipsoid'),
-  hyperboloid(value: 'Hyperboloid Shell'),
-  torus(value: 'Torus'),
-  cylinder(value: 'Cylinder');
-
-  final String value;
-  const ShapeType({required this.value});
-}
+import '../models/3d_shapes/shape_type.dart';
 
 class Dropdown extends StatefulWidget {
   // Add the callback function property
