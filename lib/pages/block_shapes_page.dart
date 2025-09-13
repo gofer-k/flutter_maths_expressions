@@ -8,6 +8,7 @@ import 'package:util_simple_3d/util_simple_3d.dart';
 
 import '../models/3d_shapes/ellipsoid.dart';
 import '../models/3d_shapes/hyperboloid_shell.dart';
+import '../models/3d_shapes/saddle.dart';
 import '../models/3d_shapes/shape_type.dart';
 import '../widgets/background_container.dart';
 
@@ -162,8 +163,13 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
     switch (selectedShape) {
       case ShapeType.ellipsoid:
         _renderEllipsoid();
-      case ShapeType.hyperboloid:
-        _renderHyperboloid();
+      case ShapeType.hyperboloid_one_shell:
+        _renderHyperboloid(twoShell: false);
+      case ShapeType.hyperboloid_two_shell:
+        _renderHyperboloid(twoShell: true);
+        case ShapeType.saddle:
+        // TODO: Handle this case.
+        _renderSaddle();
       case ShapeType.torus:
         // TODO: Handle this case.
         throw UnimplementedError();
@@ -188,13 +194,29 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
       _objs.add(obj);
   }
 
-  void _renderHyperboloid() {
-    Sp3dObj obj = HyperboloidShell.hyperboloidShell(25, 50, 100, false, uBands: 20, vBands: 30, uMin: 1.0, uMax: -1.0);
+  void _renderHyperboloid({required bool twoShell}) {
+    Sp3dObj obj = HyperboloidShell.hyperboloidShell(25, 50, 100, twoShell, uBands: 20, vBands: 30, uMin: 1.0, uMax: -1.0);
     obj.materials.add(FSp3dMaterial.red.deepCopy());
     obj.fragments[0].faces[0].materialIndex = 1;
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
     obj.rotate(Sp3dV3D(1, 1, 0).nor(), 15 * pi / 180);
+
+    if (_objs.isNotEmpty) {
+      _objs.first = obj;
+    }
+    else {
+      _objs.add(obj);
+    }
+  }
+
+  void _renderSaddle() {
+    Sp3dObj obj = Saddle.saddle(200, 100, 50);
+    obj.materials.add(FSp3dMaterial.red.deepCopy());
+    obj.fragments[0].faces[0].materialIndex = 1;
+    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+      ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
+    obj.rotate(Sp3dV3D(0, 1, 1).nor(), -135 * pi / 180);
 
     if (_objs.isNotEmpty) {
       _objs.first = obj;

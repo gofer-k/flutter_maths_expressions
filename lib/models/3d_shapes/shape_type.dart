@@ -1,6 +1,8 @@
 enum ShapeType {
   ellipsoid(value: 'Ellipsoid'),
-  hyperboloid(value: 'Hyperboloid Shell'),
+  hyperboloid_two_shell(value: 'Hyperboloid 2-shell'),
+  hyperboloid_one_shell(value: 'Hyperboloid 1-shell'),
+  saddle(value: 'Saddle'),
   torus(value: 'Torus'),
   cylinder(value: 'Cylinder');
 
