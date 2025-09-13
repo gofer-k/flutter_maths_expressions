@@ -7,6 +7,7 @@ import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 
 import '../models/3d_shapes/cone.dart';
+import '../models/3d_shapes/cylinder.dart';
 import '../models/3d_shapes/ellipsoid.dart';
 import '../models/3d_shapes/hyperboloid_shell.dart';
 import '../models/3d_shapes/saddle.dart';
@@ -173,8 +174,9 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
       case ShapeType.cone:
         _renderCone();
       case ShapeType.cylinder:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        _renderCylinder();
+      case ShapeType.hyperbolic_cylinder:
+        _renderCylinder(hyperbolic: true);
     }
   }
 
@@ -189,8 +191,9 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
     if (_objs.isNotEmpty) {
       _objs.first = obj;
     }
-    else
+    else {
       _objs.add(obj);
+    }
   }
 
   void _renderHyperboloid({required bool twoShell}) {
@@ -232,6 +235,28 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
     obj.rotate(Sp3dV3D(0, 1, 1).nor(), -135 * pi / 180);
+    if (_objs.isNotEmpty) {
+      _objs.first = obj;
+    }
+    else {
+      _objs.add(obj);
+    }
+  }
+
+  void _renderCylinder({bool hyperbolic = false}) {
+    Sp3dObj obj = hyperbolic ?
+        // TODO: improve rotation parameters
+      HyperbolicCylinder.hyperbolicCylinder(
+        a: 50, b: 50, height: 200, opensAlongX: false, addCovers: false) :
+    // TODO: improve rotation parameters
+      HyperbolicCylinder.cylinder(
+        radius: 75, height: 250);
+
+    obj.materials.add(FSp3dMaterial.red.deepCopy());
+    obj.fragments[0].faces[0].materialIndex = 1;
+    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+      ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
+    obj.rotate(Sp3dV3D(0, 1, 1).nor(), -30 * pi / 180);
     if (_objs.isNotEmpty) {
       _objs.first = obj;
     }

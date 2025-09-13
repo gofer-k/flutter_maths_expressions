@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class CrossAxesPainter extends CustomPainter {
@@ -32,7 +30,7 @@ class CrossAxesPainter extends CustomPainter {
 
     // Transform this point to viewport coordinates
     final Offset viewportOrigin = MatrixUtils.transformPoint(canvasTransform, canvasOrigin);
-    final double currentScale = this.canvasTransform.getMaxScaleOnAxis();
+    final double currentScale = canvasTransform.getMaxScaleOnAxis();
     final double unitInPixels = originUnitInPixels * currentScale;
 
     paintAxisY(canvas, axisPaint, unitMarkPaint, unitLabelStyle, viewportOrigin, unitInPixels);

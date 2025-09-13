@@ -4,7 +4,8 @@ enum ShapeType {
   hyperboloid_one_shell(value: 'Hyperboloid 1-shell'),
   saddle(value: 'Saddle'),
   cone(value: 'Cone'),
-  cylinder(value: 'Cylinder');
+  cylinder(value: 'Cylinder'),
+  hyperbolic_cylinder(value: 'Hyperbolic cylinder');
 
   final String value;
   const ShapeType({required this.value});

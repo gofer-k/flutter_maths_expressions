@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/models/planametry/triangle.dart';
 import 'package:flutter_maths_expressions/painters/figure_painter.dart';
@@ -13,12 +12,12 @@ class TrianglePainter extends FigurePainter {
     required this.triangle,
     required this.originUnitInPixels}) : super(canvasTransform, viewportSize) {
     // TODO: Refactor this property to base class
-    this.minUnitInPixels = 0.25 * originUnitInPixels;
+    minUnitInPixels = 0.25 * originUnitInPixels;
   }
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (this.minUnitInPixels <= 0) return;
+    if (minUnitInPixels <= 0) return;
 
     final Paint paint = Paint()
       ..color = Colors.black

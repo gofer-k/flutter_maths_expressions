@@ -90,7 +90,6 @@ extension HyperboloidShell on UtilSp3dGeometry {
       actualUMin = uMin; // Default for two sheets (avoid u=0 if a,b != 0)
       actualUMax = uMax;
       if (actualUMin < 0) {
-        print("Warning: uMin for two-sheet hyperboloid should generally be >= 0.");
         actualUMin = 0.1; // Correct if negative
       }
     } else {

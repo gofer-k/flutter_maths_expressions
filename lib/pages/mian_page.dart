@@ -22,9 +22,9 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child:
         BackgroundContainer(
-          child: _pageContent(),
           beginColor: Colors.grey.shade200,
-          endColor: Colors.grey.shade700),
+          endColor: Colors.grey.shade700,
+          child: _pageContent()),
     );
   }
 
