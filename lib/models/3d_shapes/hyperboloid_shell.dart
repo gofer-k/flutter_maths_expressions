@@ -19,7 +19,6 @@ extension HyperboloidShell on UtilSp3dGeometry {
       double uMax) {
     List<Sp3dV3D> vertices = [];
 
-    // TODO: For two sheets, u typically starts from 0 (or a small positive value to avoid singularity at the pole if c=0)
     // and goes outwards. cosh(0)=1, sinh(0)=0.
     // We should ensure uMin is appropriate for the chosen type.
     // For two-sheets, u represents a radial-like parameter from the central axis for each nappe.
@@ -88,15 +87,15 @@ extension HyperboloidShell on UtilSp3dGeometry {
     double actualUMin, actualUMax;
 
     if (twoSheet) {
-      actualUMin = uMin ?? 0.1; // Default for two sheets (avoid u=0 if a,b != 0)
-      actualUMax = uMax ?? 1.5;
+      actualUMin = uMin; // Default for two sheets (avoid u=0 if a,b != 0)
+      actualUMax = uMax;
       if (actualUMin < 0) {
         print("Warning: uMin for two-sheet hyperboloid should generally be >= 0.");
         actualUMin = 0.1; // Correct if negative
       }
     } else {
-      actualUMin = uMin ?? -1.5; // Default for one sheet
-      actualUMax = uMax ?? 1.5;
+      actualUMin = uMin; // Default for one sheet
+      actualUMax = uMax;
     }
 
     List<Sp3dV3D> vertices = _generateHyperboloidVertices(
@@ -114,6 +113,49 @@ extension HyperboloidShell on UtilSp3dGeometry {
         ];
         fragments.add(Sp3dFragment(faces));
       }
+    }
+
+    // Covers for two-sheets
+    // Add a center vertex for the bottom cap
+    double centerZBottom;
+    if (twoSheet) {
+      centerZBottom = (actualUMin == 0 && c == 0) ? 0 : (twoSheet ? 1 : -1) * c * _cosh(actualUMin);
+    } else {
+      centerZBottom = c * _sinh(actualUMin);
+    }
+    Sp3dV3D bottomCenterVertex = Sp3dV3D(0, 0, centerZBottom);
+    int bottomCenterIndex = vertices.length;
+    vertices.add(bottomCenterVertex);
+
+    for (int j = 0; j < vBands; j++) {
+      int v1 = j;
+      int v2 = j + 1;
+      // Ensure faces are wound correctly (e.g., counter-clockwise for front-facing)
+      fragments.add(Sp3dFragment([
+        Sp3dFace([bottomCenterIndex, v1, v2],0)
+      ]));
+    }
+
+    // Add top cover
+    // Add a center vertex for the top cap
+    double centerZTop;
+    if (twoSheet) {
+      centerZTop = (twoSheet ? 1: -1) * c * _cosh(actualUMax);
+    } else {
+      centerZTop = c * _sinh(actualUMax);
+    }
+    Sp3dV3D topCenterVertex = Sp3dV3D(0, 0, centerZTop);
+    int topCenterIndex = vertices.length;
+    vertices.add(topCenterVertex);
+
+    int topStartIndex = uBands * (vBands + 1);
+    for (int j = 0; j < vBands; j++) {
+      int v1 = topStartIndex + j;
+      int v2 = topStartIndex + j + 1;
+      // Ensure faces are wound correctly
+      fragments.add(Sp3dFragment([
+        Sp3dFace([topCenterIndex, v2, v1],0) // Note the order for correct winding
+      ]));
     }
 
     return Sp3dObj(
