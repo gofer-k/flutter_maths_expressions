@@ -29,7 +29,7 @@ extension Ellipsoid on UtilSp3dGeometry {
     return vertices;
   }
 
-  static Sp3dObj ellipsoid(String? id, double a, double b, double c,
+  static Sp3dObj ellipsoid(double a, double b, double c,
       { int latitudeBands = 30, int longitudeBands = 30, Sp3dMaterial? material}) {
 
     List<Sp3dV3D> vertices = _ellipsoid(a, b, c, latitudeBands, longitudeBands);
@@ -53,8 +53,6 @@ extension Ellipsoid on UtilSp3dGeometry {
       vertices,
       fragments,
       [material ?? FSp3dMaterial.grey.deepCopy()], // Ensure a default material
-      [],
-      id: id
-    );
+      []);
   }
 }

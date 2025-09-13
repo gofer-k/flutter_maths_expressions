@@ -67,7 +67,6 @@ extension HyperboloidShell on UtilSp3dGeometry {
   }
 
   static Sp3dObj hyperboloidShell(
-      String? id,
       double a, // Controls the "throat" radius (radius at z=0 for one-sheet)
       double b, // If you want elliptical cross-sections, add this and use it for 'y'
       double c, // Controls the curvature/steepness along the z-axis
@@ -118,7 +117,6 @@ extension HyperboloidShell on UtilSp3dGeometry {
     }
 
     return Sp3dObj(
-      id: id,
       vertices,
       fragments,
       [material ?? FSp3dMaterial.grey.deepCopy()],
