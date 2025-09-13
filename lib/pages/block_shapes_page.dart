@@ -173,7 +173,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
   }
 
   void _renderEllipsoid() {
-    Sp3dObj obj = Ellipsoid.ellipsoid(100, 100, 200);
+    Sp3dObj obj = Ellipsoid.ellipsoid("ellipsoid", 100, 100, 200);
     obj.materials.add(FSp3dMaterial.blue.deepCopy());
     obj.fragments[0].faces[0].materialIndex = 1;
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
@@ -181,16 +181,14 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
     obj.layerNum = -3;
 
     if (_objs.isNotEmpty) {
-      // TODO: fix shares order
-      _objs.removeLast();
-      _objs.last = obj;
+      _objs.first = obj;
     }
     else
       _objs.add(obj);
   }
 
   void _renderHyperboloid() {
-    Sp3dObj obj = HyperboloidShell.hyperboloidShell(50, 50, 100, false, uBands: 20, vBands: 30, uMin: 1.0, uMax: -1.0);
+    Sp3dObj obj = HyperboloidShell.hyperboloidShell("hyperboloid", 100, 50, 50, false, uBands: 20, vBands: 30, uMin: 1.0, uMax: -1.0);
     obj.materials.add(FSp3dMaterial.red.deepCopy());
     obj.fragments[0].faces[0].materialIndex = 1;
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
@@ -198,9 +196,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
     obj.rotate(Sp3dV3D(1, 1, 0).nor(), 15 * pi / 180);
 
     if (_objs.isNotEmpty) {
-      // TODO: fix shares order
-      _objs.removeLast();
-      _objs.last = obj;
+      _objs.first = obj;
     }
     else {
       _objs.add(obj);
