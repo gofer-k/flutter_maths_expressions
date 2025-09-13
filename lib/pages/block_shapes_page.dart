@@ -6,6 +6,7 @@ import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 
+import '../models/3d_shapes/cone.dart';
 import '../models/3d_shapes/ellipsoid.dart';
 import '../models/3d_shapes/hyperboloid_shell.dart';
 import '../models/3d_shapes/saddle.dart';
@@ -168,11 +169,9 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
       case ShapeType.hyperboloid_two_shell:
         _renderHyperboloid(twoShell: true);
         case ShapeType.saddle:
-        // TODO: Handle this case.
         _renderSaddle();
-      case ShapeType.torus:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+      case ShapeType.cone:
+        _renderCone();
       case ShapeType.cylinder:
         // TODO: Handle this case.
         throw UnimplementedError();
@@ -218,6 +217,21 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
       ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
     obj.rotate(Sp3dV3D(0, 1, 1).nor(), -135 * pi / 180);
 
+    if (_objs.isNotEmpty) {
+      _objs.first = obj;
+    }
+    else {
+      _objs.add(obj);
+    }
+  }
+
+  void _renderCone() {
+    Sp3dObj obj = Cone.cone(radius: 100, height: 200);
+    obj.materials.add(FSp3dMaterial.red.deepCopy());
+    obj.fragments[0].faces[0].materialIndex = 1;
+    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+      ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
+    obj.rotate(Sp3dV3D(0, 1, 1).nor(), -135 * pi / 180);
     if (_objs.isNotEmpty) {
       _objs.first = obj;
     }
