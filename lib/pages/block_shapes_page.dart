@@ -23,7 +23,7 @@ class BlockShapesPage extends StatefulWidget {
   State<StatefulWidget> createState() => _BlockShapesPageState();
 }
 
-class _BlockShapesPageState extends State<BlockShapesPage> {
+class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProviderStateMixin {
   late Sp3dWorld _world;
   late final List<Sp3dObj> _objs = [];
   bool _isLoaded = false;
@@ -43,12 +43,35 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
   bool _dependenciesInitialized = false; // Flag to run logic only once
   ShapeType _currentShape = ShapeType.ellipsoid;
 
+  late AnimationController _expandController;
+  late Animation<double> _expandAnimationParameters;
+  bool _isInputParametersExpanded = true;
+  
   @override
   void initState() {
     super.initState();
     _halfMargin3dView = _margin3dView / 2;
     _renderShape(_currentShape);
-    loadImage();
+    _loadImage();
+
+    _expandController = AnimationController(
+      vsync: this, // from SingleTickerProviderStateMixin
+      duration: const Duration(milliseconds: 300),
+    );
+
+    _expandAnimationParameters = CurvedAnimation(
+      parent: _expandController,
+      curve: Curves.easeInOut,
+    );
+    if (_isInputParametersExpanded) {
+      _expandController.forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _expandController.dispose();
+    super.dispose();
   }
 
   @override
@@ -72,7 +95,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
         materialZ: FSp3dMaterial.blueNonWire.deepCopy(),
         useArrowHead: false));
 
-      loadImage();
+      _loadImage();
 
       _dependenciesInitialized = true;
     }
@@ -169,7 +192,18 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
     );
   }
 
-  void loadImage() async {
+  void _toggleExpandParameters() {
+    setState(() {
+      _isInputParametersExpanded = !_isInputParametersExpanded;
+      if (_isInputParametersExpanded) {
+        _expandController.forward(); // Play animation to expand
+      } else {
+        _expandController.reverse(); // Play animation to collapse
+      }
+    });
+  }
+  
+  void _loadImage() async {
     _camera = Sp3dCamera(Sp3dV3D(0, 0, _worldSize.shortestSide * 2),
         _worldSize.shortestSide * 2,
         radian: pi/6,
@@ -289,7 +323,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
 
   Widget _shapeParameters(ShapeType shapeType, double horizontalMargin) {
     double exprScale = 1.5;
-    String expression = shapeExpression(shapeType);
+    String expression = _shapeExpression(shapeType);
 
     return Padding(
       padding: EdgeInsetsGeometry.symmetric(horizontal: horizontalMargin),
@@ -304,12 +338,46 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
               fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
               fontWeight: Theme.of(context).textTheme.bodyLarge?.fontWeight,
             )),
+          Column(
+            children: [
+              InkWell(
+                onTap: _toggleExpandParameters,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text("Animation Parameters",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        _isInputParametersExpanded ? Icons.expand_less : Icons.expand_more,
+                        size: 30.0,
+                        semanticLabel: _isInputParametersExpanded ? 'Collapse parameters' : 'Expand parameters',
+                      ),
+                    ]
+                ),
+              ),
+              SizeTransition(
+                axisAlignment: -1.0,
+                sizeFactor: _expandAnimationParameters,
+                child: Column(
+                  children: [
+                    _editShapeParameters(shapeType, horizontalMargin),
+                  ]
+                ),
+              ),
+            ],
+          ),
         ]
       )
     );
   }
 
-  String shapeExpression(ShapeType shapeType) {
+  String _shapeExpression(ShapeType shapeType) {
     switch(shapeType) {
       case ShapeType.ellipsoid:
         return r"\frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1";
@@ -329,6 +397,82 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
         return r"\frac{x^2}{a^2)} - \frac{y^2}{b^2} - 1 = 0";
     // return r"\Frac{y^2}{a^2)} - \frac{x^2}{b^2} - 1 = 0";
     }
+  }
+
+  Widget _editShapeParameters(ShapeType shapeType, double horizontalMargin) {
+    switch(shapeType) {
+      case ShapeType.ellipsoid:
+       return _editEllipsoidParameters(horizontalMargin);
+      case ShapeType.hyperboloid_two_shell:
+        return _editHyperboloidParameters(horizontalMargin);
+      case ShapeType.hyperboloid_one_shell:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case ShapeType.saddle:
+        return _editSaddleParameters(horizontalMargin);
+      case ShapeType.cone:
+        return _editConeParameters(horizontalMargin);
+      case ShapeType.cylinder:
+        return _editCylinderParameters(horizontalMargin);
+      case ShapeType.hyperbolic_cylinder:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+    }
+  }
+
+  Widget _editEllipsoidParameters(double horizontalMargin) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
+      child: Column(
+        children: [
+          Text("Now implemented ellipsoid params")
+        ]
+      ),
+    );
+  }
+
+  Widget _editHyperboloidParameters(double horizontalMargin) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
+      child: Column(
+          children: [
+            Text("Now implemented hyperbolic params")
+          ]
+      ),
+    );
+  }
+
+  Widget _editSaddleParameters(double horizontalMargin) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
+      child: Column(
+        children: [
+          Text("Now implemented saddle params")
+        ]
+      ),
+    );
+  }
+
+  Widget _editConeParameters(double horizontalMargin) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
+      child: Column(
+        children: [
+          Text("Now implemented cone params")
+        ]
+      ),
+    );
+  }
+
+  Widget _editCylinderParameters(double horizontalMargin) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
+      child: Column(
+        children: [
+          Text("Now implemented cylinder params")
+        ]
+      ),
+    );
   }
 }
 
