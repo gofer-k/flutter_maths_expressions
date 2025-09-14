@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/widgets/display_expression.dart';
 import 'package:flutter_maths_expressions/widgets/dropdown.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
@@ -40,12 +41,13 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
   static const Sp3dCameraZoomController _camZCtrl = Sp3dCameraZoomController();
 
   bool _dependenciesInitialized = false; // Flag to run logic only once
+  ShapeType _currentShape = ShapeType.ellipsoid;
 
   @override
   void initState() {
     super.initState();
     _halfMargin3dView = _margin3dView / 2;
-    _renderShape(ShapeType.ellipsoid);
+    _renderShape(_currentShape);
     loadImage();
   }
 
@@ -84,66 +86,86 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
       return const BackgroundContainer( // Or your preferred loading widget
         beginColor: Colors.grey,
         endColor: Colors.black,
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Center(child: CircularProgressIndicator()),
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: Center(child: CircularProgressIndicator()),
+          ),
         ),
       );
     }
 
+    const topHorizontalMargin = 2.0;
+
     return BackgroundContainer(
       beginColor: Colors.grey.shade300,
-       endColor: Colors.grey.shade800,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
+      endColor: Colors.grey.shade800,
+      child: SafeArea(
+        child: Scaffold(
           backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            widget.title, style: Theme.of(context).textTheme.headlineMedium,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+            title: Text(
+              widget.title, style: Theme.of(context).textTheme.headlineMedium,
+            ),
           ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 2.0, right: 2.0),
-          child: Column(
-            children: [
-              Container(
-                constraints: BoxConstraints(
-                  maxWidth: _renderSize.width,
-                  maxHeight: _renderSize.height,
+          body: Padding(
+            padding: const EdgeInsets.only(
+                top: 8.0,
+                left: topHorizontalMargin,
+                right: topHorizontalMargin),
+            child: Column(
+              children: [
+                // Render shape
+                Container(
+                  constraints: BoxConstraints(
+                    maxWidth: _renderSize.width,
+                    maxHeight: _renderSize.height,
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.black26,
+                      border: Border.all(color: Colors.black87)),
+                  margin: EdgeInsets.all(_margin3dView),
+                  child:  Column(
+                    children: [
+                      Sp3dRenderer(
+                          _worldSize,
+                          Sp3dV2D(_worldSize.width / 2, _worldSize.height / 2), // canvas center = Origin world space (0, 0)
+                          _world,
+                          // If you want to reduce distortion, shoot from a distance at high magnification.
+                          _camera,
+                          Sp3dLight(Sp3dV3D(0, 0, 1), syncCam: true),
+                          rotationController: _camRCtrl,
+                          zoomController: _camZCtrl,
+                          useClipping: true
+                      ),
+                    ],
+                  ),
                 ),
-                decoration: BoxDecoration(
-                    color: Colors.black26,
-                    border: Border.all(color: Colors.black87)),
-                margin: EdgeInsets.all(_margin3dView),
-                child:  Column(
-                  children: [
-                    Sp3dRenderer(
-                        _worldSize,
-                        Sp3dV2D(_worldSize.width / 2, _worldSize.height / 2), // canvas center = Origin world space (0, 0)
-                        _world,
-                        // If you want to reduce distortion, shoot from a distance at high magnification.
-                        _camera,
-                        Sp3dLight(Sp3dV3D(0, 0, 1), syncCam: true),
-                        rotationController: _camRCtrl,
-                        zoomController: _camZCtrl,
-                        useClipping: true
-                    ),
-                  ],
+                const SizedBox(height: 10),
+                // Choose the shape
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Dropdown(
+                    shapeType: _currentShape,
+                    onShapeSelected: (ShapeType selectedShape) {
+                      // Update widgets
+                      setState(() {
+                        _currentShape = selectedShape;
+                        _renderShape(_currentShape);
+                      });
+                    }
+                  )
                 ),
-              ),
-              const SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                child:Dropdown(shapeType: ShapeType.ellipsoid, onShapeSelected: (ShapeType selectedShape) {
-                  _renderShape(selectedShape);
-                },)
-              ),
-            ],
+                // Parameters area
+                _shapeParameters(_currentShape, topHorizontalMargin),
+              ],
+            ),
           ),
-        ),
-      )
+        )
+      ),
     );
   }
 
@@ -262,6 +284,50 @@ class _BlockShapesPageState extends State<BlockShapesPage> {
     }
     else {
       _objs.add(obj);
+    }
+  }
+
+  Widget _shapeParameters(ShapeType shapeType, double horizontalMargin) {
+    double exprScale = 1.5;
+    String expression = shapeExpression(shapeType);
+
+    return Padding(
+      padding: EdgeInsetsGeometry.symmetric(horizontal: horizontalMargin),
+      child: Column(
+        children: [
+          DisplayExpression(
+            context: context,
+            expression: expression,
+            scale: exprScale,
+            textStyle: TextStyle(
+              color: Colors.white,
+              fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
+              fontWeight: Theme.of(context).textTheme.bodyLarge?.fontWeight,
+            )),
+        ]
+      )
+    );
+  }
+
+  String shapeExpression(ShapeType shapeType) {
+    switch(shapeType) {
+      case ShapeType.ellipsoid:
+        return r"\frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1";
+      case ShapeType.hyperboloid_two_shell:
+        return r"\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} - 1 = 0";
+      case ShapeType.hyperboloid_one_shell:
+        return r"\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} + 1 = 0";
+      case ShapeType.saddle:
+        return r"\frac{x^2}{a^2} - \frac{y^2}{b^2} - z = 0";
+      case ShapeType.cone:
+        return r"\frac{x^2}{r^2} + \frac{y^2}{r^2} + \frac{z^2}{h^2} = 0";
+        // General form:
+        // return r"\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} = 0";
+      case ShapeType.cylinder:
+        return r"\frac{x^2}{a^2)} + \frac{y^2}{b^2} - 1 = 0";
+      case ShapeType.hyperbolic_cylinder:
+        return r"\frac{x^2}{a^2)} - \frac{y^2}{b^2} - 1 = 0";
+    // return r"\Frac{y^2}{a^2)} - \frac{x^2}{b^2} - 1 = 0";
     }
   }
 }

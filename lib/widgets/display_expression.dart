@@ -10,12 +10,14 @@ class DisplayExpression extends StatefulWidget {
     required this.expression,
     required this.scale,
     this.decoration,
+    this.textStyle,
   });
 
   final BuildContext context;
   final String expression;
   final double scale;
   final BoxDecoration? decoration;
+  final TextStyle? textStyle;
 
   @override
   State<DisplayExpression> createState() => DisplayExpressionState();
@@ -31,7 +33,7 @@ class DisplayExpressionState extends State<DisplayExpression> {
       decoration: widget.decoration,
       child: Math.tex(
         widget.expression,
-        textStyle: Theme.of(context).textTheme.bodyMedium, // Start with a base style
+        textStyle: (widget.textStyle != null) ? widget.textStyle : Theme.of(context).textTheme.bodyMedium,
         mathStyle: MathStyle.display, // Or .text, .script, .scriptScript
         textScaleFactor: widget.scale, // Adjust this factor as needed
         onErrorFallback: (FlutterMathException e) { // Good practice to have an error fallback
