@@ -14,6 +14,7 @@ import '../models/3d_shapes/hyperboloid_shell.dart';
 import '../models/3d_shapes/saddle.dart';
 import '../models/3d_shapes/shape_type.dart';
 import '../widgets/background_container.dart';
+import '../widgets/factor_slider.dart';
 
 class BlockShapesPage extends StatefulWidget {
   final String title;
@@ -421,12 +422,36 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
   }
 
   Widget _editEllipsoidParameters(double horizontalMargin) {
+    var currentParamA = 100.0;
+    var currentParamB = 100.0;
+    var currentParamC = 100.0;
+
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
+      padding: EdgeInsetsGeometry.symmetric(horizontal: horizontalMargin),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Now implemented ellipsoid params")
-        ]
+          FactorSlider(label: r'a', initialValue: currentParamA, minValue: 100, maxValue: 200,
+            onChanged: (double value) {
+              setState(() {
+                currentParamA = value;
+                // TODO: update ellipsoid
+              });
+            }
+          ),
+          FactorSlider(label: r'b', initialValue: currentParamB, minValue: 100, maxValue: 200,
+              onChanged: (double value) {
+                currentParamB = value;
+                // TODO: update ellipsoid
+              }
+          ),
+          FactorSlider(label: r'c', initialValue: currentParamC, minValue: 100, maxValue: 200,
+              onChanged: (double value) {
+                currentParamC = value;
+                // TODO: update ellipsoid
+              }
+          ),
+        ],
       ),
     );
   }
@@ -475,5 +500,3 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
     );
   }
 }
-
-
