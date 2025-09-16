@@ -1,17 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/models/3d_shapes/shape_model.dart';
 import 'package:flutter_maths_expressions/widgets/display_expression.dart';
 import 'package:flutter_maths_expressions/widgets/dropdown.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
-
-import '../models/3d_shapes/cone.dart';
-import '../models/3d_shapes/cylinder.dart';
-import '../models/3d_shapes/ellipsoid.dart';
-import '../models/3d_shapes/hyperboloid_shell.dart';
-import '../models/3d_shapes/saddle.dart';
 import '../models/3d_shapes/shape_type.dart';
 import '../widgets/background_container.dart';
 import '../widgets/factor_slider.dart';
@@ -47,7 +42,21 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
   late AnimationController _expandController;
   late Animation<double> _expandAnimationParameters;
   bool _isInputParametersExpanded = true;
-  
+
+  final _shapeModel = <ShapeType, ShapeModel>{
+    ShapeType.ellipsoid: ShapeModel(type: ShapeType.ellipsoid, a: 200, b: 100, c: 100),
+    ShapeType.cone: ShapeModel(type: ShapeType.cone, a: 100, b: 100, c: 75),
+    ShapeType.cylinder: ShapeModel(
+        type: ShapeType.cylinder, a: 75, b: 75, c: 200),
+    ShapeType.hyperbolic_cylinder: ShapeModel(
+        type: ShapeType.hyperbolic_cylinder, a: 75, b: 75, c: 200),
+    ShapeType.hyperboloid_one_shell: ShapeModel(
+        type: ShapeType.hyperboloid_one_shell, a: 50, b: 50, c: 100),
+    ShapeType.hyperboloid_two_shell: ShapeModel(
+        type: ShapeType.hyperboloid_two_shell, a: 50, b: 50, c: 100),
+    ShapeType.saddle: ShapeModel(type: ShapeType.saddle, a: 200, b: 100, c: 50)
+  };
+
   @override
   void initState() {
     super.initState();
@@ -219,107 +228,119 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
   }
 
   void _renderShape(ShapeType selectedShape) {
+    Sp3dObj? obj;
     switch (selectedShape) {
       case ShapeType.ellipsoid:
-        _renderEllipsoid();
+        obj = _renderEllipsoid();
       case ShapeType.hyperboloid_one_shell:
-        _renderHyperboloid(twoShell: false);
+        obj = _renderHyperboloid(twoShell: false);
       case ShapeType.hyperboloid_two_shell:
-        _renderHyperboloid(twoShell: true);
+        obj = _renderHyperboloid(twoShell: true);
         case ShapeType.saddle:
-        _renderSaddle();
+          obj = _renderSaddle();
       case ShapeType.cone:
-        _renderCone();
+        obj = _renderCone();
       case ShapeType.cylinder:
-        _renderCylinder();
+        obj = _renderCylinder();
       case ShapeType.hyperbolic_cylinder:
-        _renderCylinder(hyperbolic: true);
+        obj = _renderCylinder(hyperbolic: true);
+    }
+    if (obj != null) {
+      if (_objs.isNotEmpty) {
+        _objs.first = obj;
+      }
+      else {
+        _objs.add(obj);
+      }
     }
   }
 
-  void _renderEllipsoid() {
-    Sp3dObj obj = Ellipsoid.ellipsoid(100, 100, 200);
-    obj.materials.add(FSp3dMaterial.blue.deepCopy());
-    obj.fragments[0].faces[0].materialIndex = 1;
-    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-      ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
-    obj.layerNum = -3;
+  Sp3dObj? _renderEllipsoid() {
+    final ShapeModel? model = _shapeModel[ShapeType.ellipsoid];
 
-    if (_objs.isNotEmpty) {
-      _objs.first = obj;
+    if (model != null) {
+      Sp3dObj obj = _shapeModel[ShapeType.ellipsoid]!.display();
+      obj.materials.add(FSp3dMaterial.blue.deepCopy());
+      obj.fragments[0].faces[0].materialIndex = 1;
+      obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+        ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
+      obj.layerNum = -3;
+
+      return obj;
     }
-    else {
-      _objs.add(obj);
-    }
+    return null;
   }
 
-  void _renderHyperboloid({required bool twoShell}) {
-    Sp3dObj obj = HyperboloidShell.hyperboloidShell(25, 50, 100, twoShell, uBands: 20, vBands: 30, uMin: 1.0, uMax: -1.0);
-    obj.materials.add(FSp3dMaterial.red.deepCopy());
-    obj.fragments[0].faces[0].materialIndex = 1;
-    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-      ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
-    obj.rotate(Sp3dV3D(1, 1, 0).nor(), 15 * pi / 180);
+  Sp3dObj? _renderHyperboloid({required bool twoShell}) {
+    final ShapeModel? model = _shapeModel[ShapeType.hyperboloid_two_shell];
 
-    if (_objs.isNotEmpty) {
-      _objs.first = obj;
+    if (model != null) {
+      Sp3dObj? obj = _shapeModel[ShapeType.hyperboloid_two_shell]?.display();
+      if (obj != null) {
+        obj.materials.add(FSp3dMaterial.red.deepCopy());
+        obj.fragments[0].faces[0].materialIndex = 1;
+        obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+          ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
+        obj.rotate(Sp3dV3D(1, 1, 0).nor(), 15 * pi / 180);
+      }
+      return obj;
     }
-    else {
-      _objs.add(obj);
-    }
+    return null;
   }
 
-  void _renderSaddle() {
-    Sp3dObj obj = Saddle.saddle(200, 100, 50);
-    obj.materials.add(FSp3dMaterial.red.deepCopy());
-    obj.fragments[0].faces[0].materialIndex = 1;
-    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-      ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
-    obj.rotate(Sp3dV3D(0, 1, 1).nor(), -135 * pi / 180);
+  Sp3dObj? _renderSaddle() {
+    final ShapeModel? model = _shapeModel[ShapeType.saddle];
 
-    if (_objs.isNotEmpty) {
-      _objs.first = obj;
+    if (model != null) {
+      Sp3dObj? obj = _shapeModel[ShapeType.saddle]?.display();
+      if (obj != null) {
+        obj.materials.add(FSp3dMaterial.red.deepCopy());
+        obj.fragments[0].faces[0].materialIndex = 1;
+        obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+          ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
+        obj.rotate(Sp3dV3D(0, 1, 1).nor(), -135 * pi / 180);
+      }
+      return obj;
     }
-    else {
-      _objs.add(obj);
-    }
+    return null;
   }
 
-  void _renderCone() {
-    Sp3dObj obj = Cone.cone(radius: 100, height: 200);
-    obj.materials.add(FSp3dMaterial.red.deepCopy());
-    obj.fragments[0].faces[0].materialIndex = 1;
-    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-      ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
-    obj.rotate(Sp3dV3D(0, 1, 1).nor(), -135 * pi / 180);
-    if (_objs.isNotEmpty) {
-      _objs.first = obj;
+  Sp3dObj? _renderCone() {
+    final ShapeModel? model = _shapeModel[ShapeType.cone];
+
+    if (model != null) {
+      Sp3dObj? obj = _shapeModel[ShapeType.cone]?.display();
+      if (obj != null) {
+        obj.materials.add(FSp3dMaterial.red.deepCopy());
+        obj.fragments[0].faces[0].materialIndex = 1;
+        obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+          ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
+        obj.rotate(Sp3dV3D(0, 1, 1).nor(), -135 * pi / 180);
+      }
+      return obj;
     }
-    else {
-      _objs.add(obj);
-    }
+    return null;
   }
 
-  void _renderCylinder({bool hyperbolic = false}) {
-    Sp3dObj obj = hyperbolic ?
-        // TODO: improve rotation parameters
-      HyperbolicCylinder.hyperbolicCylinder(
-        a: 50, b: 50, height: 200, opensAlongX: false, addCovers: false) :
-    // TODO: improve rotation parameters
-      HyperbolicCylinder.cylinder(
-        radius: 75, height: 250);
+  Sp3dObj? _renderCylinder({bool hyperbolic = false}) {
+    final ShapeModel? model = _shapeModel[ShapeType.saddle];
 
-    obj.materials.add(FSp3dMaterial.red.deepCopy());
-    obj.fragments[0].faces[0].materialIndex = 1;
-    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-      ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
-    obj.rotate(Sp3dV3D(0, 1, 1).nor(), -30 * pi / 180);
-    if (_objs.isNotEmpty) {
-      _objs.first = obj;
-    }
-    else {
-      _objs.add(obj);
-    }
+     if (model != null) {
+       Sp3dObj? obj = hyperbolic ?
+       // TODO: improve rotation parameters
+       _shapeModel[ShapeType.hyperbolic_cylinder]?.display() :
+       _shapeModel[ShapeType.cylinder]?.display();
+
+       if (obj != null) {
+         obj.materials.add(FSp3dMaterial.red.deepCopy());
+         obj.fragments[0].faces[0].materialIndex = 1;
+         obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+           ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
+         obj.rotate(Sp3dV3D(0, 1, 1).nor(), -30 * pi / 180);
+       }
+       return obj;
+     }
+     return null;
   }
 
   Widget _shapeParameters(ShapeType shapeType, double horizontalMargin) {
@@ -422,33 +443,39 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
   }
 
   Widget _editEllipsoidParameters(double horizontalMargin) {
-    var currentParamA = 100.0;
-    var currentParamB = 100.0;
-    var currentParamC = 100.0;
-
     return Padding(
       padding: EdgeInsetsGeometry.symmetric(horizontal: horizontalMargin),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FactorSlider(label: r'a', initialValue: currentParamA, minValue: 100, maxValue: 200,
+          FactorSlider(label: r'a', initialValue: _shapeModel[_currentShape]!.a, minValue: 100, maxValue: 200,
             onChanged: (double value) {
-              setState(() {
-                currentParamA = value;
-                // TODO: update ellipsoid
-              });
+              if (_shapeModel[_currentShape]?.a != value) {
+                setState(() {
+                  _shapeModel[_currentShape]?.a = value;
+                  _renderShape(_currentShape);
+                });
+              }
             }
           ),
-          FactorSlider(label: r'b', initialValue: currentParamB, minValue: 100, maxValue: 200,
+          FactorSlider(label: r'b', initialValue: _shapeModel[_currentShape]!.b, minValue: 100, maxValue: 200,
               onChanged: (double value) {
-                currentParamB = value;
-                // TODO: update ellipsoid
+                if (_shapeModel[_currentShape]?.b != value) {
+                  setState(() {
+                    _shapeModel[_currentShape]?.b = value;
+                    _renderShape(_currentShape);
+                  });
+                }
               }
           ),
-          FactorSlider(label: r'c', initialValue: currentParamC, minValue: 100, maxValue: 200,
+          FactorSlider(label: r'c', initialValue: _shapeModel[_currentShape]!.c, minValue: 100, maxValue: 200,
               onChanged: (double value) {
-                currentParamC = value;
-                // TODO: update ellipsoid
+                if (_shapeModel[_currentShape]?.c != value) {
+                  setState(() {
+                    _shapeModel[_currentShape]?.c = value;
+                    _renderShape(_currentShape);
+                  });
+                }
               }
           ),
         ],
