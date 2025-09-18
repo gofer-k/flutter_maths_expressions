@@ -37,9 +37,10 @@ class DisplayExpressionState extends State<DisplayExpression> {
         mathStyle: MathStyle.display, // Or .text, .script, .scriptScript
         textScaleFactor: widget.scale, // Adjust this factor as needed
         onErrorFallback: (FlutterMathException e) { // Good practice to have an error fallback
-          return Text(
+          return Flexible(child: Text(
             'Error rendering formula: ${e.message}',
-            style: const TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
+            )
           );
         },
       ),
