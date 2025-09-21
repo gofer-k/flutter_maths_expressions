@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class ShrinkableListItem extends StatefulWidget {
   final String title;
   final List<Widget> details;
+  final TextStyle? titleStyle;
 
-  const ShrinkableListItem({
+  ShrinkableListItem({
     Key? key,
     required this.title,
     required this.details,
+    this.titleStyle,
   }) : super(key: key);
 
   @override
@@ -63,7 +65,8 @@ class _ShrinkableListItemState extends State<ShrinkableListItem>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(widget.title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(widget.title,
+                   style: widget.titleStyle ?? Theme.of(context).textTheme.titleMedium,),
                 Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
               ],
             ),

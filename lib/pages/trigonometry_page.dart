@@ -41,6 +41,10 @@ class _TrigonometryPageState extends State<TrigonometryPage> {
     final tableItemDecoration = BoxDecoration(color: Colors.transparent);
     final tableItemTextStyle = TextStyle(color: Colors.white70);
     final tableHeaderTextStyle = TextStyle(color: Colors.lightBlueAccent, fontWeight: FontWeight.bold, fontSize: 12.0);
+    final shrinkableTitleTextStyle = TextStyle(
+        color: Colors.black,
+        fontWeight: Theme.of(context).textTheme.titleMedium?.fontWeight,
+        fontSize: Theme.of(context).textTheme.titleMedium?.fontSize);
 
     final List<Widget> basicExpressions = [
       PopupWidget(
@@ -914,13 +918,27 @@ class _TrigonometryPageState extends State<TrigonometryPage> {
                 vertical: verticalPaddingItem),
             child: ListView(
               children: [
-                ShrinkableListItem(title: "Basic functions", details: basicExpressions),
-                ShrinkableListItem(title: "Reverses of basic functions", details: arcExpressions),
-                ShrinkableListItem(title: "Parity features", details: parityFeatures),
-                ShrinkableListItem(title: "Periodic features", details: periodicity),
-                ShrinkableListItem(title: "Functional equations", details: equations),
-                ShrinkableTable(title: "Trigonometric values", contents: tableTrigonometricValues),
-                ShrinkableTable(title: "Reduced expressions", contents: tableReducedExpressions),
+                ShrinkableListItem(title: "Basic functions",
+                  details: basicExpressions,
+                  titleStyle: shrinkableTitleTextStyle,),
+                ShrinkableListItem(title: "Reverses of basic functions",
+                  details: arcExpressions,
+                  titleStyle: shrinkableTitleTextStyle,),
+                ShrinkableListItem(title: "Parity features",
+                  details: parityFeatures,
+                  titleStyle: shrinkableTitleTextStyle,),
+                ShrinkableListItem(title: "Periodic features",
+                  details: periodicity,
+                  titleStyle: shrinkableTitleTextStyle,),
+                ShrinkableListItem(title: "Functional equations",
+                  details: equations,
+                  titleStyle: shrinkableTitleTextStyle,),
+                ShrinkableTable(title: "Trigonometric values",
+                  contents: tableTrigonometricValues,
+                  titleStyle: shrinkableTitleTextStyle,),
+                ShrinkableTable(title: "Reduced expressions",
+                  contents: tableReducedExpressions,
+                  titleStyle: shrinkableTitleTextStyle,),
               ],
             )
         ),

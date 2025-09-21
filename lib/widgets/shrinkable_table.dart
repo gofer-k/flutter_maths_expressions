@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class ShrinkableTable extends StatefulWidget {
   final String title;
   final List<List<Widget>> contents;
+  final TextStyle? titleStyle;
 
   const ShrinkableTable({
     Key? key,
     required this.title,
     required this.contents,
+    this.titleStyle,
   }) : super(key: key);
 
   @override
@@ -62,8 +64,8 @@ class _ShrinkableTableState extends State<ShrinkableTable>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(widget.title, style: TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text(widget.title,
+                    style: widget.titleStyle ?? Theme.of(context).textTheme.titleMedium,),
                   Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
                 ],
               ),
