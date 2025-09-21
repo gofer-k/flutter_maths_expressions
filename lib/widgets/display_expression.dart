@@ -28,7 +28,7 @@ class DisplayExpressionState extends State<DisplayExpression> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0), // Padding inside the container, around the text
+      padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 2.0), // Padding inside the container, around the text
       margin: const EdgeInsets.all(2.0),   // Margin outside the container
       decoration: widget.decoration,
       child: Math.tex(
