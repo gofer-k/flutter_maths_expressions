@@ -57,32 +57,36 @@ class _ShrinkableListItemState extends State<ShrinkableListItem>
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        InkWell(
-          onTap: _toggleExpand,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(widget.title,
-                   style: widget.titleStyle ?? Theme.of(context).textTheme.titleMedium,),
-                Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
-              ],
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          InkWell(
+            onTap: _toggleExpand,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(widget.title,
+                      style: widget.titleStyle ?? Theme.of(context).textTheme.titleMedium,)
+                  ),
+                  Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+                ],
+              ),
             ),
           ),
-        ),
-        SizeTransition(
-          axisAlignment: -1.0, // Aligns to the top during transition
-          sizeFactor: _animation,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 2.0),
-            child: Column(
-              children: widget.details,
+          SizeTransition(
+            axisAlignment: -1.0, // Aligns to the top during transition
+            sizeFactor: _animation,
+            child: Container(
+              // padding: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 2.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: widget.details,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
     );
   }
 }

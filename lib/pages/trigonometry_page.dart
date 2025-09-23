@@ -291,16 +291,20 @@ class _TrigonometryPageState extends State<TrigonometryPage> {
               expression: r"\cos(x \pm y) = \cos x \cdot \cos y \pm \sin x \cdot \sin y",
               scale: rightColScale)
       ),
-      DisplayExpression(
+      FittedBox(fit: BoxFit.fitWidth,
+        child: DisplayExpression(
           context: context,
           decoration: listItemDecoration,
           expression: r"\tan(x \pm y) = \frac{\tan x \pm \tan y}{1 \mp \tan x * \tan y}",
           scale: rightColScale),
-      DisplayExpression(
-          context: context,
-          decoration: listItemDecoration,
-          expression: r"\ctg (x \pm y) = \frac{\ctg x * \ctg y \mp 1}{\ctg y \pm \ctg x}",
-          scale: rightColScale),
+      ),
+      FittedBox(fit: BoxFit.fitWidth,
+        child: DisplayExpression(
+        context: context,
+        decoration: listItemDecoration,
+        expression: r"\ctg (x \pm y) = \frac{\ctg x * \ctg y \mp 1}{\ctg y \pm \ctg x}",
+        scale: rightColScale)
+      ),
       FittedBox(
           fit: BoxFit.fitWidth,
           child: DisplayExpression(
@@ -310,18 +314,21 @@ class _TrigonometryPageState extends State<TrigonometryPage> {
               scale: rightColScale)
       ),
       FittedBox(
-          fit: BoxFit.fitWidth,
-          child: DisplayExpression(
-              context: context,
-              decoration: listItemDecoration,
-              expression: r"\cos x \pm \cos y = \pm 2 \cos \frac{x + y}{2} \cdot \cos \frac{x - y}{2}",
-              scale: rightColScale)
+        fit: BoxFit.fitWidth,
+        child: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\cos x \pm \cos y = \pm 2 \cos \frac{x + y}{2} \cdot \cos \frac{x - y}{2}",
+            scale: rightColScale)
       ),
-      DisplayExpression(
+      FittedBox(
+        fit: BoxFit.fitWidth,
+        child: DisplayExpression(
         context: context,
         decoration: listItemDecoration,
         expression: r"\sin 2x = 2 \sin x \cdot \cos x",
-        scale: rightColScale),
+        scale: rightColScale)
+      ),
       DisplayExpression(
         context: context,
         decoration: listItemDecoration,
@@ -912,36 +919,34 @@ class _TrigonometryPageState extends State<TrigonometryPage> {
             widget.title, style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
-        body: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: horizontalPaddingItem,
-                vertical: verticalPaddingItem),
-            child: ListView(
-              children: [
-                ShrinkableListItem(title: "Basic functions",
-                  details: basicExpressions,
-                  titleStyle: shrinkableTitleTextStyle,),
-                ShrinkableListItem(title: "Reverses of basic functions",
-                  details: arcExpressions,
-                  titleStyle: shrinkableTitleTextStyle,),
-                ShrinkableListItem(title: "Parity features",
-                  details: parityFeatures,
-                  titleStyle: shrinkableTitleTextStyle,),
-                ShrinkableListItem(title: "Periodic features",
-                  details: periodicity,
-                  titleStyle: shrinkableTitleTextStyle,),
-                ShrinkableListItem(title: "Functional equations",
-                  details: equations,
-                  titleStyle: shrinkableTitleTextStyle,),
-                ShrinkableTable(title: "Trigonometric values",
-                  contents: tableTrigonometricValues,
-                  titleStyle: shrinkableTitleTextStyle,),
-                ShrinkableTable(title: "Reduced expressions",
-                  contents: tableReducedExpressions,
-                  titleStyle: shrinkableTitleTextStyle,),
-              ],
-            )
-        ),
+        body: ListView(
+        padding: EdgeInsets.symmetric(
+          horizontal: horizontalPaddingItem,
+          vertical: verticalPaddingItem),
+          children: [
+            ShrinkableListItem(title: "Basic functions",
+              details: basicExpressions,
+              titleStyle: shrinkableTitleTextStyle,),
+            ShrinkableListItem(title: "Reverses of basic functions",
+              details: arcExpressions,
+              titleStyle: shrinkableTitleTextStyle,),
+            ShrinkableListItem(title: "Parity features",
+              details: parityFeatures,
+              titleStyle: shrinkableTitleTextStyle,),
+            ShrinkableListItem(title: "Periodic features",
+              details: periodicity,
+              titleStyle: shrinkableTitleTextStyle,),
+            ShrinkableListItem(title: "Functional equations",
+              details: equations,
+              titleStyle: shrinkableTitleTextStyle,),
+            ShrinkableTable(title: "Trigonometric values",
+              contents: tableTrigonometricValues,
+              titleStyle: shrinkableTitleTextStyle,),
+            ShrinkableTable(title: "Reduced expressions",
+              contents: tableReducedExpressions,
+              titleStyle: shrinkableTitleTextStyle,),
+          ],
+        )
       ),
     );
   }
