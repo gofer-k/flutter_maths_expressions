@@ -4,6 +4,7 @@ import 'package:flutter_maths_expressions/pages/trigonometry_page.dart';
 
 import '../widgets/background_container.dart';
 import 'block_shapes_page.dart';
+import 'limits_page.dart';
 import 'logarithms_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -60,6 +61,10 @@ class _HomePageState extends State<HomePage> {
               navigatingCard(
                 context, Image.asset("assets/images/block_shapes.png"), 'Block shapes',
                 BlockShapesPage(title: 'Block shapes'),
+              ),
+              navigatingCard(
+                context, Image.asset("assets/images/limits.png"), 'Limits',
+                LimitsPage(title: 'Limits'),
               ),
             ],
           ),
