@@ -16,7 +16,7 @@ class LimitsPage extends StatefulWidget{
 class _LimitsPagePageState extends State<LimitsPage> {
   @override
   Widget build(BuildContext context) {
-    final leftColScale = 2.0;
+    final expressionScale = 2.0;
     final horizontalPaddingItem = 2.0;
     final verticalPaddingItem = 2.0;
     final listItemDecoration = BoxDecoration(
@@ -35,13 +35,6 @@ class _LimitsPagePageState extends State<LimitsPage> {
         ),
       ],
     );
-    final List<Widget> factors = [
-      DisplayExpression(
-          context: context,
-          decoration: listItemDecoration,
-          expression: "\lim_{x \to x_0} f(x)} = f, \lim_{x \to x_0} g(x) = g",
-          scale: leftColScale),
-    ];
     final List<Widget> theorems = [
       PopupWidget(
         horizontalPadding: horizontalPaddingItem,
@@ -52,7 +45,7 @@ class _LimitsPagePageState extends State<LimitsPage> {
             context: context,
             decoration: listItemDecoration,
             expression: r"\lim_{x \to x_0} [f(x) + g(x)] = \lim_{x \to x_0} f(x) + \lim_{x \to x_0} g(x) = f + g",
-            scale: leftColScale),
+            scale: expressionScale),
         )
       ),
       PopupWidget(
@@ -64,7 +57,7 @@ class _LimitsPagePageState extends State<LimitsPage> {
           context: context,
           decoration: listItemDecoration,
           expression: r"\lim_{x \to x_0} [f(x) - g(x)] = \lim_{x \to x_0} f(x) - \lim_{x \to x_0} g(x) = f - g",
-          scale: leftColScale),
+          scale: expressionScale),
         )
       ),
       PopupWidget(
@@ -76,18 +69,265 @@ class _LimitsPagePageState extends State<LimitsPage> {
             context: context,
             decoration: listItemDecoration,
             expression: r"\lim_{x \to x_0} [f(x) \cdot g(x)] = \lim_{x \to x_0} f(x) \cdot \lim_{x \to x_0} g(x) = f \cdot g",
-            scale: leftColScale),
+            scale: expressionScale),
         )
       ),
       PopupWidget(
-          horizontalPadding: horizontalPaddingItem,
-          verticalPadding: verticalPaddingItem,
-          content: DisplayExpression(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to x_0} \frac{f(x)}{g(x)} = \frac{f}{g}",
+          scale: expressionScale),
+        ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to x_0} [f(x) + g(x)] = \infty",
+          scale: expressionScale
+        ),
+        popupDialog: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DisplayExpression(
             context: context,
             decoration: listItemDecoration,
-            expression: r"\lim_{x \to x_0} \frac{f(x)}{g(x)} = \frac{f}{g}",
-            scale: leftColScale),
-          )
+            expression:
+            r"\lim_{x \to x_0} f(x) = a, \lim_{x \to x_0} g(x) = \infty",
+            scale: expressionScale)
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\lim_{x \to x_0} [f(x) + g(x)] = a -\infty",
+            scale: expressionScale
+        ),
+        popupDialog: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: DisplayExpression(
+                context: context,
+                decoration: listItemDecoration,
+                expression:
+                r"\lim_{x \to x_0} f(x) = a, \lim_{x \to x_0} g(x) = -\infty",
+                scale: expressionScale)
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to x_0} [f(x) + g(x)] = \infty",
+          scale: expressionScale
+        ),
+        popupDialog: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression:
+            r"\lim_{x \to x_0} f(x) = \infty, \lim_{x \to x_0} g(x) = \infty",
+            scale: expressionScale)
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to x_0} [f(x) + g(x)] = -\infty",
+          scale: expressionScale
+        ),
+        popupDialog: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression:
+            r"\lim_{x \to x_0} f(x) = -\infty, \lim_{x \to x_0} g(x) = -\infty",
+            scale: expressionScale)
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to x_0} [f(x) \cdot g(x)] = \infty",
+          scale: expressionScale
+        ),
+        popupDialog: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression:
+            r"\lim_{x \to x_0} f(x) = a > 0, \lim_{x \to x_0} g(x) = \infty",
+            scale: expressionScale)
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to x_0} [f(x) \cdot g(x)] = \infty",
+          scale: expressionScale
+        ),
+        popupDialog: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression:
+            r"\lim_{x \to x_0} f(x) = a < 0, \lim_{x \to x_0} g(x) = -\infty",
+            scale: expressionScale)
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to x_0} [f(x) \cdot g(x)] = \infty",
+          scale: expressionScale
+        ),
+        popupDialog: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression:
+            r"\lim_{x \to x_0} f(x) = \infty, \lim_{x \to x_0} g(x) = \infty",
+            scale: expressionScale)
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to x_0} [f(x) \cdot g(x)] = -\infty",
+          scale: expressionScale
+        ),
+        popupDialog: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression:
+            r"\lim_{x \to x_0} f(x) = \infty, \lim_{x \to x_0} g(x) = -\infty",
+            scale: expressionScale)
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to x_0} \frac{f(x)}{g(x)} = 0",
+          scale: expressionScale
+        ),
+        popupDialog: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression:
+            r"\lim_{x \to x_0} f(x) = a, \lim_{x \to x_0} g(x) = \pm \infty",
+            scale: expressionScale)
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to x_0} \frac{f(x)}{g(x)} = \infty",
+          scale: expressionScale
+        ),
+        popupDialog: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression:
+            r"\lim_{x \to x_0} f(x) = \infty, \lim_{x \to x_0} g(x) = a > 0",
+            scale: expressionScale)
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to x_0} \frac{f(x)}{g(x)} = -\infty",
+          scale: expressionScale
+        ),
+        popupDialog: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression:
+            r"\lim_{x \to x_0} f(x) = -\infty, \lim_{x \to x_0} g(x) = a > 0",
+            scale: expressionScale)
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to x_0} \frac{f(x)}{g(x)} = -\infty",
+          scale: expressionScale
+        ),
+        popupDialog: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression:
+            r"\lim_{x \to x_0} f(x) = \infty, \lim_{x \to x_0} g(x) = a < 0",
+            scale: expressionScale)
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to x_0} \frac{f(x)}{g(x)} = \infty",
+          scale: expressionScale
+        ),
+        popupDialog: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression:
+            r"\lim_{x \to x_0} f(x) = -\infty, \lim_{x \to x_0} g(x) = a < 0",
+            scale: expressionScale)
+        ),
+      ),
     ];
 
     return BackgroundContainer(
