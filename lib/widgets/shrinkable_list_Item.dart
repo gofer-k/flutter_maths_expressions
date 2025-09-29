@@ -6,12 +6,14 @@ class ShrinkableListItem extends StatefulWidget {
   final String title;
   final List<Widget> details;
   final TextStyle? titleStyle;
+  final bool expanded;
 
   ShrinkableListItem({
     Key? key,
     required this.title,
     required this.details,
     this.titleStyle,
+    this.expanded = false,
   }) : super(key: key);
 
   @override
@@ -20,9 +22,9 @@ class ShrinkableListItem extends StatefulWidget {
 
 class _ShrinkableListItemState extends State<ShrinkableListItem>
     with SingleTickerProviderStateMixin {
-  bool _isExpanded = false;
   late AnimationController _controller;
   late Animation<double> _animation;
+  bool _isExpanded = false;
 
   @override
   void initState() {
@@ -35,6 +37,18 @@ class _ShrinkableListItemState extends State<ShrinkableListItem>
       parent: _controller,
       curve: Curves.easeInOut, // Adjust curve
     );
+    _isExpanded = widget.expanded;
+  }
+
+  @override
+  void didUpdateWidget(covariant ShrinkableListItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // If the parent widget's `expanded` property changes, update the internal state
+    if (widget.expanded != oldWidget.expanded) {
+      setState(() {
+        _isExpanded = widget.expanded!;
+      });
+    }
   }
 
   @override
@@ -75,16 +89,21 @@ class _ShrinkableListItemState extends State<ShrinkableListItem>
               ),
             ),
           ),
-          SizeTransition(
-            axisAlignment: -1.0, // Aligns to the top during transition
-            sizeFactor: _animation,
-            child: Container(
-              // padding: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 2.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: widget.details,
+          AnimatedCrossFade(
+            firstChild: const SizedBox.shrink(),
+            secondChild: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: widget.details,
+                ),
               ),
             ),
+            crossFadeState: _isExpanded
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            duration: const Duration(milliseconds: 250),
           ),
         ],
     );

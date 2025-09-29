@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/pages/derived_page.dart';
 import 'package:flutter_maths_expressions/pages/planimetry_page.dart';
 import 'package:flutter_maths_expressions/pages/trigonometry_page.dart';
 
@@ -65,6 +66,10 @@ class _HomePageState extends State<HomePage> {
               navigatingCard(
                 context, Image.asset("assets/images/limits.png"), 'Limits',
                 LimitsPage(title: 'Limits'),
+              ),
+              navigatingCard(
+                context, Image.asset("assets/images/derivatives.png"), 'Derivative theorems',
+                DerivativePage(title: 'Derivative theorems'),
               ),
             ],
           ),
