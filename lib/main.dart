@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/pages/mian_page.dart';
 
+import 'Themes/math_theme.dart';
+
 void main() {
   runApp(const MathsExpressionsApp());
 }
@@ -30,6 +32,36 @@ class MathsExpressionsApp extends StatelessWidget {
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        extensions: <ThemeExtension<dynamic>>[
+          MathTheme(
+            horizontalPadding: 2.0,
+            verticalPadding: 2.0,
+            expressionScale: 1.8,
+            shrinkableTitleTextStyle: TextStyle(
+              color: Colors.black,
+              fontWeight: Theme.of(context).textTheme.titleMedium?.fontWeight,
+              fontSize: Theme.of(context).textTheme.titleMedium?.fontSize),
+            listItemDecoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              // Background color of the "card"
+              border: Border.all(
+                color: Colors.grey.shade400, // Color of the outline
+                width: 1.0, // Thickness of the outline
+              ),
+              borderRadius: BorderRadius.circular(8.0),
+              // Rounded corners for the card-like look
+              boxShadow: [
+                // Optional: Add shadow similar to a Card
+                BoxShadow(
+                  color: Colors.grey.withAlpha(128),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            )
+          ),
+        ],
       ),
       home: const HomePage(title: 'Meths expressions'),
     );
