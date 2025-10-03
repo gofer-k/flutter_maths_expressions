@@ -346,7 +346,7 @@ class _LimitsPagePageState extends State<LimitsPage> {
         body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
           children: [
-            ShrinkableListItem(title: "Theorems on the limits of functions", details: theorems,),
+            ShrinkableListItem(title: "Limits theorems", details: theorems,),
           ],
         )
       ),

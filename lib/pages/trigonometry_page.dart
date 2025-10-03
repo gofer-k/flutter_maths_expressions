@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/widgets/popup_widget.dart';
 import 'package:flutter_maths_expressions/widgets/shrinkable_list_Item.dart';
 
+import '../l10n/app_localizations.dart';
 import '../widgets/background_container.dart';
 import '../widgets/display_expression.dart';
 import '../widgets/shrinkable_table.dart';
@@ -1054,6 +1055,8 @@ class _TrigonometryPageState extends State<TrigonometryPage> {
       ],
     ];
 
+    final l10n = AppLocalizations.of(context)!;
+
     return BackgroundContainer(
       beginColor: Colors.grey.shade300,
       endColor: Colors.grey.shade800,
@@ -1075,37 +1078,37 @@ class _TrigonometryPageState extends State<TrigonometryPage> {
           ),
           children: [
             ShrinkableListItem(
-              title: "Basic functions",
+              title:  l10n.trigonometryFunctions,
               details: basicExpressions,
               titleStyle: shrinkableTitleTextStyle,
             ),
             ShrinkableListItem(
-              title: "Reverses of basic functions",
+              title: l10n.trigonometryReversedFunctions,
               details: arcExpressions,
               titleStyle: shrinkableTitleTextStyle,
             ),
             ShrinkableListItem(
-              title: "Parity features",
+              title: l10n.trigonometryParityFeatures,
               details: parityFeatures,
               titleStyle: shrinkableTitleTextStyle,
             ),
             ShrinkableListItem(
-              title: "Periodic features",
+              title: l10n.trigonometryPeriodicFunctions,
               details: periodicity,
               titleStyle: shrinkableTitleTextStyle,
             ),
             ShrinkableListItem(
-              title: "Functional equations",
+              title: l10n.trigonometryEquations,
               details: equations,
               titleStyle: shrinkableTitleTextStyle,
             ),
             ShrinkableTable(
-              title: "Trigonometric values",
+              title: l10n.trigonometryValues,
               contents: tableTrigonometricValues,
               titleStyle: shrinkableTitleTextStyle,
             ),
             ShrinkableTable(
-              title: "Reduced expressions",
+              title: l10n.trigonometryReducedExpressions,
               contents: tableReducedExpressions,
               titleStyle: shrinkableTitleTextStyle,
             ),

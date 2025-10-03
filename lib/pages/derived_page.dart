@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/Themes/math_theme.dart';
 
+import '../l10n/app_localizations.dart';
 import '../widgets/background_container.dart';
 import '../widgets/display_expression.dart';
 import '../widgets/popup_widget.dart';
@@ -18,6 +19,8 @@ class _DerivativePageState extends State<DerivativePage>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final List<Widget> genericRulesExpressions = [
       FittedBox(
         fit: BoxFit.fitWidth,
@@ -209,7 +212,7 @@ class _DerivativePageState extends State<DerivativePage>
         body: ListView(
           children: [
             ShrinkableListItem(
-              title: "Derive theorem definition",
+              title: l10n.deriveTheoremDefinition,
               expanded: true,
               details: [
                 PopupWidget(
@@ -241,12 +244,12 @@ class _DerivativePageState extends State<DerivativePage>
             // TODO: Derivative continuity geometry
             // TODO: Derivative continuity of functions
             ShrinkableListItem(
-              title: "Derivatives computation rules ",
+              title: l10n.derivativesComputationRules,
               details: genericRulesExpressions,
               titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
               ),
             ShrinkableListItem(
-              title: "Basic derivatives expressions",
+              title: l10n.basicDerivativesExpressions,
               details: basicDerivativeExpressions,
               titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
             ),

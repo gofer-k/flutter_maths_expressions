@@ -3,16 +3,14 @@ import 'package:flutter_maths_expressions/pages/derived_page.dart';
 import 'package:flutter_maths_expressions/pages/planimetry_page.dart';
 import 'package:flutter_maths_expressions/pages/trigonometry_page.dart';
 
+import '../l10n/app_localizations.dart';
 import '../widgets/background_container.dart';
 import 'block_shapes_page.dart';
 import 'limits_page.dart';
 import 'logarithms_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-
-  final String title;
-
+  const HomePage({super.key});
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -31,13 +29,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _pageContent() {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: Text(widget.title),
+        title: Text(l10n.mainPageTitle),
       ),
       body: Center(
         child:
@@ -49,27 +49,27 @@ class _HomePageState extends State<HomePage> {
             children: [
               navigatingCard(
                 context, Image.asset("assets/images/logarithms.png"), 'Logarithms',
-                LogarithmsPage(title: 'Logarithms'),
+                LogarithmsPage(title: l10n.logarithmsPageTitle),
               ),
               navigatingCard(
                 context, Image.asset("assets/images/planimetry.png"), 'Planimetry',
-                PlanimetryPage(title: 'Planimetry'),
+                PlanimetryPage(title: l10n.planimetryPageTitle),
               ),
               navigatingCard(
                 context, Image.asset("assets/images/trigonometry.png"), 'Trigonometry',
-                TrigonometryPage(title: 'Trigonometry'),
+                TrigonometryPage(title: l10n.trigonometryPageTitle),
               ),
               navigatingCard(
                 context, Image.asset("assets/images/block_shapes.png"), 'Block shapes',
-                BlockShapesPage(title: 'Block shapes'),
+                BlockShapesPage(title: l10n.blockShapesPageTitle),
               ),
               navigatingCard(
                 context, Image.asset("assets/images/limits.png"), 'Limits',
-                LimitsPage(title: 'Limits'),
+                LimitsPage(title: l10n.limitsPageTitle),
               ),
               navigatingCard(
                 context, Image.asset("assets/images/derivatives.png"), 'Derivative theorems',
-                DerivativePage(title: 'Derivative theorems'),
+                DerivativePage(title: l10n.derivativePageTitle),
               ),
             ],
           ),

@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_maths_expressions/pages/mian_page.dart';
 
 import 'Themes/math_theme.dart';
+import 'l10n/app_localizations.dart';
 
 void main() {
   runApp(const MathsExpressionsApp());
@@ -14,7 +18,19 @@ class MathsExpressionsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      onGenerateTitle: (context) {
+        return AppLocalizations.of(context)!.mainPageTitle;
+      },
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('pl'),
+      ],
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -63,7 +79,7 @@ class MathsExpressionsApp extends StatelessWidget {
           ),
         ],
       ),
-      home: const HomePage(title: 'Meths expressions'),
+      home: HomePage(),
     );
   }
 }

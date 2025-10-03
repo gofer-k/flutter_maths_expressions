@@ -1,0 +1,31 @@
+{
+  "@@locale": "en",
+  "mainPageTitle": "Maths Expressions",
+  "derivativePageTitle": "Derivative theorems",
+  "deriveTheoremDefinition": "Derive theorem definition",
+  "derivativesComputationRules": "Derivatives computation rules",
+  "basicDerivativesExpressions": "Basic derivatives expressions",
+  "logarithmsPageTitle": "Logarithms",
+  "planimetryPageTitle": "Planimetry",
+  "trigonometryPageTitle": "Trigonometry",
+  "trigonometryFunctions": "Trigonometry functions",
+  "trigonometryReversedFunctions": "Trigonometry reversed functions",
+  "trigonometryParityFeatures": "Trigonometry parity features",
+  "trigonometryPeriodicFunctions": "Trigonometry periodic functions",
+  "trigonometryEquations": "Trigonometry equations",
+  "trigonometryValues": "Trigonometry values",
+  "trigonometryReducedExpressions": "Trigonometry reduced expressions",
+
+  "blockShapesPageTitle": "Block shapes",
+
+  "limitsPageTitle": "Limits",
+  "limitsTheorems": "Limits theorems",
+
+  "shapeTypeEllipsoid": "Ellipsoid",
+  "shapeTypeHyperboloidTwoShell": "Hyperboloid 2-shell",
+  "shapeTypeHyperboloidOneShell": "Hyperboloid 1-shell",
+  "shapeTypeSaddle": "Saddle",
+  "shapeTypeCone": "Cone",
+  "shapeTypeCylinder": "Cylinder",
+  "shapeTypeHyperbolicCylinder": "Hyperbolic cylinder"
+}

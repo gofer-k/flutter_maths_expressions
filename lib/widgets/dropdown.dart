@@ -41,7 +41,7 @@ class _DropdownState extends State<Dropdown> {
       items: ShapeType.values.map<DropdownMenuItem<ShapeType>>((ShapeType value) {
         return DropdownMenuItem(
           value: value,
-          child: Text(value.value, style: dropdownTextStyle),
+          child: Text(value.getLocalizedName(context), style: dropdownTextStyle),
         );
       }).toList(),
       onChanged: (ShapeType? newValue) {

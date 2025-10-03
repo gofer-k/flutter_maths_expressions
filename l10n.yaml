@@ -1,0 +1,3 @@
+arb-dir: lib/l10n # Directory for your translation files
+template-arb-file: app_en.arb # The template file for your translations
+output-localization-file: app_localizations.dart # The generated Dart file
