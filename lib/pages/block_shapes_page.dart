@@ -31,9 +31,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
   // This package allows you to customize various movements,
   // including camera rotation control, by extending the controller class.
   late Sp3dCamera _camera;
-  // final Sp3dFreeLookCamera _camera = Sp3dFreeLookCamera(Sp3dV3D(0,0,1000), 1000);
   final Sp3dCameraRotationController _camRCtrl = Sp3dCameraRotationController();
-  static const Sp3dCameraZoomController _camZCtrl = Sp3dCameraZoomController();
 
   bool _dependenciesInitialized = false; // Flag to run logic only once
   ShapeType _currentShape = ShapeType.ellipsoid;
@@ -168,8 +166,8 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
                           _camera,
                           Sp3dLight(Sp3dV3D(0, 0, 1), syncCam: true),
                           rotationController: _camRCtrl,
-                          zoomController: _camZCtrl,
-                          useClipping: true
+                          useClipping: true,
+                          allowUserWorldZoom: false // disable zoom the scene
                       ),
                     ],
                   ),
@@ -190,7 +188,9 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
                   )
                 ),
                 // Parameters area
-                _shapeParameters(_currentShape, topHorizontalMargin),
+                Expanded(
+                  child: _shapeParameters(_currentShape, topHorizontalMargin)
+                ),
               ],
             ),
           ),
@@ -209,7 +209,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
       }
     });
   }
-  
+
   void _loadImage() async {
     _camera = Sp3dCamera(Sp3dV3D(0, 0, _worldSize.shortestSide * 2),
         _worldSize.shortestSide * 2,
@@ -330,49 +330,49 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
     double exprScale = 1.5;
     String expression = _shapeExpression(shapeType);
 
-    return Padding(
+    return Container(
       padding: EdgeInsetsGeometry.symmetric(horizontal: horizontalMargin),
-      child: Column(
-        children: [
-          DisplayExpression(
-            context: context,
-            expression: expression,
-            scale: exprScale,
-            textStyle: TextStyle(
-              color: Colors.white,
-              fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
-              fontWeight: Theme.of(context).textTheme.bodyLarge?.fontWeight,
-            )),
-          Column(
-            children: [
-              InkWell(
-                onTap: _toggleExpandParameters,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text("Animation Parameters",
-                            style: Theme.of(context).textTheme.titleLarge,
+        child: Column(
+          children: [
+            DisplayExpression(
+                context: context,
+                expression: expression,
+                scale: exprScale,
+                textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
+                  fontWeight: Theme.of(context).textTheme.bodyLarge?.fontWeight,
+                )),
+            Column(
+              children: [
+                InkWell(
+                  onTap: _toggleExpandParameters,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text("Animation Parameters",
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
                           ),
                         ),
-                      ),
-                      Icon(
-                        _isInputParametersExpanded ? Icons.expand_less : Icons.expand_more,
-                        size: 30.0,
-                        semanticLabel: _isInputParametersExpanded ? 'Collapse parameters' : 'Expand parameters',
-                      ),
-                    ]
+                        Icon(
+                          _isInputParametersExpanded ? Icons.expand_less : Icons.expand_more,
+                          size: 30.0,
+                          semanticLabel: _isInputParametersExpanded ? 'Collapse parameters' : 'Expand parameters',
+                        ),
+                      ]
+                  ),
                 ),
-              ),
-              SizeTransition(
-                axisAlignment: -1.0,
-                sizeFactor: _expandAnimationParameters,
-                child: Column(
-                  children: [
-                    _editShapeParameters(shapeType, horizontalMargin),
-                  ]
+                SizeTransition(
+                  axisAlignment: -1.0,
+                  sizeFactor: _expandAnimationParameters,
+                  child: Column(
+                    children: [
+                      _editShapeParameters(shapeType, horizontalMargin),
+                    ]
                 ),
               ),
             ],
