@@ -395,9 +395,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
       case ShapeType.saddle:
         return r"\frac{x^2}{a^2} - \frac{y^2}{b^2} - z = 0";
       case ShapeType.cone:
-        return r"\frac{x^2}{r^2} + \frac{y^2}{r^2} + \frac{z^2}{h^2} = 0";
-        // General form:
-        // return r"\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} = 0";
+        return r"\frac{x^2}{a^2} + \frac{y^2}{a^2} + \frac{z^2}{b^2} = 0";
       case ShapeType.cylinder:
         return r"\frac{x^2}{a^2} + \frac{y^2}{b^2} - 1 = 0";
     }
@@ -414,7 +412,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
       case ShapeType.saddle:
         return _editParameters(horizontalMargin: horizontalMargin, is3dParameters: false);
       case ShapeType.cone:
-        return _editParameters(horizontalMargin: horizontalMargin);
+        return _editParameters(horizontalMargin: horizontalMargin, is3dParameters: false);
       case ShapeType.cylinder:
         return _editParameters(horizontalMargin: horizontalMargin, is3dParameters: false);
     }

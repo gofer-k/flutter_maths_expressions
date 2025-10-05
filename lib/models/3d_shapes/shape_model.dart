@@ -25,9 +25,9 @@ class ShapeModel {
       case ShapeType.saddle:
         return Saddle.saddle(a, b, c);
       case ShapeType.cone:
-        return Cone.cone(radius: a, height: c);
+        return Cone.cone(radius: a, height: b);
       case ShapeType.cylinder:
-        return HyperbolicCylinder.cylinder(radius: a, height: c, addCovers: true);
+        return HyperbolicCylinder.cylinder(radius: a, height: b, addCovers: true);
     }
   }
 
