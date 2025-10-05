@@ -22,7 +22,6 @@ class BlockShapesPage extends StatefulWidget {
 class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProviderStateMixin {
   late Sp3dWorld _world;
   late final List<Sp3dObj> _objs = [];
-  bool _isLoaded = false;
   late Size _worldSize;
   final _margin3dView = 4.0;
   late double _halfMargin3dView;
@@ -45,16 +44,14 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
 
   final _shapeModel = <ShapeType, ShapeModel>{
     ShapeType.ellipsoid: ShapeModel(type: ShapeType.ellipsoid, a: 200, b: 100, c: 100),
-    ShapeType.cone: ShapeModel(type: ShapeType.cone, a: 100, b: 100, c: 75),
+    ShapeType.cone: ShapeModel(type: ShapeType.cone, a: 75, b: 75, c: 150), // a, b - radius xy-axes, c - height (z-axis)
     ShapeType.cylinder: ShapeModel(
         type: ShapeType.cylinder, a: 75, b: 75, c: 200),
-    ShapeType.hyperbolic_cylinder: ShapeModel(
-        type: ShapeType.hyperbolic_cylinder, a: 75, b: 75, c: 200),
-    ShapeType.hyperboloid_one_shell: ShapeModel(
-        type: ShapeType.hyperboloid_one_shell, a: 50, b: 50, c: 100),
-    ShapeType.hyperboloid_two_shell: ShapeModel(
-        type: ShapeType.hyperboloid_two_shell, a: 50, b: 50, c: 100),
-    ShapeType.saddle: ShapeModel(type: ShapeType.saddle, a: 200, b: 100, c: 50)
+    ShapeType.hyperboloidOneShell: ShapeModel(
+        type: ShapeType.hyperboloidOneShell, a: 50, b: 50, c: 100), // a - x-axis, b - y-axis, c - z-axis
+    ShapeType.hyperboloidTwoShell: ShapeModel(
+        type: ShapeType.hyperboloidTwoShell, a: 50, b: 50, c: 100), // a - x-axis, b - z-axis, c - z-axis
+    ShapeType.saddle: ShapeModel(type: ShapeType.saddle, a: 200, b: 100, c: 25) // a - x-axis, b - y-axis, c - z-axis
   };
 
   @override
@@ -217,14 +214,9 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
     _camera = Sp3dCamera(Sp3dV3D(0, 0, _worldSize.shortestSide * 2),
         _worldSize.shortestSide * 2,
         radian: pi/6,
-        rotateAxis: Sp3dV3D(1, -1, 0)
+        rotateAxis: Sp3dV3D(0, 1, 0)
     );
     _world = Sp3dWorld(_objs);
-    _world.initImages().then((List<Sp3dObj> errorObjs) {
-      setState(() {
-        _isLoaded = true;
-      });
-    });
   }
 
   void _renderShape(ShapeType selectedShape) {
@@ -232,9 +224,9 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
     switch (selectedShape) {
       case ShapeType.ellipsoid:
         obj = _renderEllipsoid();
-      case ShapeType.hyperboloid_one_shell:
+      case ShapeType.hyperboloidOneShell:
         obj = _renderHyperboloid(twoShell: false);
-      case ShapeType.hyperboloid_two_shell:
+      case ShapeType.hyperboloidTwoShell:
         obj = _renderHyperboloid(twoShell: true);
         case ShapeType.saddle:
           obj = _renderSaddle();
@@ -242,8 +234,6 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
         obj = _renderCone();
       case ShapeType.cylinder:
         obj = _renderCylinder();
-      case ShapeType.hyperbolic_cylinder:
-        obj = _renderCylinder(hyperbolic: true);
     }
     if (obj != null) {
       if (_objs.isNotEmpty) {
@@ -272,18 +262,16 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
   }
 
   Sp3dObj? _renderHyperboloid({required bool twoShell}) {
-    final ShapeModel? model = _shapeModel[ShapeType.hyperboloid_two_shell];
+    final ShapeModel? model = _shapeModel[twoShell ? ShapeType.hyperboloidTwoShell : ShapeType.hyperboloidOneShell];
 
     if (model != null) {
-      Sp3dObj? obj = _shapeModel[ShapeType.hyperboloid_two_shell]?.display();
-      if (obj != null) {
-        obj.materials.add(FSp3dMaterial.red.deepCopy());
-        obj.fragments[0].faces[0].materialIndex = 1;
-        obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-          ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
-        obj.rotate(Sp3dV3D(1, 1, 0).nor(), 15 * pi / 180);
-      }
-      return obj;
+      Sp3dObj? obj = model.display();
+      obj.materials.add(FSp3dMaterial.red.deepCopy());
+      obj.fragments[0].faces[0].materialIndex = 1;
+      obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+        ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
+      obj.rotate(Sp3dV3D(1, 0, 0), 90 * pi / 180);
+          return obj;
     }
     return null;
   }
@@ -298,7 +286,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
         obj.fragments[0].faces[0].materialIndex = 1;
         obj.materials[0] = FSp3dMaterial.grey.deepCopy()
           ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
-        obj.rotate(Sp3dV3D(0, 1, 1).nor(), -135 * pi / 180);
+        obj.rotate(Sp3dV3D(1, 0, 0), -90 * pi / 180);
       }
       return obj;
     }
@@ -310,34 +298,29 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
 
     if (model != null) {
       Sp3dObj? obj = _shapeModel[ShapeType.cone]?.display();
+
       if (obj != null) {
         obj.materials.add(FSp3dMaterial.red.deepCopy());
         obj.fragments[0].faces[0].materialIndex = 1;
         obj.materials[0] = FSp3dMaterial.grey.deepCopy()
           ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
-        obj.rotate(Sp3dV3D(0, 1, 1).nor(), -135 * pi / 180);
+        obj.rotate(Sp3dV3D(-1, 0, 0).nor(), 90 * pi / 180);
       }
       return obj;
     }
     return null;
   }
 
-  Sp3dObj? _renderCylinder({bool hyperbolic = false}) {
-    final ShapeModel? model = _shapeModel[ShapeType.saddle];
+  Sp3dObj? _renderCylinder() {
+    final ShapeModel? model = _shapeModel[ShapeType.cylinder];
 
      if (model != null) {
-       Sp3dObj? obj = hyperbolic ?
-       // TODO: improve rotation parameters
-       _shapeModel[ShapeType.hyperbolic_cylinder]?.display() :
-       _shapeModel[ShapeType.cylinder]?.display();
-
-       if (obj != null) {
-         obj.materials.add(FSp3dMaterial.red.deepCopy());
-         obj.fragments[0].faces[0].materialIndex = 1;
-         obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-           ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
-         obj.rotate(Sp3dV3D(0, 1, 1).nor(), -30 * pi / 180);
-       }
+       Sp3dObj? obj = model.display();
+       obj.materials.add(FSp3dMaterial.red.deepCopy());
+       obj.fragments[0].faces[0].materialIndex = 1;
+       obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+         ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
+       obj.rotate(Sp3dV3D(1, 0, 0), 90 * pi / 180);
        return obj;
      }
      return null;
@@ -403,9 +386,9 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
     switch(shapeType) {
       case ShapeType.ellipsoid:
         return r"\frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1";
-      case ShapeType.hyperboloid_two_shell:
+      case ShapeType.hyperboloidTwoShell:
         return r"\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} - 1 = 0";
-      case ShapeType.hyperboloid_one_shell:
+      case ShapeType.hyperboloidOneShell:
         return r"\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} + 1 = 0";
       case ShapeType.saddle:
         return r"\frac{x^2}{a^2} - \frac{y^2}{b^2} - z = 0";
@@ -415,9 +398,6 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
         // return r"\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} = 0";
       case ShapeType.cylinder:
         return r"\frac{x^2}{a^2)} + \frac{y^2}{b^2} - 1 = 0";
-      case ShapeType.hyperbolic_cylinder:
-        return r"\frac{x^2}{a^2)} - \frac{y^2}{b^2} - 1 = 0";
-    // return r"\Frac{y^2}{a^2)} - \frac{x^2}{b^2} - 1 = 0";
     }
   }
 
@@ -425,20 +405,16 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
     switch(shapeType) {
       case ShapeType.ellipsoid:
        return _editEllipsoidParameters(horizontalMargin);
-      case ShapeType.hyperboloid_two_shell:
+      case ShapeType.hyperboloidTwoShell:
         return _editHyperboloidParameters(horizontalMargin);
-      case ShapeType.hyperboloid_one_shell:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+      case ShapeType.hyperboloidOneShell:
+        return _editHyperboloidParameters(horizontalMargin);
       case ShapeType.saddle:
         return _editSaddleParameters(horizontalMargin);
       case ShapeType.cone:
         return _editConeParameters(horizontalMargin);
       case ShapeType.cylinder:
         return _editCylinderParameters(horizontalMargin);
-      case ShapeType.hyperbolic_cylinder:
-        // TODO: Handle this case.
-        throw UnimplementedError();
     }
   }
 

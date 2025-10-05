@@ -4,12 +4,11 @@ import '../../l10n/app_localizations.dart';
 
 enum ShapeType {
   ellipsoid,
-  hyperboloid_two_shell,
-  hyperboloid_one_shell,
+  hyperboloidTwoShell,
+  hyperboloidOneShell,
   saddle,
   cone,
-  cylinder,
-  hyperbolic_cylinder;
+  cylinder
 }
 
 extension ShapeTypeLocalization on ShapeType {
@@ -18,9 +17,9 @@ extension ShapeTypeLocalization on ShapeType {
     switch (this) {
       case ShapeType.ellipsoid:
         return l10n.shapeTypeEllipsoid;
-      case ShapeType.hyperboloid_two_shell:
+      case ShapeType.hyperboloidTwoShell:
         return l10n.shapeTypeHyperboloidTwoShell;
-      case ShapeType.hyperboloid_one_shell:
+      case ShapeType.hyperboloidOneShell:
         return l10n.shapeTypeHyperboloidOneShell;
       case ShapeType.saddle:
         return l10n.shapeTypeSaddle;
@@ -28,8 +27,6 @@ extension ShapeTypeLocalization on ShapeType {
         return l10n.shapeTypeCone;
       case ShapeType.cylinder:
         return l10n.shapeTypeCylinder;
-      case ShapeType.hyperbolic_cylinder:
-        return l10n.shapeTypeHyperbolicCylinder;
     }
   }
 }

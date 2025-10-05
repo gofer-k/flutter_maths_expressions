@@ -18,19 +18,16 @@ class ShapeModel {
     switch (type) {
       case ShapeType.ellipsoid:
         return Ellipsoid.ellipsoid(a, b, c);
-      case ShapeType.hyperboloid_one_shell:
+      case ShapeType.hyperboloidOneShell:
         return HyperboloidShell.hyperboloidShell(a, b, c, false, uBands: 20, vBands: 30, uMin: 1.0, uMax: -1.0);
-    case ShapeType.hyperboloid_two_shell:
+    case ShapeType.hyperboloidTwoShell:
         return HyperboloidShell.hyperboloidShell(a, b, c, true, uBands: 20, vBands: 30, uMin: 1.0, uMax: -1.0);
       case ShapeType.saddle:
         return Saddle.saddle(a, b, c);
       case ShapeType.cone:
         return Cone.cone(radius: a, height: c);
-      case ShapeType.hyperbolic_cylinder:
-       return HyperbolicCylinder.hyperbolicCylinder(a: a, b: b, height: c);
       case ShapeType.cylinder:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        return HyperbolicCylinder.cylinder(radius: a, height: c, addCovers: true);
     }
   }
 

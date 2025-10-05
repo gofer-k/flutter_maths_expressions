@@ -158,7 +158,7 @@ class _LogarithmsPageState extends State<LogarithmsPage> {
                     context: context,
                     decoration: listItemDecoration,
                     // This formula: r'.... \log_a 'frac{1}{a}...' do only work !!!
-                    expression: "b^y = a^{y\log_a b}",
+                    expression: "b^y = a^{y log_a b}",
                     scale: leftColScale),
                 popupDialog:
                 DisplayExpression(

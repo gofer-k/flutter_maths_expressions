@@ -1,5 +1,3 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ShrinkableListItem extends StatefulWidget {
@@ -8,22 +6,21 @@ class ShrinkableListItem extends StatefulWidget {
   final TextStyle? titleStyle;
   final bool expanded;
 
-  ShrinkableListItem({
-    Key? key,
+  const ShrinkableListItem({
+    super.key,
     required this.title,
     required this.details,
     this.titleStyle,
     this.expanded = false,
-  }) : super(key: key);
+  });
 
   @override
-  _ShrinkableListItemState createState() => _ShrinkableListItemState();
+  State<ShrinkableListItem> createState() => _ShrinkableListItemState();
 }
 
 class _ShrinkableListItemState extends State<ShrinkableListItem>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _animation;
   bool _isExpanded = false;
 
   @override
@@ -32,10 +29,6 @@ class _ShrinkableListItemState extends State<ShrinkableListItem>
     _controller = AnimationController(
       duration: const Duration(milliseconds: 300), // Adjust duration
       vsync: this,
-    );
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut, // Adjust curve
     );
     _isExpanded = widget.expanded;
   }
@@ -46,7 +39,7 @@ class _ShrinkableListItemState extends State<ShrinkableListItem>
     // If the parent widget's `expanded` property changes, update the internal state
     if (widget.expanded != oldWidget.expanded) {
       setState(() {
-        _isExpanded = widget.expanded!;
+        _isExpanded = widget.expanded;
       });
     }
   }
@@ -93,11 +86,9 @@ class _ShrinkableListItemState extends State<ShrinkableListItem>
             firstChild: const SizedBox.shrink(),
             secondChild: Padding(
               padding: const EdgeInsets.all(1.0),
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: widget.details,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: widget.details,
               ),
             ),
             crossFadeState: _isExpanded

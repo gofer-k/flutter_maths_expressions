@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ShrinkableTable extends StatefulWidget {
@@ -7,14 +6,14 @@ class ShrinkableTable extends StatefulWidget {
   final TextStyle? titleStyle;
 
   const ShrinkableTable({
-    Key? key,
+    super.key,
     required this.title,
     required this.contents,
     this.titleStyle,
-  }) : super(key: key);
+  });
 
   @override
-  _ShrinkableTableState createState() => _ShrinkableTableState();
+  State<ShrinkableTable> createState() => _ShrinkableTableState();
 }
 
 class _ShrinkableTableState extends State<ShrinkableTable>

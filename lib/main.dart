@@ -1,8 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_maths_expressions/pages/mian_page.dart';
+import 'package:flutter_maths_expressions/pages/main_page.dart';
 
 import 'Themes/math_theme.dart';
 import 'l10n/app_localizations.dart';
