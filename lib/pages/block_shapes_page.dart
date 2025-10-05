@@ -190,7 +190,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
                 // Parameters area
                 Expanded(
                   child: _shapeParameters(_currentShape, topHorizontalMargin)
-                ),
+                )
               ],
             ),
           ),
@@ -332,52 +332,54 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
 
     return Container(
       padding: EdgeInsetsGeometry.symmetric(horizontal: horizontalMargin),
-        child: Column(
-          children: [
-            DisplayExpression(
-                context: context,
-                expression: expression,
-                scale: exprScale,
-                textStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
-                  fontWeight: Theme.of(context).textTheme.bodyLarge?.fontWeight,
-                )),
-            Column(
-              children: [
-                InkWell(
-                  onTap: _toggleExpandParameters,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text("Animation Parameters",
-                              style: Theme.of(context).textTheme.titleLarge,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              DisplayExpression(
+                  context: context,
+                  expression: expression,
+                  scale: exprScale,
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
+                    fontWeight: Theme.of(context).textTheme.bodyLarge?.fontWeight,
+                  )),
+              Column(
+                children: [
+                  InkWell(
+                    onTap: _toggleExpandParameters,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text("Animation Parameters",
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
                             ),
                           ),
-                        ),
-                        Icon(
-                          _isInputParametersExpanded ? Icons.expand_less : Icons.expand_more,
-                          size: 30.0,
-                          semanticLabel: _isInputParametersExpanded ? 'Collapse parameters' : 'Expand parameters',
-                        ),
+                          Icon(
+                            _isInputParametersExpanded ? Icons.expand_less : Icons.expand_more,
+                            size: 30.0,
+                            semanticLabel: _isInputParametersExpanded ? 'Collapse parameters' : 'Expand parameters',
+                          ),
+                        ]
+                    ),
+                  ),
+                  SizeTransition(
+                    axisAlignment: -1.0,
+                    sizeFactor: _expandAnimationParameters,
+                    child: Column(
+                      children: [
+                        _editShapeParameters(shapeType, horizontalMargin),
                       ]
                   ),
                 ),
-                SizeTransition(
-                  axisAlignment: -1.0,
-                  sizeFactor: _expandAnimationParameters,
-                  child: Column(
-                    children: [
-                      _editShapeParameters(shapeType, horizontalMargin),
-                    ]
-                ),
-              ),
-            ],
-          ),
-        ]
+              ],
+            ),
+          ],
+        )
       )
     );
   }
@@ -397,34 +399,34 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
         // General form:
         // return r"\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} = 0";
       case ShapeType.cylinder:
-        return r"\frac{x^2}{a^2)} + \frac{y^2}{b^2} - 1 = 0";
+        return r"\frac{x^2}{a^2} + \frac{y^2}{b^2} - 1 = 0";
     }
   }
 
   Widget _editShapeParameters(ShapeType shapeType, double horizontalMargin) {
     switch(shapeType) {
       case ShapeType.ellipsoid:
-       return _editEllipsoidParameters(horizontalMargin);
+       return _editParameters(horizontalMargin: horizontalMargin);
       case ShapeType.hyperboloidTwoShell:
-        return _editHyperboloidParameters(horizontalMargin);
+        return _editParameters(horizontalMargin: horizontalMargin);
       case ShapeType.hyperboloidOneShell:
-        return _editHyperboloidParameters(horizontalMargin);
+        return _editParameters(horizontalMargin: horizontalMargin);
       case ShapeType.saddle:
-        return _editSaddleParameters(horizontalMargin);
+        return _editParameters(horizontalMargin: horizontalMargin, is3dParameters: false);
       case ShapeType.cone:
-        return _editConeParameters(horizontalMargin);
+        return _editParameters(horizontalMargin: horizontalMargin);
       case ShapeType.cylinder:
-        return _editCylinderParameters(horizontalMargin);
+        return _editParameters(horizontalMargin: horizontalMargin, is3dParameters: false);
     }
   }
 
-  Widget _editEllipsoidParameters(double horizontalMargin) {
+  Widget _editParameters({required double horizontalMargin, bool is3dParameters = true}) {
     return Padding(
       padding: EdgeInsetsGeometry.symmetric(horizontal: horizontalMargin),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FactorSlider(label: r'a', initialValue: _shapeModel[_currentShape]!.a, minValue: 100, maxValue: 200,
+          FactorSlider(label: r'a', initialValue: _shapeModel[_currentShape]!.a, minValue: 20, maxValue: 200,
             onChanged: (double value) {
               if (_shapeModel[_currentShape]?.a != value) {
                 setState(() {
@@ -434,7 +436,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
               }
             }
           ),
-          FactorSlider(label: r'b', initialValue: _shapeModel[_currentShape]!.b, minValue: 100, maxValue: 200,
+          FactorSlider(label: r'b', initialValue: _shapeModel[_currentShape]!.b, minValue: 20, maxValue: 200,
               onChanged: (double value) {
                 if (_shapeModel[_currentShape]?.b != value) {
                   setState(() {
@@ -444,7 +446,8 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
                 }
               }
           ),
-          FactorSlider(label: r'c', initialValue: _shapeModel[_currentShape]!.c, minValue: 100, maxValue: 200,
+          if (is3dParameters)
+            FactorSlider(label: r'c', initialValue: _shapeModel[_currentShape]!.c, minValue: 20, maxValue: 200,
               onChanged: (double value) {
                 if (_shapeModel[_currentShape]?.c != value) {
                   setState(() {
@@ -453,52 +456,8 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
                   });
                 }
               }
-          ),
+            ),
         ],
-      ),
-    );
-  }
-
-  Widget _editHyperboloidParameters(double horizontalMargin) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
-      child: Column(
-          children: [
-            Text("Now implemented hyperbolic params")
-          ]
-      ),
-    );
-  }
-
-  Widget _editSaddleParameters(double horizontalMargin) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
-      child: Column(
-        children: [
-          Text("Now implemented saddle params")
-        ]
-      ),
-    );
-  }
-
-  Widget _editConeParameters(double horizontalMargin) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
-      child: Column(
-        children: [
-          Text("Now implemented cone params")
-        ]
-      ),
-    );
-  }
-
-  Widget _editCylinderParameters(double horizontalMargin) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
-      child: Column(
-        children: [
-          Text("Now implemented cylinder params")
-        ]
       ),
     );
   }
