@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/pages/derived_page.dart';
-import 'package:flutter_maths_expressions/pages/planimetry_page.dart';
+import 'package:flutter_maths_expressions/pages/planimetry/planimetry_page.dart';
 import 'package:flutter_maths_expressions/pages/trigonometry_page.dart';
 
 import '../l10n/app_localizations.dart';
