@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_canvas/infinite_canvas.dart';
 
-import '../models/planametry/triangle.dart';
-import '../painters/cross_axes_painter.dart';
-import '../painters/triangle_painter.dart';
-import '../widgets/background_container.dart';
+import '../../models/planametry/triangle.dart';
+import '../../painters/cross_axes_painter.dart';
+import '../../painters/legend_painter.dart';
+import '../../painters/triangle_painter.dart';
+import '../../widgets/background_container.dart';
 
 class PlanimetryPage extends StatefulWidget {
   final String title;
@@ -76,6 +77,26 @@ class _PlanimetryPageState extends State<PlanimetryPage> {
                       triangle: Triangle(a: Offset(1, 1), b: Offset(3, 3), c: Offset(5, 1)),
                       canvasTransform: _controller.transform.value,
                       viewportSize: viewportSize, originUnitInPixels: unitInPixels,  // Adjust as needed
+                    )
+                  ),
+                  CustomPaint(
+                    size: viewportSize,
+                    painter: TrianglePainter(
+                      triangle: Triangle(a: Offset(1, 1), b: Offset(3, 3), c: Offset(5, 1)),
+                      canvasTransform: _controller.transform.value,
+                      viewportSize: viewportSize, originUnitInPixels: unitInPixels,  // Adjust as needed
+                    )
+                  ),
+                  CustomPaint(
+                    size: viewportSize,
+                    painter: LegendPainter(canvasTransform: _controller.transform.value,
+                      viewportSize: viewportSize,
+                      labelsSpans: [
+                        TextSpan(text: "α, ", style: TextStyle(color: Colors.red, fontSize: 28)),
+                        TextSpan(text: "β, ", style: TextStyle(color: Colors.blue, fontSize: 28)),
+                        TextSpan(text: "γ", style: TextStyle(color: Colors.green, fontSize: 28))
+                      ],
+                      startPosition: Offset(viewportSize.width - 100, 0.95),
                     )
                   ),
                 ]
