@@ -11,6 +11,8 @@ class DisplayExpression extends StatefulWidget {
     required this.scale,
     this.decoration,
     this.textStyle,
+    this.outlineMargin = 2.0,
+    this.alignment = Alignment.center
   });
 
   final BuildContext context;
@@ -18,6 +20,8 @@ class DisplayExpression extends StatefulWidget {
   final double scale;
   final BoxDecoration? decoration;
   final TextStyle? textStyle;
+  final outlineMargin;
+  final alignment;
 
   @override
   State<DisplayExpression> createState() => DisplayExpressionState();
@@ -27,9 +31,9 @@ class DisplayExpressionState extends State<DisplayExpression> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
+      alignment: widget.alignment,
       padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 2.0), // Padding inside the container, around the text
-      margin: const EdgeInsets.all(2.0),   // Margin outside the container
+      margin: EdgeInsets.all(widget.outlineMargin),   // Margin outside the container
       decoration: widget.decoration,
       child: Math.tex(
         widget.expression,
