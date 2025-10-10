@@ -573,11 +573,14 @@ class _LimitsPagePageState extends State<LimitsPage> {
       PopupWidget(
         horizontalPadding: horizontalPaddingItem,
         verticalPadding: verticalPaddingItem,
-        content: DisplayExpression(
+        content: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DisplayExpression(
             context: context,
             decoration: listItemDecoration,
-            expression: r"f(x) - g(x) = \frac{1 /div g(x)}{1 \div f(x)}{1 /\div f(x) \cdot g(x)}",
+            expression: r"f(x) - g(x) = \frac{1 \div g(x) - 1 \div f(x)}{1 \div (f(x) \cdot g(x))}",
             scale: expressionScale
+          )
         ),
         popupDialog: Column(
             children: [
@@ -585,7 +588,68 @@ class _LimitsPagePageState extends State<LimitsPage> {
                 context: context,
                 decoration: constraintItemDecoration,
                 expression:
-                r"f(x) = \inf, g(x) = \inf, \lim_{x} f(x) = 0, \lim_{x} g(x) = 0",
+                r"f(x) = \infty, g(x) = \infty",
+                scale: constraintsScale,
+                outlineMargin: 0.0,
+                alignment: Alignment.centerLeft,
+              ),
+              DisplayExpression(
+                context: context,
+                decoration: constraintItemDecoration,
+                expression:
+                r"\lim_{x} f(x) = 0, \lim_{x} g(x) = 0",
+                scale: constraintsScale,
+                outlineMargin: 0.0,
+                alignment: Alignment.centerLeft,
+              ),
+            ]
+        ),
+      ),
+      // Case 11: 0^0, 1^inf, inf^0
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: Column(
+          children: [
+            DisplayExpression(
+              context: context,
+              decoration: listItemDecoration,
+              expression: r"F(x) = [f(x)]^{g(x)}",
+              scale: expressionScale,
+              outlineMargin: 0.0,
+            ),
+            DisplayExpression(
+              context: context,
+              decoration: listItemDecoration,
+              expression: r"A = \lim_{x \to a} F(x) = e^B",
+              scale: expressionScale,
+              outlineMargin: 0.0,
+            ),
+            DisplayExpression(
+              context: context,
+              decoration: listItemDecoration,
+              expression: r"A = \lim_{x \to a} F(x) = e^B",
+              scale: expressionScale,
+              outlineMargin: 0.0,
+            ),
+          ],
+        ),
+        popupDialog: Column(
+            children: [
+              DisplayExpression(
+                context: context,
+                decoration: constraintItemDecoration,
+                expression:
+                r"\lim_{x \to a} F(x) = 0 \cap \lim B  = -\infty",
+                scale: constraintsScale,
+                outlineMargin: 0.0,
+                alignment: Alignment.centerLeft,
+              ),
+              DisplayExpression(
+                context: context,
+                decoration: constraintItemDecoration,
+                expression:
+                r"B = \infty \cap \lim_{x \to a} F(x)= \infty",
                 scale: constraintsScale,
                 outlineMargin: 0.0,
                 alignment: Alignment.centerLeft,
