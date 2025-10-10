@@ -621,7 +621,7 @@ class _LimitsPagePageState extends State<LimitsPage> {
             DisplayExpression(
               context: context,
               decoration: listItemDecoration,
-              expression: r"A = \lim_{x \to a} F(x) = e^B",
+              expression: r"B = \log {\lim_{x \to a} F(x)}",
               scale: expressionScale,
               outlineMargin: 0.0,
             ),
@@ -677,6 +677,7 @@ class _LimitsPagePageState extends State<LimitsPage> {
           children: [
             ShrinkableListItem(title: "Limits theorems", details: theorems,),
             ShrinkableListItem(title: "Unmarked symbols - de L'Hospital rules", details: deLHospitalRules,),
+            const SizedBox(height: 48),
           ],
         )
       ),
