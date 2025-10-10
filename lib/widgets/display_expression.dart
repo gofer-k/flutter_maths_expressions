@@ -20,8 +20,8 @@ class DisplayExpression extends StatefulWidget {
   final double scale;
   final BoxDecoration? decoration;
   final TextStyle? textStyle;
-  final outlineMargin;
-  final alignment;
+  final double outlineMargin;
+  final Alignment alignment;
 
   @override
   State<DisplayExpression> createState() => DisplayExpressionState();
