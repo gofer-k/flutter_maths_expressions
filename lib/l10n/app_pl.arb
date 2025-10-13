@@ -6,7 +6,11 @@
   "derivativesComputationRules": "Reguły obliczania pochodnych",
   "basicDerivativesExpressions": "Postawone wyrażenia pochodnych",
   "logarithmsPageTitle": "Logarytmy",
+
   "planimetryPageTitle": "Planimetria",
+  "triangleTheorems": "Twierdzenia trójkąta",
+  "triangleArea": "Powierzchnia trójkąta",
+
   "trigonometryPageTitle": "Trigonometria",
   "trigonometryFunctions": "Trigonometry functions",
   "trigonometryReversedFunctions": "Trigonometry reversed functions",

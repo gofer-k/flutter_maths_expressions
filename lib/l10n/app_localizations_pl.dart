@@ -30,6 +30,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get planimetryPageTitle => 'Planimetria';
 
   @override
+  String get triangleTheorems => 'Twierdzenia trójkąta';
+
+  @override
+  String get triangleArea => 'Powierzchnia trójkąta';
+
+  @override
   String get trigonometryPageTitle => 'Trigonometria';
 
   @override

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_maths_expressions/models/planametry/triangle.dart';
+import 'package:flutter_maths_expressions/models/planimetry/triangle.dart';
 import 'package:flutter_maths_expressions/painters/figure_painter.dart';
 
 class TrianglePainter extends FigurePainter {

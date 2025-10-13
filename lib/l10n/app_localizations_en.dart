@@ -30,6 +30,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get planimetryPageTitle => 'Planimetry';
 
   @override
+  String get triangleTheorems => 'Triangle theorems';
+
+  @override
+  String get triangleArea => 'Triangle area';
+
+  @override
   String get trigonometryPageTitle => 'Trigonometry';
 
   @override

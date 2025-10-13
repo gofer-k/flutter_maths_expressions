@@ -140,6 +140,18 @@ abstract class AppLocalizations {
   /// **'Planimetry'**
   String get planimetryPageTitle;
 
+  /// No description provided for @triangleTheorems.
+  ///
+  /// In en, this message translates to:
+  /// **'Triangle theorems'**
+  String get triangleTheorems;
+
+  /// No description provided for @triangleArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Triangle area'**
+  String get triangleArea;
+
   /// No description provided for @trigonometryPageTitle.
   ///
   /// In en, this message translates to:
