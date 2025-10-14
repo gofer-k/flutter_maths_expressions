@@ -6,10 +6,10 @@ class LegendPainter extends FigurePainter {
   final Offset startPosition;
 
   LegendPainter({
-    required Matrix4 canvasTransform,
-    required Size viewportSize,
+    required super.canvasTransform,
+    required super.viewportSize,
     required this.labelsSpans,
-    required this.startPosition}) : super(canvasTransform, viewportSize);
+    required this.startPosition}) : super(0.0, null);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -32,5 +32,4 @@ class LegendPainter extends FigurePainter {
     return startPosition != oldDelegate.startPosition ||
       labelsSpans != oldDelegate.labelsSpans;
   }
-
 }

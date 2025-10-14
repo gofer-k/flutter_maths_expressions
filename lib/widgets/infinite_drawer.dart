@@ -2,10 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_canvas/infinite_canvas.dart';
 
-import '../models/planimetry/triangle.dart';
 import '../painters/cross_axes_painter.dart';
+import '../painters/drawable_shape.dart';
 import '../painters/legend_painter.dart';
-import '../painters/triangle_painter.dart';
 
 enum DockSide {
   leftBottom,
@@ -18,13 +17,17 @@ class InfiniteDrawer extends StatefulWidget {
   final bool enableRotation;
   final bool enablePanning;
   final bool enableScaling;
+  final bool enableCrossAxes;
   final DockSide actionsDockSide;
+  final List<DrawableShape> drawableShapes;
 
   const InfiniteDrawer({super.key,
     this.enableRotation = true,
     this.enablePanning = true,
     this.enableScaling = true,
-    this.actionsDockSide = DockSide.rightBottom});
+    this.enableCrossAxes = true,
+    this.actionsDockSide = DockSide.rightBottom, required this.drawableShapes,
+  });
 
   @override
   State<StatefulWidget> createState() => _InfiniteDrawerState();
@@ -32,12 +35,16 @@ class InfiniteDrawer extends StatefulWidget {
 
 class _InfiniteDrawerState extends State<InfiniteDrawer> {
   late InfiniteCanvasController _controller;
+  late Size gridSize;
+  late double unitInPixels;
 
   @override
   void initState() {
     super.initState();
     _controller = InfiniteCanvasController();
     _controller.transform.addListener(_onCanvasTransformChanged);
+    gridSize = Size.square(20);
+    unitInPixels = 2 * gridSize.width;
   }
 
   @override
@@ -50,7 +57,7 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
   @override
   Widget build(BuildContext context) {
     const gridSize = Size.square(20);
-    final unitInPixels = 2* gridSize.width;
+    final unitInPixels = 2 * gridSize.width;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
@@ -65,42 +72,26 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
                 menuVisible: false,
                 canAddEdges: true,
               ),
-              CustomPaint(
-                size: viewportSize,
-                painter: CrossAxesPainter(
-                  canvasTransform: _controller.transform.value,
-                  viewportSize: viewportSize,
-                  originUnitInPixels: unitInPixels, // Adjust as needed
-                ),
-              ),
-              CustomPaint(
+              if (widget.enableCrossAxes)
+                CustomPaint(
                   size: viewportSize,
-                  painter: TrianglePainter(
-                    triangle: Triangle(a: Offset(1, 1), b: Offset(3, 3), c: Offset(5, 1)),
+                  painter: CrossAxesPainter(
                     canvasTransform: _controller.transform.value,
-                    viewportSize: viewportSize, originUnitInPixels: unitInPixels,  // Adjust as needed
-                  )
-              ),
-              CustomPaint(
-                  size: viewportSize,
-                  painter: TrianglePainter(
-                    triangle: Triangle(a: Offset(1, 1), b: Offset(3, 3), c: Offset(5, 1)),
-                    canvasTransform: _controller.transform.value,
-                    viewportSize: viewportSize, originUnitInPixels: unitInPixels,  // Adjust as needed
-                  )
-              ),
-              CustomPaint(
-                  size: viewportSize,
-                  painter: LegendPainter(canvasTransform: _controller.transform.value,
                     viewportSize: viewportSize,
-                    labelsSpans: [
-                      TextSpan(text: "α, ", style: TextStyle(color: Colors.red, fontSize: 28)),
-                      TextSpan(text: "β, ", style: TextStyle(color: Colors.blue, fontSize: 28)),
-                      TextSpan(text: "γ", style: TextStyle(color: Colors.green, fontSize: 28))
-                    ],
-                    startPosition: Offset(viewportSize.width - 100, 0.95),
+                    originUnitInPixels: unitInPixels, // Adjust as needed
+                  ),
+                ),
+              for (final shape in widget.drawableShapes) ...[
+                CustomPaint(size: viewportSize, painter: shape.paint(_controller.transform.value, viewportSize, unitInPixels)),
+                CustomPaint(size: viewportSize, painter:
+                  LegendPainter(
+                    canvasTransform: _controller.transform.value,
+                    viewportSize: viewportSize,
+                    labelsSpans: shape.labelsSpans,
+                    startPosition: Offset(viewportSize.width - 100, 0.95)
                   )
-              ),
+                ),
+              ],
               if (widget.enableRotation || widget.enablePanning || widget.enableScaling)
                 floatingActions(context, widget.actionsDockSide),
             ]

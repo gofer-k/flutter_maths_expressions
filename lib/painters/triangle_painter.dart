@@ -5,15 +5,15 @@ import 'package:flutter_maths_expressions/models/planimetry/triangle.dart';
 import 'package:flutter_maths_expressions/painters/figure_painter.dart';
 
 class TrianglePainter extends FigurePainter {
-  final Triangle triangle;
+  // final Triangle triangle;
   final double originUnitInPixels;
   final double _arcRadius = 25.0;
   late final double minUnitInPixels;
 
-  TrianglePainter({required Matrix4 canvasTransform,
-    required Size viewportSize,
-    required this.triangle,
-    required this.originUnitInPixels}) : super(canvasTransform, viewportSize) {
+  TrianglePainter(super.unitInPixels, super.shape,
+    {required super.canvasTransform,
+    required super.viewportSize,
+    required this.originUnitInPixels}) {
     minUnitInPixels = 0.25 * originUnitInPixels;
   }
 
@@ -106,6 +106,8 @@ class TrianglePainter extends FigurePainter {
     Path path = Path();
 
     // Convert local triangle coordinates to pixel coordinates
+    final triangle = shape as Triangle;
+
     final Offset aPos =
     Offset(triangle.a.dx * originUnitInPixels, -triangle.a.dy * originUnitInPixels);
     final Offset bPos =
@@ -140,7 +142,7 @@ class TrianglePainter extends FigurePainter {
   @override
   bool shouldRepaint(covariant TrianglePainter oldDelegate) {
     return oldDelegate.canvasTransform != canvasTransform ||
-        oldDelegate.triangle != triangle ||
+        oldDelegate.shape != shape ||
         oldDelegate.originUnitInPixels != originUnitInPixels;
   }
 }
