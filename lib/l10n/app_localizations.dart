@@ -218,6 +218,18 @@ abstract class AppLocalizations {
   /// **'Limits theorems'**
   String get limitsTheorems;
 
+  /// No description provided for @similitudeHospitalRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Unmarked symbols - de L\'Hospital rules'**
+  String get similitudeHospitalRules;
+
+  /// No description provided for @limitsBaseCases.
+  ///
+  /// In en, this message translates to:
+  /// **'Examples'**
+  String get limitsBaseCases;
+
   /// No description provided for @shapeTypeEllipsoid.
   ///
   /// In en, this message translates to:

@@ -23,6 +23,8 @@
 
   "limitsPageTitle": "Limits",
   "limitsTheorems": "Limits theorems",
+  "similitudeHospitalRules": "Unmarked symbols - de L'Hospital rules",
+  "limitsBaseCases": "Examples",
 
   "shapeTypeEllipsoid": "Ellipsoid",
   "shapeTypeHyperboloidTwoShell": "Hyperboloid 2-shell",

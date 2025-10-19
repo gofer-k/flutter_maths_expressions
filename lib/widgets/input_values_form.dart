@@ -49,7 +49,9 @@ class _InputValuesFormState<T extends InputValuesForm<Value>, Value>
   @override
   void dispose() {
     super.dispose();
-    _controllers.forEach((controller) => controller.dispose());
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
   }
 
   @override

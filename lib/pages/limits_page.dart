@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/widgets/background_container.dart';
 import 'package:flutter_maths_expressions/widgets/display_expression.dart';
 
+import '../l10n/app_localizations.dart';
 import '../widgets/popup_widget.dart';
 import '../widgets/shrinkable_list_Item.dart';
 
@@ -16,6 +17,8 @@ class LimitsPage extends StatefulWidget{
 class _LimitsPagePageState extends State<LimitsPage> {
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+
     final expressionScale = 2.0;
     final constraintsScale = 1.5;
     final horizontalPaddingItem = 2.0;
@@ -124,7 +127,25 @@ class _LimitsPagePageState extends State<LimitsPage> {
         content: DisplayExpression(
             context: context,
             decoration: listItemDecoration,
-            expression: r"\lim_{x \to x_0} [f(x) + g(x)] = a -\infty",
+            expression: r"\lim_{x \to x_0} \frac{f(x)}{g(x)} = \frac{f}{g}",
+            scale: expressionScale),
+        popupDialog: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: DisplayExpression(
+                context: context,
+                decoration: listItemDecoration,
+                expression:
+                r" g(x) \neq 0",
+                scale: expressionScale)
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\lim_{x \to x_0} f(x)^n = [\lim_{x \to x_0} f(x)]^{x_0}",
             scale: expressionScale
         ),
         popupDialog: FittedBox(
@@ -658,6 +679,265 @@ class _LimitsPagePageState extends State<LimitsPage> {
         ),
       ),
     ];
+    final List<Widget> baseCases = [
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: Column(
+          children: [
+            FittedBox(fit: BoxFit.fitWidth,
+              child: DisplayExpression(
+                context: context,
+                decoration: listItemDecoration,
+                expression: r"\lim_{x \to \infty} (a_nx^n + a_{n-1}x^{n-1} + \dots + a_1x + a_0) =",
+                scale: expressionScale,
+                outlineMargin: 0.0,
+                alignment: Alignment.centerLeft,
+              ),
+            ),
+            DisplayExpression(
+                context: context,
+                decoration: listItemDecoration,
+                expression: r" = \lim_{x \to \infty} a_n \cdot x^n",
+                scale: expressionScale,
+                outlineMargin: 0.0,
+            ),
+          ],
+        )
+      ),
+      PopupWidget(
+          horizontalPadding: horizontalPaddingItem,
+          verticalPadding: verticalPaddingItem,
+          content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to \infty} \sin(x) = \infty",
+          scale: expressionScale,
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to \infty} \cos(x) = \infty",
+          scale: expressionScale,
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to \infty} \tan(x) = \infty",
+          scale: expressionScale,
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to \infty} \ctg(x) = \infty",
+          scale: expressionScale,
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to \infty} \sec(x) = \infty",
+          scale: expressionScale,
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to \infty} \csc(x) = \infty",
+          scale: expressionScale,
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\lim_{x \to +\infty} ln(x) = +\infty",
+            scale: expressionScale
+        )
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to +\infty} \log_{a}(x) = +\infty",
+          scale: expressionScale
+        ),
+        popupDialog: DisplayExpression(
+          context: context,
+          decoration: constraintItemDecoration,
+          expression:
+          r"a > 1",
+          scale: constraintsScale,
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+          context: context,
+          decoration: listItemDecoration,
+          expression: r"\lim_{x \to +\infty} \log_{a}(x) = -\infty",
+          scale: expressionScale
+        ),
+        popupDialog: DisplayExpression(
+          context: context,
+          decoration: constraintItemDecoration,
+          expression:
+          r"0 < a < 1",
+          scale: constraintsScale,
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\lim_{x \to +\infty} e^(x) = +\infty",
+            scale: expressionScale
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\lim_{x \to -\infty} e^(x) = 0",
+            scale: expressionScale
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\lim_{x \to +\infty} a^x = \infty",
+            scale: expressionScale
+        ),
+        popupDialog: DisplayExpression(
+          context: context,
+          decoration: constraintItemDecoration,
+          expression:
+          r"a > 1",
+          scale: constraintsScale,
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\lim_{x \to +\infty} a^x = 0",
+            scale: expressionScale
+        ),
+        popupDialog: DisplayExpression(
+          context: context,
+          decoration: constraintItemDecoration,
+          expression:
+          r"a > 1",
+          scale: constraintsScale,
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\lim_{x \to +\infty} a^x = 0",
+            scale: expressionScale
+        ),
+        popupDialog: DisplayExpression(
+          context: context,
+          decoration: constraintItemDecoration,
+          expression:
+          r"0 < a < 1",
+          scale: constraintsScale,
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\lim_{x \to -\infty} a^x = +\infty",
+            scale: expressionScale
+        ),
+        popupDialog: DisplayExpression(
+          context: context,
+          decoration: constraintItemDecoration,
+          expression:
+          r"0 < a < 1",
+          scale: constraintsScale,
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\lim_{x \to 0} \frac{sinx}{x} = 1",
+            scale: expressionScale
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\lim_{x \to 0} \frac{1 - cosx}{x} = 0",
+            scale: expressionScale
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\lim_{x \to 0} \frac{sin(a \cdot x)}{b \cdot x} = \frac{a}{b}",
+            scale: expressionScale
+        ),
+      ),
+      PopupWidget(
+        horizontalPadding: horizontalPaddingItem,
+        verticalPadding: verticalPaddingItem,
+        content: DisplayExpression(
+            context: context,
+            decoration: listItemDecoration,
+            expression: r"\lim_{x \to 0} \frac{sin(a \cdot x)}{b \cdot x} = \frac{a}{b}",
+            scale: expressionScale
+        ),
+      ),
+    ];
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade300,
@@ -675,8 +955,9 @@ class _LimitsPagePageState extends State<LimitsPage> {
         body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
           children: [
-            ShrinkableListItem(title: "Limits theorems", details: theorems,),
-            ShrinkableListItem(title: "Unmarked symbols - de L'Hospital rules", details: deLHospitalRules,),
+            ShrinkableListItem(title: l10n.limitsTheorems, details: theorems,),
+            ShrinkableListItem(title: l10n.similitudeHospitalRules, details: deLHospitalRules,),
+            ShrinkableListItem(title: l10n.limitsBaseCases, details: baseCases),
             const SizedBox(height: 48),
           ],
         )

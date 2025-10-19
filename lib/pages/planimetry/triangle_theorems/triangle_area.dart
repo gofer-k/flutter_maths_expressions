@@ -137,7 +137,7 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
                       ],
                     ],
                     onSubmit: (Map<String, double> output) {
-                      // TODO:
+                      // TODO: save values to the model
                     },
                   ),
                 ),
@@ -162,63 +162,4 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
       ),
     );
   }
-
-  // Widget _buildForm(String title, AppLocalizations l10n) {
-  //   const spaceWidth = 16.0;
-  //
-  //   return SingleChildScrollView(padding: EdgeInsets.all(8),
-  //     child: Form(key: _formKey,
-  //       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Text(title, style: Theme.of(context).textTheme.titleMedium),
-  //           const SizedBox(height: spaceWidth, child: Divider(thickness: 2.0,)),
-  //           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               Expanded(child: Text('A', style: Theme.of(context).textTheme.titleMedium,)),
-  //               const VerticalDivider(color: Colors.black, thickness: 2.0,),
-  //               Expanded(child: _buildVertexField('x', _axController, l10n)),
-  //               const VerticalDivider(color: Colors.black, thickness: 2.0,),
-  //               Expanded(child: _buildVertexField('y', _ayController, l10n)),
-  //             ]
-  //           ),
-  //           // const SizedBox(height: spaceWidth, child: Divider(thickness: 2.0,)),
-  //           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               Expanded(child: Text('B', style: Theme.of(context).textTheme.titleMedium,)),
-  //               const VerticalDivider(color: Colors.black, thickness: 2.0,),
-  //               Expanded(child: _buildVertexField('x', _bxController, l10n)),
-  //               const VerticalDivider(color: Colors.black, thickness: 2.0,),
-  //               Expanded(child: _buildVertexField('y', _byController, l10n)),
-  //             ]
-  //           ),
-  //           // const SizedBox(height: spaceWidth, child: Divider(thickness: 2.0,)),
-  //           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               Expanded(child: Text("C", style: Theme.of(context).textTheme.titleMedium,)),
-  //               const VerticalDivider(color: Colors.black, thickness: 2.0,),
-  //               Expanded(child: _buildVertexField('x', _cxController, l10n)),
-  //               const VerticalDivider(color: Colors.black, thickness: 2.0,),
-  //               Expanded(child: _buildVertexField('y', _cyController, l10n)),
-  //             ]
-  //           ),
-  //           const SizedBox(height: spaceWidth),
-  //           ElevatedButton(
-  //             onPressed: () {
-  //               if (_formKey.currentState!.validate()) {
-  //                 final ax = double.parse(_axController.text);
-  //                 final ay = double.parse(_ayController.text);
-  //                 final bx = double.parse(_bxController.text);
-  //                 final by = double.parse(_byController.text);
-  //                 final cx = double.parse(_cxController.text);
-  //                 final cy = double.parse(_cyController.text);
-  //                 triangle.update(Offset(ax, ay), Offset(bx, by), Offset(cx, cy));
-  //               }
-  //             },
-  //             child: Text(l10n?.submit ?? 'Submit'),
-  //           )
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 }

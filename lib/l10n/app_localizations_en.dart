@@ -70,6 +70,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get limitsTheorems => 'Limits theorems';
 
   @override
+  String get similitudeHospitalRules =>
+      'Unmarked symbols - de L\'Hospital rules';
+
+  @override
+  String get limitsBaseCases => 'Examples';
+
+  @override
   String get shapeTypeEllipsoid => 'Ellipsoid';
 
   @override

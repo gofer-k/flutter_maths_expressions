@@ -23,6 +23,8 @@
   "blockShapesPageTitle": "Figury 3D",
   "limitsPageTitle": "Limity",
   "limitsTheorems": "Twierdzenia o limitach",
+  "similitudeHospitalRules": "Limity symbołów de L'Hospital",
+  "limitsBaseCases": "Przykłady",
 
   "shapeTypeEllipsoid": "Elipsoida",
   "shapeTypeHyperboloidTwoShell": "Hyperboloida 2-powierzchni",

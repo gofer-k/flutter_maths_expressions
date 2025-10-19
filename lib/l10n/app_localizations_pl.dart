@@ -70,6 +70,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get limitsTheorems => 'Twierdzenia o limitach';
 
   @override
+  String get similitudeHospitalRules => 'Limity symbołów de L\'Hospital';
+
+  @override
+  String get limitsBaseCases => 'Przykłady';
+
+  @override
   String get shapeTypeEllipsoid => 'Elipsoida';
 
   @override
