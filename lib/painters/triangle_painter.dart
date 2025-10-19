@@ -1,54 +1,63 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/models/planimetry/triangle.dart';
 import 'package:flutter_maths_expressions/painters/figure_painter.dart';
+
+enum ShowTriangleProperty {
+  center,
+  angleA,
+  angleB,
+  angleC,
+  height,
+  heightPoint
+}
+
 
 class TrianglePainter extends FigurePainter {
   // final Triangle triangle;
   final double originUnitInPixels;
   final double _arcRadius = 25.0;
   late final double minUnitInPixels;
-
-  TrianglePainter(super.unitInPixels, super.shape,
+  final List<ShowTriangleProperty> showProperties;
+  
+  TrianglePainter(super.unitInPixels, super.shape, this.showProperties,
     {required super.canvasTransform,
     required super.viewportSize,
     required this.originUnitInPixels}) {
     minUnitInPixels = 0.25 * originUnitInPixels;
   }
 
-  void _paintAngleText(Canvas canvas, String text, Offset vertex, double startAngle, double sweepAngle, Color colorText) {
-    final textStyle = TextStyle(
-      color: colorText,
-      fontSize: 16,
-    );
-    final textSpan = TextSpan(
-      text: text,
-      style: textStyle,
-    );
-    final textPainter = TextPainter(
-      text: textSpan,
-      textDirection: TextDirection.ltr,
-    );
-    textPainter.layout();
-
-    // Calculate the angle of the bisector
-    final double bisectorAngle = startAngle + sweepAngle / 2.0;
-
-    // Calculate the position for the text along the bisector
-    // The position is calculated from the vertex outwards
-    final double x = vertex.dx + _arcRadius * cos(bisectorAngle);
-    final double y = vertex.dy + _arcRadius * sin(bisectorAngle);
-    final Offset textPosition = Offset(x, y);
-
-    // Center the text on the calculated position
-    final centeredOffset = Offset(
-      textPosition.dx - textPainter.width / 2,
-      textPosition.dy - textPainter.height / 2,
-    );
-
-    textPainter.paint(canvas, centeredOffset);
-  }
+  // void _paintAngleText(Canvas canvas, String text, Offset vertex, double startAngle, double sweepAngle, Color colorText) {
+  //   final textStyle = TextStyle(
+  //     color: colorText,
+  //     fontSize: 16,
+  //   );
+  //   final textSpan = TextSpan(
+  //     text: text,
+  //     style: textStyle,
+  //   );
+  //   final textPainter = TextPainter(
+  //     text: textSpan,
+  //     textDirection: TextDirection.ltr,
+  //   );
+  //   textPainter.layout();
+  //
+  //   // Calculate the angle of the bisector
+  //   final double bisectorAngle = startAngle + sweepAngle / 2.0;
+  //
+  //   // Calculate the position for the text along the bisector
+  //   // The position is calculated from the vertex outwards
+  //   final double x = vertex.dx + _arcRadius * cos(bisectorAngle);
+  //   final double y = vertex.dy + _arcRadius * sin(bisectorAngle);
+  //   final Offset textPosition = Offset(x, y);
+  //
+  //   // Center the text on the calculated position
+  //   final centeredOffset = Offset(
+  //     textPosition.dx - textPainter.width / 2,
+  //     textPosition.dy - textPainter.height / 2,
+  //   );
+  //
+  //   textPainter.paint(canvas, centeredOffset);
+  // }
 
   void _paintText(Canvas canvas, String text, Offset position, {double xOffset = 4.0, double yOffset = 4.0}) {
     final textStyle = TextStyle(
@@ -129,11 +138,23 @@ class TrianglePainter extends FigurePainter {
     _paintText(canvas, 'B', bPos, xOffset: -4.0, yOffset: -20.0);
     _paintText(canvas, 'C', cPos, xOffset: 0.0, yOffset: -2.0);
 
-    _paintArc(canvas, aPos, (bPos - aPos).direction, triangle.getAngleA(), Colors.red);
-
-    _paintArc(canvas, bPos, (cPos - bPos).direction, triangle.getAngleB(), Colors.blue);
-
-    _paintArc(canvas, cPos, (aPos - cPos).direction, triangle.getAngleC(), Colors.green);
+    if (showProperties.contains(ShowTriangleProperty.angleA)) {
+      _paintArc(canvas, aPos, (bPos - aPos).direction, triangle.getAngleA(), Colors.red);
+    }
+    if (showProperties.contains(ShowTriangleProperty.angleB)) {
+      _paintArc(canvas, bPos, (cPos - bPos).direction, triangle.getAngleB(), Colors.blue);
+    }
+    if (showProperties.contains(ShowTriangleProperty.angleC)) {
+      _paintArc(canvas, cPos, (aPos - cPos).direction, triangle.getAngleC(), Colors.green);
+    }
+    if (showProperties.contains(ShowTriangleProperty.height)) {
+      final Paint paintHeight = Paint()
+        ..color = Colors.black26
+        ..strokeWidth = 2.0
+        ..style = PaintingStyle.stroke;
+      final Offset heightPoint = (aPos + cPos) / 2;
+      canvas.drawLine(bPos, heightPoint, paintHeight);
+    }
 
     // Restore the canvas to its state before canvas.save()
     canvas.restore();

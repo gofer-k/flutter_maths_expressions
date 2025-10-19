@@ -89,4 +89,22 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get shapeTypeHyperbolicCylinder => 'Cylinder hiperboliczny';
+
+  @override
+  String get vertex => 'Punkt';
+
+  @override
+  String get vertexInputTitle => 'Wprowadź punkt';
+
+  @override
+  String get enterValue => 'Wprowadź';
+
+  @override
+  String get parseValueError => 'Nieprawidłowe dane';
+
+  @override
+  String get submit => 'Zapisz';
+
+  @override
+  String get tooLongValueError => 'Za długy tekst';
 }

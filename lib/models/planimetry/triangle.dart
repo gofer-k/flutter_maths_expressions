@@ -4,12 +4,18 @@ import 'dart:ui';
 import 'package:flutter_maths_expressions/models/planimetry/base_shape.dart';
 
 class Triangle extends BaseShape {
-  final Offset a;
-  final Offset b;
-  final Offset c;
+  late final Offset a;
+  late final Offset b;
+  late final Offset c;
 
   Triangle({required this.a, required this.b, required this.c}) {
     assert(a != b && a != c && b != c);
+  }
+
+  update(Offset a, Offset b, Offset c) {
+    this.a = a;
+    this.b = b;
+    this.c = c;
   }
 
   @override

@@ -30,5 +30,12 @@
   "shapeTypeSaddle": "Saddle",
   "shapeTypeCone": "Cone",
   "shapeTypeCylinder": "Cylinder",
-  "shapeTypeHyperbolicCylinder": "Hyperbolic cylinder"
+  "shapeTypeHyperbolicCylinder": "Hyperbolic cylinder",
+
+  "vertex": "Vertex",
+  "vertexInputTitle": "Vertex values",
+  "enterValue": "Enter",
+  "parseValueError": "Invalid number",
+  "submit": "Submit",
+  "tooLongValueError": "Too long value"
 }

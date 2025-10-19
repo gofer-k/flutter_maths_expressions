@@ -30,5 +30,12 @@
   "shapeTypeSaddle": "Siodło",
   "shapeTypeCone": "Stożek",
   "shapeTypeCylinder": "Cylinder",
-  "shapeTypeHyperbolicCylinder": "Cylinder hiperboliczny"
+  "shapeTypeHyperbolicCylinder": "Cylinder hiperboliczny",
+
+  "vertex": "Punkt",
+  "vertexInputTitle": "Wprowadź punkt",
+  "enterValue": "Wprowadź",
+  "parseValueError": "Nieprawidłowe dane",
+  "submit": "Zapisz",
+  "tooLongValueError": "Za długy tekst"
 }

@@ -89,4 +89,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shapeTypeHyperbolicCylinder => 'Hyperbolic cylinder';
+
+  @override
+  String get vertex => 'Vertex';
+
+  @override
+  String get vertexInputTitle => 'Vertex values';
+
+  @override
+  String get enterValue => 'Enter';
+
+  @override
+  String get parseValueError => 'Invalid number';
+
+  @override
+  String get submit => 'Submit';
+
+  @override
+  String get tooLongValueError => 'Too long value';
 }

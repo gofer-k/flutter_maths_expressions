@@ -259,6 +259,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hyperbolic cylinder'**
   String get shapeTypeHyperbolicCylinder;
+
+  /// No description provided for @vertex.
+  ///
+  /// In en, this message translates to:
+  /// **'Vertex'**
+  String get vertex;
+
+  /// No description provided for @vertexInputTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vertex values'**
+  String get vertexInputTitle;
+
+  /// No description provided for @enterValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter'**
+  String get enterValue;
+
+  /// No description provided for @parseValueError.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid number'**
+  String get parseValueError;
+
+  /// No description provided for @submit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get submit;
+
+  /// No description provided for @tooLongValueError.
+  ///
+  /// In en, this message translates to:
+  /// **'Too long value'**
+  String get tooLongValueError;
 }
 
 class _AppLocalizationsDelegate
