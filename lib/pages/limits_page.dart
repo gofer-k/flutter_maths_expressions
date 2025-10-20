@@ -903,36 +903,6 @@ class _LimitsPagePageState extends State<LimitsPage> {
         content: DisplayExpression(
             context: context,
             decoration: listItemDecoration,
-            expression: r"\lim_{x \to 0} \frac{sinx}{x} = 1",
-            scale: expressionScale
-        ),
-      ),
-      PopupWidget(
-        horizontalPadding: horizontalPaddingItem,
-        verticalPadding: verticalPaddingItem,
-        content: DisplayExpression(
-            context: context,
-            decoration: listItemDecoration,
-            expression: r"\lim_{x \to 0} \frac{1 - cosx}{x} = 0",
-            scale: expressionScale
-        ),
-      ),
-      PopupWidget(
-        horizontalPadding: horizontalPaddingItem,
-        verticalPadding: verticalPaddingItem,
-        content: DisplayExpression(
-            context: context,
-            decoration: listItemDecoration,
-            expression: r"\lim_{x \to 0} \frac{sin(a \cdot x)}{b \cdot x} = \frac{a}{b}",
-            scale: expressionScale
-        ),
-      ),
-      PopupWidget(
-        horizontalPadding: horizontalPaddingItem,
-        verticalPadding: verticalPaddingItem,
-        content: DisplayExpression(
-            context: context,
-            decoration: listItemDecoration,
             expression: r"\lim_{x \to 0} \frac{sin(a \cdot x)}{b \cdot x} = \frac{a}{b}",
             scale: expressionScale
         ),
