@@ -26,6 +26,11 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    String triangleArea = triangle.b.dx == triangle.a.dx
+        ? r"A = \frac{1}{2}|AC| \cdot |AB| = " + triangle.getArea().toStringAsFixed(2)
+        : triangle.b.dx == triangle.c.dx
+        ? r"A = \frac{1}{2}|AC| \cdot |BC| = " + triangle.getArea().toStringAsFixed(2)
+        : r"A = \frac{1}{2}|AC| \cdot |BD| = " + triangle.getArea().toStringAsFixed(2);
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade300,
@@ -97,7 +102,7 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
                     fit: BoxFit.fitWidth,
                     child: DisplayExpression(
                       context: context,
-                      expression: r"A = \frac{1}{2}|AB| \cdot |BD| = " + triangle.getArea().toStringAsFixed(2),
+                      expression: triangleArea,
                       scale: 2.0,
                     ),
                   ),

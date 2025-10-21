@@ -152,8 +152,18 @@ class TrianglePainter extends FigurePainter {
         ..color = Colors.black26
         ..strokeWidth = 2.0
         ..style = PaintingStyle.stroke;
-      final Offset heightPoint = (aPos + cPos) / 2;
-      canvas.drawLine(bPos, heightPoint, paintHeight);
+      try {
+        final m = (cPos.dy - aPos.dy) / (cPos.dx - aPos.dx);
+        final m2 = m * m;
+        final xD = (m2 * aPos.dx - m * (bPos.dy - aPos.dy) + bPos.dx) / (m2 + 1);
+        final dPos = Offset(
+           (m2 * aPos.dx - m * (bPos.dy - aPos.dy) + bPos.dx) / (m2 + 1),
+           m * xD - m * aPos.dx + aPos.dy);
+
+        canvas.drawLine(bPos, dPos, paintHeight);
+        _paintText(canvas, "D", dPos, xOffset: -4.0, yOffset: -2.0);
+      } catch(e) {
+      }
     }
 
     // Restore the canvas to its state before canvas.save()
