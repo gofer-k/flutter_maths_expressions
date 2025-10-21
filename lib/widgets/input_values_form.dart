@@ -4,15 +4,17 @@ import '../l10n/app_localizations.dart';
 
 class CellData<Value> {
   final String label;
-  final Value? cellValue;
+  late Value? cellValue;
   final bool readOnly;
 
   CellData({required this.label, this.cellValue, this.readOnly = true});
 }
 
+typedef InputData<Value> = List<List<CellData<Value>>>;
+
 class InputValuesForm<Value> extends StatefulWidget {
-  final List<List<CellData<Value>>> contents;
-  final Function(Map<String, Value>) onSubmit;
+  final InputData<Value> contents;
+  final Function(InputData<Value>) onSubmit;
 
   const InputValuesForm({
     super.key,
@@ -21,11 +23,10 @@ class InputValuesForm<Value> extends StatefulWidget {
   });
 
   @override
-  State<InputValuesForm<Value>> createState() => _InputValuesFormState();
+  State<InputValuesForm<Value>> createState() => _InputValuesFormState<Value>();
 }
 
-class _InputValuesFormState<T extends InputValuesForm<Value>, Value>
-    extends State<T> {
+class _InputValuesFormState<Value> extends State<InputValuesForm<Value>> {
   final _formKey = GlobalKey<FormState>();
 
   late final List<TextEditingController> _controllers;
@@ -34,16 +35,7 @@ class _InputValuesFormState<T extends InputValuesForm<Value>, Value>
   void initState() {
     super.initState();
     _controllers = [];
-    for (var row in widget.contents) {
-      for (var cellData in row) {
-        if (!cellData.readOnly) {
-          final controller = TextEditingController(
-            text: cellData.cellValue?.toString(),
-          );
-          _controllers.add(controller);
-        }
-      }
-    }
+    _passInputDataToController();
   }
 
   @override
@@ -62,11 +54,6 @@ class _InputValuesFormState<T extends InputValuesForm<Value>, Value>
 
     return Form(
       key: _formKey,
-      onChanged: () {
-        setState(() {
-          Form.of(_formKey.currentContext!).save();
-        });
-      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -98,15 +85,11 @@ class _InputValuesFormState<T extends InputValuesForm<Value>, Value>
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                //   widget.onSubmit(_controllers.map((controller) => controller.text).cast<Value>());
+                _formKey.currentState!.save();
+
+                _extractInputDataFromController();
+                widget.onSubmit(widget.contents);
               }
-              // final ax = double.parse(_axController.text);
-              // final ay = double.parse(_ayController.text);
-              // final bx = double.parse(_bxController.text);
-              // final by = double.parse(_byController.text);
-              // final cx = double.parse(_cxController.text);
-              // final cy = double.parse(_cyController.text);
-              // triangle.update(Offset(ax, ay), Offset(bx, by), Offset(cx, cy));
             },
             child: Text(l10n.submit),
           ),
@@ -155,5 +138,48 @@ class _InputValuesFormState<T extends InputValuesForm<Value>, Value>
         }
       }
     );
+  }
+  
+  void _passInputDataToController() {
+    for (var row in widget.contents) {
+      for (var cellData in row) {
+        if (!cellData.readOnly) {
+          final controller = TextEditingController(
+            text: cellData.cellValue?.toString(),
+          );
+          _controllers.add(controller);
+        }
+      }
+    }
+  }
+
+  void _extractInputDataFromController() {
+    int controllerIndex = 0;
+    for (var row in widget.contents) {
+      for (var cellData in row) {
+        if (!cellData.readOnly) {
+          final controller = _controllers[controllerIndex++];
+          final value = tryParse(controller.text);
+          if(value != null) {
+            cellData.cellValue = value;
+          }
+        }
+      }
+    }
+  }
+  
+  Value? tryParse(String? value) {
+    if (value == null || value.isEmpty) {
+      return null;
+    }
+    if (Value == double) {
+      return double.tryParse(value) as Value;
+    } else if (Value == int) {
+      return int.tryParse(value) as Value;
+    } else if (Value == String) {
+      return value as Value;
+    }
+    // It's good practice to handle unsupported types.
+    throw UnsupportedError('The type $Value is not supported for parsing.');
   }
 }

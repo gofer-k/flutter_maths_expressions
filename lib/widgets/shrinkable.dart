@@ -4,12 +4,14 @@ class Shrinkable extends StatefulWidget {
   final String title;
   final Widget body;
   final TextStyle? titleStyle;
+  final bool expanded;
 
   const Shrinkable({
     super.key,
     required this.title,
     required this.body,
     this.titleStyle,
+    this.expanded = false
   });
 
   @override
@@ -24,10 +26,22 @@ class _ShrinkableState extends State<Shrinkable>
   @override
   void initState() {
     super.initState();
+    _isExpanded = widget.expanded;
     _controller = AnimationController(
       duration: const Duration(milliseconds: 300), // Adjust duration
       vsync: this,
     );
+  }
+
+  @override
+  void didUpdateWidget(covariant Shrinkable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // If the parent widget's `expanded` property changes, update the internal state
+    if (widget.expanded != oldWidget.expanded) {
+      setState(() {
+        _isExpanded = widget.expanded;
+      });
+    }
   }
 
   @override

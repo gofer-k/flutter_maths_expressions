@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/models/planimetry/base_shape.dart';
 import 'package:flutter_maths_expressions/widgets/display_expression.dart';
 import 'package:flutter_maths_expressions/widgets/infinite_drawer.dart';
-import 'package:flutter_maths_expressions/widgets/shrinkable.dart';
 import 'package:flutter_maths_expressions/widgets/input_values_form.dart';
+import 'package:flutter_maths_expressions/widgets/shrinkable.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../models/planimetry/triangle.dart';
 import '../../../painters/drawable_shape.dart';
@@ -89,11 +90,28 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
             ),
             const SizedBox(height: 8),
             Expanded(
+              flex: 1,
+              child: Row(
+                children: [
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: DisplayExpression(
+                      context: context,
+                      expression: r"A = \frac{1}{2}|AB| \cdot |BD| = " + triangle.getArea().toStringAsFixed(2),
+                      scale: 2.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
               flex: 2,
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Shrinkable(
                   title: l10n.vertexInputTitle,
+                  expanded: true,
                   body: InputValuesForm<double>(
                     contents: [
                       [
@@ -135,31 +153,61 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
                           readOnly: false,
                         ),
                       ],
+                      [
+                        CellData(label: "D", readOnly: true),
+                        CellData(
+                          label: triangle.getHeightPoint().dx.toStringAsFixed(
+                            3,
+                          ),
+                          cellValue: triangle.getHeightPoint().dx,
+                          readOnly: true,
+                        ),
+                        CellData(
+                          label: triangle.getHeightPoint().dy.toStringAsFixed(
+                            3,
+                          ),
+                          cellValue: triangle.getHeightPoint().dy,
+                          readOnly: true,
+                        ),
+                      ],
                     ],
-                    onSubmit: (Map<String, double> output) {
-                      // TODO: save values to the model
+                    onSubmit: (InputData<double> input) {
+                      convertUIDataToTriangle(input);
                     },
                   ),
                 ),
-              ),
-              // _buildForm(l10n.vertexInputTitle, l10n),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              flex: 1,
-              child: Column(
-                children: [
-                  DisplayExpression(
-                    context: context,
-                    expression: r"A = \frac{1}{2}a \cdot h",
-                    scale: 2.0,
-                  ),
-                ],
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void convertUIDataToTriangle(InputData<double> input) {
+    // Extract the coordinates for each point (A, B, C) from the input data.
+    final aPointData = input.firstWhere(
+      (pointData) => pointData.any((cellData) => cellData.label == "A"),
+    );
+    final bPointData = input.firstWhere(
+      (pointData) => pointData.any((cellData) => cellData.label == "B"),
+    );
+    final cPointData = input.firstWhere(
+      (pointData) => pointData.any((cellData) => cellData.label == "C"),
+    );
+
+    final a = Offset(
+        aPointData.firstWhere((coord) => coord.label == "x").cellValue!,
+        aPointData.firstWhere((coord) => coord.label == "y").cellValue!);
+    final b = Offset(
+        bPointData.firstWhere((coord) => coord.label == "x").cellValue!,
+        bPointData.firstWhere((coord) => coord.label == "y").cellValue!);
+    final c = Offset(
+        cPointData.firstWhere((coord) => coord.label == "x").cellValue!,
+        cPointData.firstWhere((coord) => coord.label == "y").cellValue!);
+
+    setState(() {
+      triangle.update(a, b, c);
+    });
   }
 }
