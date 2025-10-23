@@ -158,6 +158,23 @@ class _LogarithmsPageState extends State<LogarithmsPage> {
                     context: context,
                     decoration: listItemDecoration,
                     // This formula: r'.... \log_a 'frac{1}{a}...' do only work !!!
+                    expression: r"lob_a x = \frac{log_b x}{log_b a}",
+                    scale: leftColScale),
+                popupDialog:
+                DisplayExpression(
+                    context: context,
+                    decoration: listItemDecoration,
+                    expression: "a \\not\\equiv 1",
+                    scale: rightColScale),
+              ),
+              PopupWidget(
+                horizontalPadding: horizontalPaddingItem,
+                verticalPadding: verticalPaddingItem,
+                content:
+                DisplayExpression(
+                    context: context,
+                    decoration: listItemDecoration,
+                    // This formula: r'.... \log_a 'frac{1}{a}...' do only work !!!
                     expression: "b^y = a^{y log_a b}",
                     scale: leftColScale),
                 popupDialog:
