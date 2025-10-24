@@ -96,18 +96,11 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
             const SizedBox(height: 8),
             Expanded(
               flex: 1,
-              child: Row(
-                children: [
-                  FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: DisplayExpression(
-                      context: context,
-                      expression: triangleArea,
-                      scale: 2.0,
-                    ),
-                  ),
-                ],
-              ),
+              child: DisplayExpression(
+                  context: context,
+                  expression: triangleArea,
+                  scale: 1.2,
+                ),
             ),
             const SizedBox(height: 8),
             Expanded(

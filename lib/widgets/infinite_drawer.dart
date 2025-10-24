@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/widgets/hierarchical_fab_menu.dart';
 import 'package:infinite_canvas/infinite_canvas.dart';
 
 import '../painters/cross_axes_painter.dart';
@@ -93,7 +94,7 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
                 ),
               ],
               if (widget.enableRotation || widget.enablePanning || widget.enableScaling)
-                floatingActions(context, widget.actionsDockSide),
+                HierarchicalFABMenu(actionsDockSide: widget.actionsDockSide)
             ]
           );
         }
@@ -101,128 +102,120 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
     );
   }
 
-  Widget _scalingWidget(BuildContext context) {
-    return Column(
-      children: [
-        FloatingActionButton(
-          mini: true, // Makes the button smaller
-          onPressed: () {
-            // Implement zoom in logic for _controller
-            _controller.zoomIn();              },
-          heroTag: "zoomInBtn", // Unique heroTag for each FAB
-          child: const Icon(Icons.zoom_in),
-        ),
-        const SizedBox(height: 6), // Spacing between buttons
-        FloatingActionButton(
-          mini: true,
-          onPressed: () {
-            _controller.zoomOut();
-          },
-          heroTag: "zoomOutBtn",
-          child: const Icon(Icons.zoom_out),
-        ),
-      ],
-    );
-  }
+  // Widget _scalingWidget(BuildContext context) {
+  //   return Column(
+  //     children: [
+  //       FloatingActionButton(
+  //         mini: true, // Makes the button smaller
+  //         onPressed: () {
+  //           // Implement zoom in logic for _controller
+  //           _controller.zoomIn();              },
+  //         heroTag: "zoomInBtn", // Unique heroTag for each FAB
+  //         child: const Icon(Icons.zoom_in),
+  //       ),
+  //       const SizedBox(height: 6), // Spacing between buttons
+  //       FloatingActionButton(
+  //         mini: true,
+  //         onPressed: () {
+  //           _controller.zoomOut();
+  //         },
+  //         heroTag: "zoomOutBtn",
+  //         child: const Icon(Icons.zoom_out),
+  //       ),
+  //     ],
+  //   );
+  // }
 
-  Widget _panningWidget(BuildContext context) {
-    final paddingScape = 6.0;
+  // Widget _panningWidget(BuildContext context) {
+  //   final paddingScape = 6.0;
+  //
+  //   return  Column(
+  //     crossAxisAlignment: CrossAxisAlignment.center, // Center the middle row
+  //     children: [
+  //       // Pan Up Button
+  //       FloatingActionButton(
+  //         mini: true,
+  //         onPressed: () {
+  //           _controller.panUp();
+  //         },
+  //         heroTag: "panUpBtn",
+  //         child: const Icon(Icons.arrow_upward),
+  //       ),
+  //       SizedBox(height: paddingScape),
+  //       // Middle Row: Pan Left, (Optional Spacer), Pan Right
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.center, // Center buttons in the row
+  //         mainAxisSize: MainAxisSize.min, // Important to keep Row compact
+  //         children: [
+  //           // Pan Left Button
+  //           FloatingActionButton(
+  //             mini: true,
+  //             onPressed: () {
+  //               _controller.panLeft();                      },
+  //             heroTag: "panLeftBtn",
+  //             child: const Icon(Icons.arrow_back),
+  //           ),
+  //           SizedBox(width: paddingScape),
+  //           // Reset Zoom Button
+  //           FloatingActionButton(
+  //             mini: true,
+  //             onPressed: () {
+  //               _controller.zoomReset();
+  //             },
+  //             heroTag: "resetBtn",
+  //             child: const Icon(Icons.lock_reset),
+  //           ),
+  //           SizedBox(width: paddingScape),
+  //           // Pan Right Button
+  //           FloatingActionButton(
+  //             mini: true,
+  //             onPressed: () {
+  //               _controller.panRight();
+  //             },
+  //             heroTag: "panRightBtn",
+  //             child: const Icon(Icons.arrow_forward),
+  //           ),
+  //         ],
+  //       ),
+  //       SizedBox(height: paddingScape),
+  //       // Pan Down Button
+  //       FloatingActionButton(
+  //         mini: true,
+  //         onPressed: () {
+  //           _controller.panDown();
+  //         },
+  //         heroTag: "panDownBtn",
+  //         child: const Icon(Icons.arrow_downward),
+  //       ),
+  //     ],
+  //   );
+  // }
 
-    return  Column(
-      crossAxisAlignment: CrossAxisAlignment.center, // Center the middle row
-      children: [
-        // Pan Up Button
-        FloatingActionButton(
-          mini: true,
-          onPressed: () {
-            _controller.panUp();
-          },
-          heroTag: "panUpBtn",
-          child: const Icon(Icons.arrow_upward),
-        ),
-        SizedBox(height: paddingScape),
-        // Middle Row: Pan Left, (Optional Spacer), Pan Right
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center, // Center buttons in the row
-          mainAxisSize: MainAxisSize.min, // Important to keep Row compact
-          children: [
-            // Pan Left Button
-            FloatingActionButton(
-              mini: true,
-              onPressed: () {
-                _controller.panLeft();                      },
-              heroTag: "panLeftBtn",
-              child: const Icon(Icons.arrow_back),
-            ),
-            SizedBox(width: paddingScape),
-            // Reset Zoom Button
-            FloatingActionButton(
-              mini: true,
-              onPressed: () {
-                _controller.zoomReset();
-              },
-              heroTag: "resetBtn",
-              child: const Icon(Icons.lock_reset),
-            ),
-            SizedBox(width: paddingScape),
-            // Pan Right Button
-            FloatingActionButton(
-              mini: true,
-              onPressed: () {
-                _controller.panRight();
-              },
-              heroTag: "panRightBtn",
-              child: const Icon(Icons.arrow_forward),
-            ),
-          ],
-        ),
-        SizedBox(height: paddingScape),
-        // Pan Down Button
-        FloatingActionButton(
-          mini: true,
-          onPressed: () {
-            _controller.panDown();
-          },
-          heroTag: "panDownBtn",
-          child: const Icon(Icons.arrow_downward),
-        ),
-      ],
-    );
-  }
-
-  Widget floatingActions(BuildContext context, DockSide dockSide) {
-    final positionRight = (widget.actionsDockSide == DockSide.rightBottom ||
-        widget.actionsDockSide == DockSide.rightTop) ? 16.0 : null;
-    final positionBottom = (widget.actionsDockSide == DockSide.rightBottom ||
-        widget.actionsDockSide == DockSide.leftBottom) ? 16.0 : null;
-    final positionLeft = (widget.actionsDockSide == DockSide.leftBottom ||
-        widget.actionsDockSide == DockSide.leftTop) ? 16.0 : null;
-    final positionTop = (widget.actionsDockSide == DockSide.rightTop ||
-        widget.actionsDockSide == DockSide.leftTop) ? 16.0 : null;
-
-    final mainAxisAlignment = (dockSide == DockSide.leftBottom ||
-      dockSide == DockSide.leftTop) ? MainAxisAlignment.start : MainAxisAlignment.end;
-    final crossAxisAlignment = (dockSide == DockSide.leftBottom ||
-        dockSide == DockSide.leftTop) ? CrossAxisAlignment.start : CrossAxisAlignment.end;
-
-    return Positioned(
-      left: positionLeft,
-      right: positionRight,
-      bottom: positionBottom,
-      top: positionTop,
-      child: Column(
-      mainAxisAlignment: mainAxisAlignment, // Aligns buttons top to the bottom
-      crossAxisAlignment: crossAxisAlignment, // Aligns buttons left to the right
-      children: <Widget>[
-        if (widget.enableScaling)
-          _scalingWidget(context),
-          const SizedBox(height: 16), // Spacing between groups of buttons
-        if (widget.enablePanning)
-          _panningWidget(context),
-        ],
-      ),
-    );
-  }
+  // Widget mainFloatingActions(BuildContext context) {
+  //   return Positioned(
+  //     left: positionLeft,
+  //     right: positionRight,
+  //     bottom: positionBottom,
+  //     top: positionTop,
+  //     child: Column(
+  //       mainAxisAlignment: mainAxisAlignment, // Aligns buttons top to the bottom
+  //       crossAxisAlignment: crossAxisAlignment, // Aligns buttons left to the right
+  //       children: <Widget>[
+  //         // Roll out/in - actions
+  //
+  //       // FloatingActionButton(
+  //       //   mini: true, // Makes the button smaller
+  //       //   onPressed: () {
+  //       //
+  //       //   },
+  //       //   heroTag: "main", // Unique heroTag for each FAB
+  //       //   child: const Icon(Icons.add_box_outlined),
+  //       // ),
+  //       // const SizedBox(height: 6), // Spacing between buttons
+  //       ],
+  //     ),
+  //   );
+  // }
 
   void _onCanvasTransformChanged() {
     if (mounted) {
