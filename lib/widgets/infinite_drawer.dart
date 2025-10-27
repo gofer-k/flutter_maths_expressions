@@ -3,16 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/widgets/hierarchical_fab_menu.dart';
 import 'package:infinite_canvas/infinite_canvas.dart';
 
+import '../models/dock_side.dart';
 import '../painters/cross_axes_painter.dart';
 import '../painters/drawable_shape.dart';
 import '../painters/legend_painter.dart';
-
-enum DockSide {
-  leftBottom,
-  rightBottom,
-  leftTop,
-  rightTop,
-}
 
 class InfiniteDrawer extends StatefulWidget {
   final bool enableRotation;
@@ -94,7 +88,28 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
                 ),
               ],
               if (widget.enableRotation || widget.enablePanning || widget.enableScaling)
-                HierarchicalFABMenu(actionsDockSide: widget.actionsDockSide)
+                HierarchicalFABMenu(actionsDockSide: widget.actionsDockSide, insetsFab: 4.0,
+                  mainMenu: [
+                    if (widget.enableScaling)
+                      FABMenu(true, action: FABAction(actionIcon: Icons.zoom_out_rounded),
+                          [
+                            FABAction(actionIcon: Icons.zoom_in_rounded),
+                            FABAction(actionIcon: Icons.zoom_out_rounded),
+                            FABAction(actionIcon: Icons.lock_reset_rounded),
+                          ]
+                      ),
+                    if (widget.enablePanning)
+                      FABMenu(true, action: FABAction(actionIcon: Icons.open_with_rounded),
+                        [
+                          FABAction(actionIcon: Icons.arrow_upward_rounded),
+                          FABAction(actionIcon: Icons.arrow_back_rounded),
+                          FABAction(actionIcon: Icons.arrow_forward_rounded),
+                          FABAction(actionIcon: Icons.arrow_downward_rounded),
+                          FABAction(actionIcon: Icons.fit_screen_rounded),
+                        ]
+                      ),
+                  ]
+                ),
             ]
           );
         }

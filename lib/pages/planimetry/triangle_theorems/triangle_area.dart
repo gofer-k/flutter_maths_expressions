@@ -6,6 +6,7 @@ import 'package:flutter_maths_expressions/widgets/input_values_form.dart';
 import 'package:flutter_maths_expressions/widgets/shrinkable.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../../models/dock_side.dart';
 import '../../../models/planimetry/triangle.dart';
 import '../../../painters/drawable_shape.dart';
 import '../../../painters/triangle_painter.dart';
@@ -22,7 +23,7 @@ class TriangleAreaPage extends StatefulWidget {
 
 class _TriangleAreaPageState extends State<TriangleAreaPage> {
   final triangle = Triangle(a: Offset(1, 1), b: Offset(3, 3), c: Offset(5, 1));
-
+  DockSide dock = DockSide.leftTop;
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -51,6 +52,7 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
             Expanded(
               flex: 2,
               child: InfiniteDrawer(
+                actionsDockSide: DockSide.leftBottom,
                 drawableShapes: [
                   DrawableShape<TrianglePainter>(
                     shape: triangle,

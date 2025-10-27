@@ -1,13 +1,35 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'infinite_drawer.dart';
+import '../models/dock_side.dart';
 
+class FABAction {
+  final IconData actionIcon;
+  final VoidCallback? onPressed;
+
+  FABAction({required this.actionIcon, this.onPressed});
+}
+
+class FABMenu {
+  late bool isExpand = false;
+  void expand(bool newValue) => isExpand = newValue;
+  final bool isExpandable;
+  final FABAction action;
+  final List<FABAction> actions;
+  FABMenu(this.isExpandable, this.actions, {required this.action});
+}
+
+/*
+  Hierarchical FloatingActionButton widgets. Support 2-dimension fabs.
+ */
 class HierarchicalFABMenu extends StatefulWidget {
   final DockSide actionsDockSide;
   final double insetsFab;
+  final List<FABMenu> mainMenu;
 
-  const HierarchicalFABMenu({super.key, this.actionsDockSide = DockSide.rightBottom, this.insetsFab = 4.0});
+  const HierarchicalFABMenu({super.key,
+    this.actionsDockSide = DockSide.rightBottom,
+    this.insetsFab = 4.0,
+    required this.mainMenu});
 
   @override
   State<StatefulWidget> createState() => _HierarchicalFABMenuState();
@@ -15,27 +37,24 @@ class HierarchicalFABMenu extends StatefulWidget {
 
 class _HierarchicalFABMenuState extends State<HierarchicalFABMenu> {
   bool isMainExpanded = false;
-  bool isZoomExpanded = false;
-  bool isPanExpanded = false;
 
-  late double? insetRight;
-  late double? insetBottom;
-  late double? insetLeft;
-  late double? insetTop;
+  late final double insetRight;
+  late final double insetBottom;
+  late final double insetLeft;
+  late final double insetTop;
 
   late final MainAxisAlignment mainAxisAlignment;
   late final CrossAxisAlignment crossAxisAlignment;
+  bool get expandUp => widget.actionsDockSide == DockSide.leftBottom || widget.actionsDockSide == DockSide.rightBottom;
+  bool get expandRight => widget.actionsDockSide == DockSide.leftTop || widget.actionsDockSide == DockSide.leftBottom;
+
   @override
   void initState() {
     super.initState();
-    insetRight = ((widget.actionsDockSide == DockSide.rightBottom ||
-        widget.actionsDockSide == DockSide.rightTop) ? widget.insetsFab : null);
-    insetBottom = ((widget.actionsDockSide == DockSide.rightBottom ||
-        widget.actionsDockSide == DockSide.leftBottom) ? widget.insetsFab : null);
-    insetLeft = ((widget.actionsDockSide == DockSide.leftBottom ||
-        widget.actionsDockSide == DockSide.leftTop) ? widget.insetsFab : null);
-    insetTop = ((widget.actionsDockSide == DockSide.rightTop ||
-        widget.actionsDockSide == DockSide.leftTop) ? widget.insetsFab : null);
+    insetLeft = widget.insetsFab;
+    insetRight = widget.insetsFab;
+    insetBottom = widget.insetsFab;
+    insetTop = widget.insetsFab;
 
     mainAxisAlignment = (widget.actionsDockSide == DockSide.leftBottom ||
         widget.actionsDockSide == DockSide.leftTop) ? MainAxisAlignment.start : MainAxisAlignment.end;
@@ -45,79 +64,195 @@ class _HierarchicalFABMenuState extends State<HierarchicalFABMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomRight,
+    final spacing = 2.0;
+    final fabSize = 44.0; // FloatingActionButton.small has 2.0 dp padding around content
+
+    return SizedBox.expand(
+      child: Stack(
+      alignment: getAlignment(widget.actionsDockSide),
       children: [
-        // Zoom In/Out
-        if (isZoomExpanded) ...[
-          _buildActionButton(Icons.zoom_in, () => print('Zoom In'), offset: const Offset(0, -230)),
-          _buildActionButton(Icons.zoom_out, () => print('Zoom Out'), offset: const Offset(0, -180)),
-          _buildActionButton(Icons.center_focus_strong, () => print('Reset Zoom'), offset: const Offset(0, -130)),
-          _buildActionButton(Icons.fit_screen, () => print('Fit to Screen'), offset: const Offset(0, -80)),
-        ],
-
-        // Pan Left/Right
-        if (isPanExpanded) ...[
-          _buildActionButton(Icons.arrow_upward, () => print('Pan Up'), offset: Offset(-60, -230)),
-          _buildActionButton(Icons.arrow_back, () => print('Pan Left'), offset: Offset(-60, -180)),
-          _buildActionButton(Icons.arrow_forward, () => print('Pan Right'), offset: Offset(-60, -130)),
-          _buildActionButton(Icons.arrow_downward, () => print('Pan Down'), offset: Offset(-60, -80)),
-        ],
-
-        // Zoom & Pan Level
-        if (isMainExpanded) ...[
-          _buildActionButton(Icons.zoom_out_map, () {
-            setState(() {
-              isZoomExpanded = !isZoomExpanded;
-              if (kDebugMode) {
-                print('isZoomExpanded: $isZoomExpanded');
-              }
-            });
-          }, offset: Offset(0, -20)),
-          _buildActionButton(Icons.open_with, () {
-            setState(() => isPanExpanded = !isPanExpanded);
-          }, offset: Offset(-60, -80)),
-        ],
-
-        // Main FAB
-      Positioned(
-        left: insetLeft,
-        right: insetRight,
-        bottom: insetBottom,
-        top: insetTop,
-        child: FloatingActionButton(
-            mini: true,
-            child: Icon(isMainExpanded ? Icons.close : Icons.menu),
-            onPressed: () {
-              setState(() {
-                isMainExpanded = !isMainExpanded;
-                if (!isMainExpanded) {
-                  isZoomExpanded = false;
-                  isPanExpanded = false;
-                }
-              });
-            },
+        Positioned(
+          child: Padding(
+            padding: EdgeInsetsGeometry.all(widget.insetsFab),
+            child: FloatingActionButton.small(
+              heroTag: 'level_main',
+              onPressed: () {
+                setState(() {
+                  isMainExpanded = !isMainExpanded;
+                  if (!isMainExpanded) {
+                    for (var action in widget.mainMenu) {
+                      action.expand(false);
+                    }
+                  }
+                });
+              },
+              child: Icon(isMainExpanded ? Icons.close : Icons.menu),
+            ),
           ),
         ),
-      ],
+        if (isMainExpanded)
+          _expandMenu(fabSize, spacing),
+
+        for(final (index, menu) in widget.mainMenu.indexed)
+          if (menu.isExpand)
+            _expandHorizontally(menu.actions, (index + 1) * fabSize, fabSize, spacing),
+        ],
+      )
     );
   }
 
-  // Widget _expandTop() {
-  //
-  // }
+  Widget _expandMenu(double fabSize, double spacing) {
+    final positionedTop = positionedOffset(
+        start: DockSide.leftTop,
+        end: DockSide.rightTop,
+        offset: fabSize + widget.insetsFab);
 
-  Widget _buildActionButton(IconData icon, VoidCallback onPressed, {required Offset offset}) {
+    final positionedBottom = positionedOffset(
+        start: DockSide.leftBottom,
+        end: DockSide.rightBottom,
+        offset: fabSize + widget.insetsFab);
+
+    final paddingLeft = paddingOffset(
+        start: DockSide.leftTop,
+        end: DockSide.leftBottom,
+        offset: widget.insetsFab);
+
+    final paddingRight = paddingOffset(
+      start: DockSide.rightTop,
+      end: DockSide.rightBottom,
+      offset: widget.insetsFab);
+
+    final paddingTop = paddingOffset(
+        start: DockSide.leftTop,
+        end: DockSide.rightTop,
+        offset: spacing);
+
+    final paddingBottom = paddingOffset(
+        start: DockSide.leftBottom,
+        end: DockSide.rightBottom,
+        offset: spacing);
+
+    final bool reserved = widget.actionsDockSide == DockSide.leftBottom ||
+        widget.actionsDockSide == DockSide.rightBottom;
+
     return Positioned(
-      left: insetLeft,
-      right: insetRight,
-      bottom: insetBottom,
-      top: insetTop,
-      child: FloatingActionButton(
-        mini: true,
-        onPressed: onPressed,
-        child: Icon(icon),
+      top: positionedTop,
+      bottom: positionedBottom,
+      child: Padding(
+        padding: EdgeInsetsGeometry.only(left: paddingLeft, right: paddingRight, top: paddingTop, bottom: paddingBottom),
+        child: Column(
+          mainAxisAlignment: mainAxisAlignment,
+          crossAxisAlignment: crossAxisAlignment,
+          children: List.generate(widget.mainMenu.length, (i) {
+            final index = reserved ? widget.mainMenu.length - 1 - i : i;
+            return Column(
+              children: [
+                FloatingActionButton.small(
+                    heroTag: 'level_2_$index',
+                    onPressed: () {
+                      setState(() {
+                        widget.mainMenu[index].expand(!widget.mainMenu[index].isExpand);
+                      });
+                    },
+                    child: Icon(widget.mainMenu[index].action.actionIcon)
+                ),
+              ]
+            );
+          }),
+        ),
       ),
     );
+  }
+
+  Widget _expandHorizontally(List<FABAction> actions, double vertLeading, double horizLeading, double spacing) {
+    final positionedTop = positionedOffset(
+        start: DockSide.leftTop,
+        end: DockSide.rightTop,
+        offset: widget.insetsFab);
+
+    final positionedBottom = positionedOffset(
+        start: DockSide.leftBottom,
+        end: DockSide.rightBottom,
+        offset: widget.insetsFab);
+
+    final positionedLeft = positionedOffset(
+        start: DockSide.leftTop,
+        end: DockSide.leftBottom,
+        offset: horizLeading + widget.insetsFab);
+
+    final positionedRight = positionedOffset(
+        start: DockSide.rightTop,
+        end: DockSide.rightBottom,
+        offset: horizLeading + widget.insetsFab);
+
+    final paddingTop = paddingOffset(
+        start: DockSide.leftTop,
+        end: DockSide.rightTop,
+        offset: vertLeading + widget.insetsFab);
+
+    final paddingBottom = paddingOffset(
+        start: DockSide.leftBottom,
+        end: DockSide.rightBottom,
+        offset: vertLeading + widget.insetsFab);
+
+    final paddingLeft = paddingOffset(
+        start: DockSide.leftTop,
+        end: DockSide.leftBottom,
+        offset: spacing);
+
+    final paddingRight = paddingOffset(
+        start: DockSide.rightTop,
+        end: DockSide.rightBottom,
+        offset: spacing);
+
+    return Positioned(
+      top: positionedTop,
+      bottom: positionedBottom,
+      left: positionedLeft,
+      right: positionedRight,
+
+      child: Padding(
+        padding: EdgeInsetsGeometry.only(top: paddingTop, bottom: paddingBottom, left: paddingLeft, right: paddingRight),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(actions.length, (i){
+            return Row(
+              children: [
+                FloatingActionButton.small(
+                  heroTag: 'level_3_$i',
+                  onPressed: () {
+                    setState(() {
+                      // TODO: trigger an action
+                    });
+                  },
+                  child: Icon(actions[i].actionIcon)
+                ),
+              ],
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
+  double? positionedOffset({required DockSide start, required DockSide end, required double offset}) {
+    return widget.actionsDockSide == start || widget.actionsDockSide == end ? offset: null;
+  }
+
+  double paddingOffset({required DockSide start, required DockSide end, required double offset}) {
+    return widget.actionsDockSide == start || widget.actionsDockSide == end ? offset: 0.0;
+  }
+
+  getAlignment(DockSide dockSide) {
+    switch (dockSide) {
+      case DockSide.leftBottom:
+        return Alignment.bottomLeft;
+      case DockSide.leftTop:
+        return Alignment.topLeft;
+      case DockSide.rightBottom:
+        return Alignment.bottomRight;
+      case DockSide.rightTop:
+        return Alignment.topRight;
+      }
   }
 }
