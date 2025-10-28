@@ -10,8 +10,9 @@ class FABAction {
 }
 
 class FABMenu {
-  late bool isExpand = false;
-  void expand(bool newValue) => isExpand = newValue;
+  late bool _isExpand = false;
+  bool get isExpand => _isExpand;
+  set expand(bool newValue) => _isExpand = newValue;
   final bool isExpandable;
   final FABAction action;
   final List<FABAction> actions;
@@ -45,6 +46,8 @@ class _HierarchicalFABMenuState extends State<HierarchicalFABMenu> {
 
   late final MainAxisAlignment mainAxisAlignment;
   late final CrossAxisAlignment crossAxisAlignment;
+
+
   bool get expandUp => widget.actionsDockSide == DockSide.leftBottom || widget.actionsDockSide == DockSide.rightBottom;
   bool get expandRight => widget.actionsDockSide == DockSide.leftTop || widget.actionsDockSide == DockSide.leftBottom;
 
@@ -81,7 +84,7 @@ class _HierarchicalFABMenuState extends State<HierarchicalFABMenu> {
                   isMainExpanded = !isMainExpanded;
                   if (!isMainExpanded) {
                     for (var action in widget.mainMenu) {
-                      action.expand(false);
+                      action.expand = false;
                     }
                   }
                 });
@@ -91,17 +94,17 @@ class _HierarchicalFABMenuState extends State<HierarchicalFABMenu> {
           ),
         ),
         if (isMainExpanded)
-          _expandMenu(fabSize, spacing),
+          _expandMainMenu(fabSize, spacing),
 
         for(final (index, menu) in widget.mainMenu.indexed)
-          if (menu.isExpand)
-            _expandHorizontally(menu.actions, (index + 1) * fabSize, fabSize, spacing),
+          if (menu.isExpandable && menu.isExpand)
+            _expandNestMenu(menu, (index + 1) * fabSize, fabSize, spacing),
         ],
       )
     );
   }
 
-  Widget _expandMenu(double fabSize, double spacing) {
+  Widget _expandMainMenu(double fabSize, double spacing) {
     final positionedTop = positionedOffset(
         start: DockSide.leftTop,
         end: DockSide.rightTop,
@@ -151,10 +154,11 @@ class _HierarchicalFABMenuState extends State<HierarchicalFABMenu> {
                     heroTag: 'level_2_$index',
                     onPressed: () {
                       setState(() {
-                        widget.mainMenu[index].expand(!widget.mainMenu[index].isExpand);
+                        final value = !widget.mainMenu[index].isExpand;
+                        widget.mainMenu[index].expand = value;
                       });
                     },
-                    child: Icon(widget.mainMenu[index].action.actionIcon)
+                    child: Icon(widget.mainMenu[index].action.actionIcon),
                 ),
               ]
             );
@@ -164,7 +168,7 @@ class _HierarchicalFABMenuState extends State<HierarchicalFABMenu> {
     );
   }
 
-  Widget _expandHorizontally(List<FABAction> actions, double vertLeading, double horizLeading, double spacing) {
+  Widget _expandNestMenu(FABMenu menu, double vertLeading, double horizLeading, double spacing) {
     final positionedTop = positionedOffset(
         start: DockSide.leftTop,
         end: DockSide.rightTop,
@@ -215,17 +219,15 @@ class _HierarchicalFABMenuState extends State<HierarchicalFABMenu> {
         padding: EdgeInsetsGeometry.only(top: paddingTop, bottom: paddingBottom, left: paddingLeft, right: paddingRight),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: List.generate(actions.length, (i){
+          children: List.generate(menu.actions.length, (i){
             return Row(
               children: [
                 FloatingActionButton.small(
                   heroTag: 'level_3_$i',
                   onPressed: () {
-                    setState(() {
-                      // TODO: trigger an action
-                    });
+                    menu.actions[i].onPressed?.call();
                   },
-                  child: Icon(actions[i].actionIcon)
+                  child: Icon(menu.actions[i].actionIcon)
                 ),
               ],
             );

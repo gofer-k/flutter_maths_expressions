@@ -32,6 +32,7 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
   late InfiniteCanvasController _controller;
   late Size gridSize;
   late double unitInPixels;
+  late HierarchicalFABMenu _fabMenu;
 
   @override
   void initState() {
@@ -40,6 +41,39 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
     _controller.transform.addListener(_onCanvasTransformChanged);
     gridSize = Size.square(20);
     unitInPixels = 2 * gridSize.width;
+
+    _fabMenu = HierarchicalFABMenu(actionsDockSide: widget.actionsDockSide, insetsFab: 4.0,
+        mainMenu: [
+          if (widget.enableScaling)
+            FABMenu(true, action: FABAction(actionIcon: Icons.zoom_out_rounded),
+                [
+                  // TODO: add the action callbacks
+                  FABAction(actionIcon: Icons.zoom_in_rounded,
+                      onPressed: (){ _controller.zoomIn(); }),
+                  FABAction(actionIcon: Icons.zoom_out_rounded,
+                      onPressed: (){ _controller.zoomOut(); }),
+                  FABAction(actionIcon: Icons.lock_reset_rounded,
+                      onPressed: (){ _controller.zoomReset(); }),
+                ]
+            ),
+          if (widget.enablePanning)
+            FABMenu(true, action: FABAction(actionIcon: Icons.open_with_rounded),
+                [
+                  FABAction(actionIcon: Icons.arrow_upward_rounded,
+                      onPressed: (){ _controller.panUp(); }),
+                  FABAction(actionIcon: Icons.arrow_back_rounded,
+                      onPressed: (){ _controller.panLeft(); }),
+                  FABAction(actionIcon: Icons.arrow_forward_rounded,
+                      onPressed: (){ _controller.panRight(); }),
+                  FABAction(actionIcon: Icons.arrow_downward_rounded,
+                      onPressed: (){ _controller.panDown(); }),
+                  FABAction(actionIcon: Icons.fit_screen_rounded,
+                      onPressed: () {
+                       }),
+                ]
+            ),
+        ]
+    );
   }
 
   @override
@@ -88,28 +122,9 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
                 ),
               ],
               if (widget.enableRotation || widget.enablePanning || widget.enableScaling)
-                HierarchicalFABMenu(actionsDockSide: widget.actionsDockSide, insetsFab: 4.0,
-                  mainMenu: [
-                    if (widget.enableScaling)
-                      FABMenu(true, action: FABAction(actionIcon: Icons.zoom_out_rounded),
-                          [
-                            FABAction(actionIcon: Icons.zoom_in_rounded),
-                            FABAction(actionIcon: Icons.zoom_out_rounded),
-                            FABAction(actionIcon: Icons.lock_reset_rounded),
-                          ]
-                      ),
-                    if (widget.enablePanning)
-                      FABMenu(true, action: FABAction(actionIcon: Icons.open_with_rounded),
-                        [
-                          FABAction(actionIcon: Icons.arrow_upward_rounded),
-                          FABAction(actionIcon: Icons.arrow_back_rounded),
-                          FABAction(actionIcon: Icons.arrow_forward_rounded),
-                          FABAction(actionIcon: Icons.arrow_downward_rounded),
-                          FABAction(actionIcon: Icons.fit_screen_rounded),
-                        ]
-                      ),
-                  ]
-                ),
+              // FAB menu instance should created while initState() when the widget's state be persist.
+              // Or FAB menu hasn't to persist its state that may be created here.
+                _fabMenu
             ]
           );
         }
