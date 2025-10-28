@@ -7,7 +7,7 @@ class CellData<Value> {
   late Value? cellValue;
   final bool readOnly;
 
-  CellData({required this.label, this.cellValue, this.readOnly = true});
+  CellData({this.label = "", this.cellValue, this.readOnly = true});
 }
 
 typedef InputData<Value> = List<List<CellData<Value>>>;
@@ -65,7 +65,7 @@ class _InputValuesFormState<Value> extends State<InputValuesForm<Value>> {
                   cellData.readOnly
                       ? Text(
                           cellData.label,
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: Theme.of(context).textTheme.titleSmall,
                         )
                       : Expanded(
                           child: _buildVertexField(
@@ -80,9 +80,6 @@ class _InputValuesFormState<Value> extends State<InputValuesForm<Value>> {
               ],
             );
           }),
-
-          const SizedBox(height: spaceWidth),
-          //TODO: prevent covered in the main bottom navigation bar
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
@@ -100,7 +97,7 @@ class _InputValuesFormState<Value> extends State<InputValuesForm<Value>> {
   }
 
   Widget _buildVertexField(
-    String label,
+    String? label,
     Value? value,
     TextEditingController controller,
     AppLocalizations? l10n,
@@ -136,6 +133,8 @@ class _InputValuesFormState<Value> extends State<InputValuesForm<Value>> {
       onSaved: (value) {
         if (value != null) {
           controller.text = value;
+          _extractInputDataFromController();
+          widget.onSubmit(widget.contents);
         }
       }
     );

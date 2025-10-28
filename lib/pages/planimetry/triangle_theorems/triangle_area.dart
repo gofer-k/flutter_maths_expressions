@@ -36,149 +36,149 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
     return BackgroundContainer(
       beginColor: Colors.grey.shade300,
       // endColor: Colors.grey.shade800,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
+      child: SafeArea(
+        child: Scaffold(
           backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            widget.title,
-            style: Theme.of(context).textTheme.headlineMedium,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+            title: Text(
+              widget.title,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
           ),
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              flex: 2,
-              child: InfiniteDrawer(
-                actionsDockSide: DockSide.leftBottom,
-                drawableShapes: [
-                  DrawableShape<TrianglePainter>(
-                    shape: triangle,
-                    labelsSpans: [
-                      TextSpan(
-                        text: "α, ",
-                        style: TextStyle(color: Colors.red, fontSize: 28),
-                      ),
-                      TextSpan(
-                        text: "β, ",
-                        style: TextStyle(color: Colors.blue, fontSize: 28),
-                      ),
-                      TextSpan(
-                        text: "γ",
-                        style: TextStyle(color: Colors.green, fontSize: 28),
-                      ),
-                    ],
-                    createPainter:
-                        (
-                          Matrix4 canvasTransform,
-                          Size viewportSize,
-                          double unitInPixels,
-                          BaseShape triangle,
-                        ) {
-                          return TrianglePainter(
-                            unitInPixels,
-                            triangle,
-                            [
-                              ShowTriangleProperty.angleA,
-                              ShowTriangleProperty.angleB,
-                              ShowTriangleProperty.angleC,
-                              ShowTriangleProperty.height,
-                            ],
-                            canvasTransform: canvasTransform,
-                            viewportSize: viewportSize,
-                            originUnitInPixels: unitInPixels,
-                          );
-                        },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              flex: 1,
-              child: DisplayExpression(
-                  context: context,
-                  expression: triangleArea,
-                  scale: 1.2,
+          body: Column(
+            children: [
+              Expanded(
+                flex: 2,
+                child: InfiniteDrawer(
+                  actionsDockSide: DockSide.leftBottom,
+                  drawableShapes: [
+                    DrawableShape<TrianglePainter>(
+                      shape: triangle,
+                      labelsSpans: [
+                        TextSpan(
+                          text: "α, ",
+                          style: TextStyle(color: Colors.red, fontSize: 28),
+                        ),
+                        TextSpan(
+                          text: "β, ",
+                          style: TextStyle(color: Colors.blue, fontSize: 28),
+                        ),
+                        TextSpan(
+                          text: "γ",
+                          style: TextStyle(color: Colors.green, fontSize: 28),
+                        ),
+                      ],
+                      createPainter:
+                          (
+                            Matrix4 canvasTransform,
+                            Size viewportSize,
+                            double unitInPixels,
+                            BaseShape triangle,
+                          ) {
+                            return TrianglePainter(
+                              unitInPixels,
+                              triangle,
+                              [
+                                ShowTriangleProperty.angleA,
+                                ShowTriangleProperty.angleB,
+                                ShowTriangleProperty.angleC,
+                                ShowTriangleProperty.height,
+                              ],
+                              canvasTransform: canvasTransform,
+                              viewportSize: viewportSize,
+                              originUnitInPixels: unitInPixels,
+                            );
+                          },
+                    ),
+                  ],
                 ),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              flex: 2,
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Shrinkable(
-                  title: l10n.vertexInputTitle,
-                  expanded: true,
-                  body: InputValuesForm<double>(
-                    contents: [
-                      [
-                        CellData(label: "A", readOnly: true),
-                        CellData(
-                          label: "x",
-                          cellValue: triangle.a.dx,
-                          readOnly: false,
-                        ),
-                        CellData(
-                          label: "y",
-                          cellValue: triangle.a.dy,
-                          readOnly: false,
-                        ),
-                      ],
-                      [
-                        CellData(label: "B", readOnly: true),
-                        CellData(
-                          label: "x",
-                          cellValue: triangle.b.dx,
-                          readOnly: false,
-                        ),
-                        CellData(
-                          label: "y",
-                          cellValue: triangle.b.dy,
-                          readOnly: false,
-                        ),
-                      ],
-                      [
-                        CellData(label: "C", readOnly: true),
-                        CellData(
-                          label: "x",
-                          cellValue: triangle.c.dx,
-                          readOnly: false,
-                        ),
-                        CellData(
-                          label: "y",
-                          cellValue: triangle.c.dy,
-                          readOnly: false,
-                        ),
-                      ],
-                      [
-                        CellData(label: "D", readOnly: true),
-                        CellData(
-                          label: triangle.getHeightPoint().dx.toStringAsFixed(
-                            3,
+              ),
+              const SizedBox(height: 4),
+              DisplayExpression(
+                context: context,
+                expression: triangleArea,
+                scale: 1.5,
+              ),
+              const SizedBox(height: 4),
+              Expanded(
+                flex: 2,
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Shrinkable(
+                    title: l10n.vertexInputTitle,
+                    titleStyle: TextStyle(fontWeight: FontWeight.normal),
+                    expanded: true,
+                    body: InputValuesForm<double>(
+                      contents: [
+                        [
+                          CellData(label: "A", readOnly: true),
+                          CellData(
+                            label: "x",
+                            cellValue: triangle.a.dx,
+                            readOnly: false,
                           ),
-                          cellValue: triangle.getHeightPoint().dx,
-                          readOnly: true,
-                        ),
-                        CellData(
-                          label: triangle.getHeightPoint().dy.toStringAsFixed(
-                            3,
+                          CellData(
+                            label: "y",
+                            cellValue: triangle.a.dy,
+                            readOnly: false,
                           ),
-                          cellValue: triangle.getHeightPoint().dy,
-                          readOnly: true,
-                        ),
+                        ],
+                        [
+                          CellData(label: "B", readOnly: true),
+                          CellData(
+                            label: "x",
+                            cellValue: triangle.b.dx,
+                            readOnly: false,
+                          ),
+                          CellData(
+                            label: "y",
+                            cellValue: triangle.b.dy,
+                            readOnly: false,
+                          ),
+                        ],
+                        [
+                          CellData(label: "C", readOnly: true),
+                          CellData(
+                            label: "x",
+                            cellValue: triangle.c.dx,
+                            readOnly: false,
+                          ),
+                          CellData(
+                            label: "y",
+                            cellValue: triangle.c.dy,
+                            readOnly: false,
+                          ),
+                        ],
+                        [
+                          CellData(label: "D", readOnly: true),
+                          CellData(
+                            label: triangle.getHeightPoint().dx.toStringAsFixed(
+                              3,
+                            ),
+                            cellValue: triangle.getHeightPoint().dx,
+                            readOnly: true,
+                          ),
+                          CellData(
+                            label: triangle.getHeightPoint().dy.toStringAsFixed(
+                              3,
+                            ),
+                            cellValue: triangle.getHeightPoint().dy,
+                            readOnly: true,
+                          ),
+                        ],
                       ],
-                    ],
-                    onSubmit: (InputData<double> input) {
-                      convertUIDataToTriangle(input);
-                    },
+                      onSubmit: (InputData<double> input) {
+                        convertUIDataToTriangle(input);
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
