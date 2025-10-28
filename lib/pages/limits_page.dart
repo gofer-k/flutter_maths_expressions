@@ -539,9 +539,6 @@ class _LimitsPagePageState extends State<LimitsPage> {
             ]
         ),
       ),
-      // TODO: 1) x e (-inf, a), lim f'(x) / g'(x) =  {-/+}inf / {+/-}inf and lim g'(x) / f'(x) = [0, K] ->  lim f(x)/g(x) = g(x)/f(x)
-      // TODO: 1) x e (a inf), lim f'(x) / g'(x) =  = {-/+}inf / {+/-}inf
-
       // Case 8: 0 / 0: f(x)*g(x) = 0*inf -> 0/0: f(x) / (1/g(x))
       PopupWidget(
         horizontalPadding: horizontalPaddingItem,
