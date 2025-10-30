@@ -33,11 +33,10 @@ class _TriangleAnglesPageState extends State<TriangleAnglesPage> {
     final sumAngles = angleA + angleB + angleC;
 
     String triangleAngles =
-      r"\begin{array}{c}\alpha = " + angleA.toStringAsFixed(1) +
-      r"& \beta = " + angleB.toStringAsFixed(1) +
-      r"& \gamma = " + angleC.toStringAsFixed(1) +
-      r" = " + sumAngles.toStringAsFixed(1) +
-      r"\end{array}";
+      r"\begin{array}{c}\alpha = " + angleA.toStringAsFixed(1) +  r"^o" +
+      r"& \beta = " + angleB.toStringAsFixed(1)  +  r"^o" +
+      r"& \gamma = " + angleC.toStringAsFixed(1)  +  r"^o \end{array}";
+    String strSumAngles = r"\alpha + \beta + \gamma = " + sumAngles.toStringAsFixed(1)  +  r"^o";
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade300,
@@ -59,6 +58,11 @@ class _TriangleAnglesPageState extends State<TriangleAnglesPage> {
               DisplayExpression(
                 context: context,
                 expression: triangleAngles,
+                scale: 1.5,
+              ),
+              DisplayExpression(
+                context: context,
+                expression: strSumAngles,
                 scale: 1.5,
               ),
               const SizedBox(height: 4),
