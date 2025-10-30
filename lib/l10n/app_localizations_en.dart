@@ -36,6 +36,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triangleArea => 'Triangle area';
 
   @override
+  String get triangleAngles => 'Triangle angles';
+
+  @override
   String get trigonometryPageTitle => 'Trigonometry';
 
   @override

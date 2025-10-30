@@ -3,6 +3,11 @@ import 'dart:ui';
 
 import 'package:flutter_maths_expressions/models/planimetry/base_shape.dart';
 
+enum AngleType {
+  radian,
+  degrees,
+}
+
 class Triangle extends BaseShape {
   Offset a;
   Offset b;
@@ -38,7 +43,8 @@ class Triangle extends BaseShape {
     return (a + b + c) / 3.0;
   }
 
-  double getAngleA() {
+  double getAngleA({AngleType angleType = AngleType.radian}) {
+    // TODO: precisely calculate angle A
     final ab = b - a;
     final ac = c - a;
     final dotProduct = ab.dx * ac.dx + ab.dy * ac.dy;
@@ -50,10 +56,12 @@ class Triangle extends BaseShape {
     final cosTheta = (dotProduct / (magnitudeAB * magnitudeAC)).clamp(
         -1.0, 1.0);
 
-    return acos(cosTheta);
+    final result = acos(cosTheta);
+    return angleType == AngleType.radian ? result : result * 180 / pi;
   }
 
-  double getAngleB() {
+  double getAngleB({AngleType angleType = AngleType.radian}) {
+    // TODO: precisely calculate angle B
     final ab = a - b;
     final cb = c - b;
     final dotProduct = ab.dx * cb.dx + ab.dy * cb.dy;
@@ -65,10 +73,12 @@ class Triangle extends BaseShape {
     final cosTheta = (dotProduct / (magnitudeAB * magnitudeCB)).clamp(
         -1.0, 1.0);
 
-    return acos(cosTheta);
+    final result = acos(cosTheta);
+    return angleType == AngleType.radian ? result : result * 180 / pi;
   }
 
-  double getAngleC() {
+  double getAngleC({AngleType angleType = AngleType.radian}) {
+    // TODO: precisely calculate angle C
     final ab = a - c;
     final bc = b - c;
     final dotProduct = ab.dx * bc.dx + ab.dy * bc.dy;
@@ -80,7 +90,8 @@ class Triangle extends BaseShape {
     final cosTheta = (dotProduct / (magnitudeAB * magnitudeBC)).clamp(
         -1.0, 1.0);
 
-    return acos(cosTheta);
+    final result = acos(cosTheta);
+    return angleType == AngleType.radian ? result : result * 180 / pi;
   }
 
   double getHeight() {

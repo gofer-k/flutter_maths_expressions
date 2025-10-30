@@ -152,6 +152,12 @@ abstract class AppLocalizations {
   /// **'Triangle area'**
   String get triangleArea;
 
+  /// No description provided for @triangleAngles.
+  ///
+  /// In en, this message translates to:
+  /// **'Triangle angles'**
+  String get triangleAngles;
+
   /// No description provided for @trigonometryPageTitle.
   ///
   /// In en, this message translates to:

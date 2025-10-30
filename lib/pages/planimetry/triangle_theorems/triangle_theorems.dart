@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangle_angles.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangle_area.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../widgets/background_container.dart';
@@ -34,6 +35,7 @@ class _TriangleTheoremsPageState extends State<TriangleTheoremsPage> {
         body: ListView(
           children: [
             navigatingTheoremPage(context, l10n.triangleArea, TriangleAreaPage(title: l10n.triangleArea)),
+            navigatingTheoremPage(context, l10n.triangleAngles, TriangleAnglesPage(title: l10n.triangleAngles)),
           ],
         )
       ),

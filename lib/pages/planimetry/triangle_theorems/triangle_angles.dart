@@ -1,44 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_maths_expressions/models/planimetry/base_shape.dart';
-import 'package:flutter_maths_expressions/widgets/display_expression.dart';
-import 'package:flutter_maths_expressions/widgets/infinite_drawer.dart';
-import 'package:flutter_maths_expressions/widgets/input_values_form.dart';
-import 'package:flutter_maths_expressions/widgets/shrinkable.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../models/dock_side.dart';
+import '../../../models/planimetry/base_shape.dart';
 import '../../../models/planimetry/triangle.dart';
 import '../../../painters/drawable_shape.dart';
 import '../../../painters/triangle_painter.dart';
 import '../../../widgets/background_container.dart';
+import '../../../widgets/display_expression.dart';
+import '../../../widgets/infinite_drawer.dart';
+import '../../../widgets/input_values_form.dart';
+import '../../../widgets/shrinkable.dart';
 
-class TriangleAreaPage extends StatefulWidget {
+class TriangleAnglesPage extends StatefulWidget {
   final String title;
 
-  const TriangleAreaPage({super.key, required this.title});
+  const TriangleAnglesPage({super.key, required this.title});
 
   @override
-  State<StatefulWidget> createState() => _TriangleAreaPageState();
+  State<StatefulWidget> createState() => _TriangleAnglesPageState();
 }
 
-class _TriangleAreaPageState extends State<TriangleAreaPage> {
-  final triangle = Triangle(a: Offset(-1, -1), b: Offset(3, 3), c: Offset(4, -1));
-  DockSide dock = DockSide.leftTop;
+class _TriangleAnglesPageState extends State<TriangleAnglesPage> {
+  final triangle = Triangle(a: Offset(-2, -3), b: Offset(1, 3), c: Offset(4, -3));
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    String triangleArea = triangle.b.dx == triangle.a.dx
-        ? r"A = \frac{1}{2}|AC| \cdot |AB| = " + triangle.getArea().toStringAsFixed(2)
-        : triangle.b.dx == triangle.c.dx
-        ? r"A = \frac{1}{2}|AC| \cdot |BC| = " + triangle.getArea().toStringAsFixed(2)
-        : r"A = \frac{1}{2}|AC| \cdot |BD| = " + triangle.getArea().toStringAsFixed(2);
+    final angleA = triangle.getAngleA(angleType: AngleType.degrees);
+    final angleB = triangle.getAngleB(angleType: AngleType.degrees);
+    final angleC = triangle.getAngleC(angleType: AngleType.degrees);
+    final sumAngles = angleA + angleB + angleC;
+
+    String triangleAngles =
+      r"\begin{array}{c}\alpha = " + angleA.toStringAsFixed(1) +
+      r"& \beta = " + angleB.toStringAsFixed(1) +
+      r"& \gamma = " + angleC.toStringAsFixed(1) +
+      r" = " + sumAngles.toStringAsFixed(1) +
+      r"\end{array}";
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade300,
-      // endColor: Colors.grey.shade800,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.transparent,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -47,14 +51,14 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
               widget.title,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-          ),
+        ),
           body: Column(
             children: [
               Expanded(flex: 2, child: drawableView(DockSide.leftTop)),
               const SizedBox(height: 4),
               DisplayExpression(
                 context: context,
-                expression: triangleArea,
+                expression: triangleAngles,
                 scale: 1.5,
               ),
               const SizedBox(height: 4),
@@ -100,7 +104,6 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
                 ShowTriangleProperty.angleA,
                 ShowTriangleProperty.angleB,
                 ShowTriangleProperty.angleC,
-                ShowTriangleProperty.height,
               ],
               canvasTransform: canvasTransform,
               viewportSize: viewportSize,
@@ -110,6 +113,33 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
         ),
       ],
     );
+  }
+
+  void convertUIDataToTriangle(InputData<double> input) {
+    // Extract the coordinates for each point (A, B, C) from the input data.
+    final aPointData = input.firstWhere(
+          (pointData) => pointData.any((cellData) => cellData.label == "A"),
+    );
+    final bPointData = input.firstWhere(
+          (pointData) => pointData.any((cellData) => cellData.label == "B"),
+    );
+    final cPointData = input.firstWhere(
+          (pointData) => pointData.any((cellData) => cellData.label == "C"),
+    );
+
+    final a = Offset(
+        aPointData.firstWhere((coord) => coord.label == "x").cellValue!,
+        aPointData.firstWhere((coord) => coord.label == "y").cellValue!);
+    final b = Offset(
+        bPointData.firstWhere((coord) => coord.label == "x").cellValue!,
+        bPointData.firstWhere((coord) => coord.label == "y").cellValue!);
+    final c = Offset(
+        cPointData.firstWhere((coord) => coord.label == "x").cellValue!,
+        cPointData.firstWhere((coord) => coord.label == "y").cellValue!);
+
+    setState(() {
+      triangle.update(a, b, c);
+    });
   }
 
   Widget inputValuesForm(AppLocalizations l10n) {
@@ -184,32 +214,5 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
         ),
       ),
     );
-  }
-
-  void convertUIDataToTriangle(InputData<double> input) {
-    // Extract the coordinates for each point (A, B, C) from the input data.
-    final aPointData = input.firstWhere(
-      (pointData) => pointData.any((cellData) => cellData.label == "A"),
-    );
-    final bPointData = input.firstWhere(
-      (pointData) => pointData.any((cellData) => cellData.label == "B"),
-    );
-    final cPointData = input.firstWhere(
-      (pointData) => pointData.any((cellData) => cellData.label == "C"),
-    );
-
-    final a = Offset(
-        aPointData.firstWhere((coord) => coord.label == "x").cellValue!,
-        aPointData.firstWhere((coord) => coord.label == "y").cellValue!);
-    final b = Offset(
-        bPointData.firstWhere((coord) => coord.label == "x").cellValue!,
-        bPointData.firstWhere((coord) => coord.label == "y").cellValue!);
-    final c = Offset(
-        cPointData.firstWhere((coord) => coord.label == "x").cellValue!,
-        cPointData.firstWhere((coord) => coord.label == "y").cellValue!);
-
-    setState(() {
-      triangle.update(a, b, c);
-    });
   }
 }

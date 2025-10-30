@@ -36,6 +36,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get triangleArea => 'Powierzchnia trójkąta';
 
   @override
+  String get triangleAngles => 'Kąty trójkąta';
+
+  @override
   String get trigonometryPageTitle => 'Trigonometria';
 
   @override
