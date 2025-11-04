@@ -15,6 +15,12 @@ class Triangle extends BaseShape {
 
   Triangle({required this.a, required this.b, required this.c}) {
     assert(a != b && a != c && b != c);
+    final ab = (a - b).distance;
+    final ac = (a - c).distance;
+    final bc = (b - c).distance;
+    assert(ab + bc > ac);
+    assert(ac + bc > ab);
+    assert(ab + ac > bc);
   }
 
   update(Offset a, Offset b, Offset c) {
@@ -114,5 +120,32 @@ class Triangle extends BaseShape {
     final cosTheta = (dotProduct / (magnitudeAB * magnitudeAC)).clamp(
         -1.0, 1.0);
     return a + ab * (magnitudeAB * cos(acos(cosTheta))) / magnitudeAB;
+  }
+
+  void scale(double value) {
+    a *= value;
+    b *= value;
+    c *= value;
+  }
+
+  void translate(double dx, double dy) {
+    a = a.translate(dx, dy);
+    b = b.translate(dx, dy);
+    c = c.translate(dx, dy);
+  }
+
+  void rotate(double angle, {AngleType angleType = AngleType.radian}) {
+    final center = getCenter();
+    a = _rotatePoint(a, center, angle, angleType: angleType);
+    b = _rotatePoint(b, center, angle, angleType: angleType);
+    c = _rotatePoint(c, center, angle, angleType: angleType);
+  }
+
+  Offset _rotatePoint(Offset origin, Offset center, double angle, {AngleType angleType = AngleType.radian}) {
+    final targetAngle = angleType == AngleType.radian ? angle : angle * 180 / pi;
+    final origToCenter = origin - center;
+    return Offset(
+      origToCenter.dx * cos(targetAngle) - origToCenter.dy * sin(targetAngle),
+      origToCenter.dx * sin(targetAngle) + origToCenter.dy * cos(targetAngle));
   }
 }

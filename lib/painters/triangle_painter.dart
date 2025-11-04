@@ -1,3 +1,5 @@
+import 'dart:math' as logger;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/models/planimetry/triangle.dart';
 import 'package:flutter_maths_expressions/painters/figure_painter.dart';
@@ -11,11 +13,9 @@ enum ShowTriangleProperty {
   heightPoint
 }
 
-
 class TrianglePainter extends FigurePainter {
   // final Triangle triangle;
   final double originUnitInPixels;
-  final double _arcRadius = 25.0;
   late final double minUnitInPixels;
   final List<ShowTriangleProperty> showProperties;
   
@@ -59,42 +59,6 @@ class TrianglePainter extends FigurePainter {
   //   textPainter.paint(canvas, centeredOffset);
   // }
 
-  void _paintText(Canvas canvas, String text, Offset position, {double xOffset = 4.0, double yOffset = 4.0}) {
-    final textStyle = TextStyle(
-      color: Colors.blueGrey,
-      fontWeight: FontWeight.bold,
-      fontSize: 18,
-    );
-    final textSpan = TextSpan(
-      text: text,
-      style: textStyle,
-    );
-    final textPainter = TextPainter(
-      text: textSpan,
-      textDirection: TextDirection.ltr,
-    );
-    textPainter.layout(
-      minWidth: 0,
-      maxWidth: 100, // Arbitrary max width
-    );
-
-    // Adjust the position to be slightly offset from the vertex
-    final adjustedPosition = Offset(
-    position.dx + xOffset, position.dy + yOffset);
-
-    textPainter.paint(canvas, adjustedPosition);
-  }
-
-  void _paintArc(Canvas canvas, Offset pos, double beginAngle, double endAngle, Color colorStroke) {
-    final Paint arcPaint = Paint()
-      ..color = colorStroke
-      ..strokeWidth = 1.5
-      ..style = PaintingStyle.stroke;
-
-    final Rect rect = Rect.fromCircle(center: pos, radius: _arcRadius);
-    canvas.drawArc(rect, beginAngle, endAngle, false, arcPaint);
-  }
-
   @override
   void paint(Canvas canvas, Size size) {
     if (minUnitInPixels <= 0) return;
@@ -134,18 +98,18 @@ class TrianglePainter extends FigurePainter {
     path.close();
     canvas.drawPath(path, paint);
 
-    _paintText(canvas, 'A', aPos, xOffset: -4.0, yOffset: -2.0);
-    _paintText(canvas, 'B', bPos, xOffset: -4.0, yOffset: -20.0);
-    _paintText(canvas, 'C', cPos, xOffset: 0.0, yOffset: -2.0);
+    paintText(canvas, 'A', aPos, xOffset: -4.0, yOffset: -2.0);
+    paintText(canvas, 'B', bPos, xOffset: -4.0, yOffset: -20.0);
+    paintText(canvas, 'C', cPos, xOffset: 0.0, yOffset: -2.0);
 
     if (showProperties.contains(ShowTriangleProperty.angleA)) {
-      _paintArc(canvas, aPos, (bPos - aPos).direction, triangle.getAngleA(), Colors.red);
+      paintArc(canvas, aPos, (bPos - aPos).direction, triangle.getAngleA(), Colors.red);
     }
     if (showProperties.contains(ShowTriangleProperty.angleB)) {
-      _paintArc(canvas, bPos, (cPos - bPos).direction, triangle.getAngleB(), Colors.blue);
+      paintArc(canvas, bPos, (cPos - bPos).direction, triangle.getAngleB(), Colors.blue);
     }
     if (showProperties.contains(ShowTriangleProperty.angleC)) {
-      _paintArc(canvas, cPos, (aPos - cPos).direction, triangle.getAngleC(), Colors.green);
+      paintArc(canvas, cPos, (aPos - cPos).direction, triangle.getAngleC(), Colors.green);
     }
     if (showProperties.contains(ShowTriangleProperty.height)) {
       final Paint paintHeight = Paint()
@@ -161,8 +125,9 @@ class TrianglePainter extends FigurePainter {
            m * xD - m * aPos.dx + aPos.dy);
 
         canvas.drawLine(bPos, dPos, paintHeight);
-        _paintText(canvas, "D", dPos, xOffset: -4.0, yOffset: -2.0);
+        paintText(canvas, "D", dPos, xOffset: -4.0, yOffset: -2.0);
       } catch(e) {
+        logger.e;
       }
     }
 

@@ -158,6 +158,36 @@ abstract class AppLocalizations {
   /// **'Triangle angles'**
   String get triangleAngles;
 
+  /// No description provided for @trianglesCongruence.
+  ///
+  /// In en, this message translates to:
+  /// **'Rules of congruence of triangles'**
+  String get trianglesCongruence;
+
+  /// No description provided for @congruenceType.
+  ///
+  /// In en, this message translates to:
+  /// **'Congruence type'**
+  String get congruenceType;
+
+  /// No description provided for @congruenceSSS.
+  ///
+  /// In en, this message translates to:
+  /// **'Side-Side=Side'**
+  String get congruenceSSS;
+
+  /// No description provided for @congruenceSAS.
+  ///
+  /// In en, this message translates to:
+  /// **'Side-Angle-Side'**
+  String get congruenceSAS;
+
+  /// No description provided for @congruenceASA.
+  ///
+  /// In en, this message translates to:
+  /// **'Angle-Side-Angle'**
+  String get congruenceASA;
+
   /// No description provided for @trigonometryPageTitle.
   ///
   /// In en, this message translates to:

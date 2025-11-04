@@ -39,29 +39,46 @@ class AppLocalizationsPl extends AppLocalizations {
   String get triangleAngles => 'Kąty trójkąta';
 
   @override
-  String get trigonometryPageTitle => 'Trigonometria';
+  String get trianglesCongruence => 'Zasady przystawania trójkątów';
 
   @override
-  String get trigonometryFunctions => 'Trigonometry functions';
+  String get congruenceType => 'Type przystawania trójkątów';
 
   @override
-  String get trigonometryReversedFunctions => 'Trigonometry reversed functions';
+  String get congruenceSSS => 'Side-Side=Side';
 
   @override
-  String get trigonometryParityFeatures => 'Trigonometry parity features';
+  String get congruenceSAS => 'Bok-Kąt-Bok';
 
   @override
-  String get trigonometryPeriodicFunctions => 'Trigonometry periodic functions';
+  String get congruenceASA => 'Kąt-Bok-Kąt';
 
   @override
-  String get trigonometryEquations => 'Trigonometry equations';
+  String get trigonometryPageTitle => 'Trygonometria';
 
   @override
-  String get trigonometryValues => 'Trigonometry values';
+  String get trigonometryFunctions => 'Funkcje trygonometryczne';
+
+  @override
+  String get trigonometryReversedFunctions =>
+      'Odwrócone funkcje trygonometryczne';
+
+  @override
+  String get trigonometryParityFeatures => 'Własności parzystości';
+
+  @override
+  String get trigonometryPeriodicFunctions =>
+      'Okresowe funkcje trygonometryczne';
+
+  @override
+  String get trigonometryEquations => '©ównania trygonometryczne';
+
+  @override
+  String get trigonometryValues => 'Wartości funkcji trygonometrycznych';
 
   @override
   String get trigonometryReducedExpressions =>
-      'Trigonometry reduced expressions';
+      'Skrócone wzory trygonometryczne';
 
   @override
   String get blockShapesPageTitle => 'Figury 3D';

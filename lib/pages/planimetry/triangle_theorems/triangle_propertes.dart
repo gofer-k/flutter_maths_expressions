@@ -12,26 +12,28 @@ import '../../../painters/drawable_shape.dart';
 import '../../../painters/triangle_painter.dart';
 import '../../../widgets/background_container.dart';
 
-class TriangleAreaPage extends StatefulWidget {
+class TrianglePropertiesPage extends StatefulWidget {
   final String title;
 
-  const TriangleAreaPage({super.key, required this.title});
+  const TrianglePropertiesPage({super.key, required this.title});
 
   @override
-  State<StatefulWidget> createState() => _TriangleAreaPageState();
+  State<StatefulWidget> createState() => _TrianglePropertiesPageState();
 }
 
-class _TriangleAreaPageState extends State<TriangleAreaPage> {
+class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
   final triangle = Triangle(a: Offset(-1, -1), b: Offset(3, 3), c: Offset(4, -1));
   DockSide dock = DockSide.leftTop;
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     String triangleArea = triangle.b.dx == triangle.a.dx
-        ? r"A = \frac{1}{2}|AC| \cdot |AB| = " + triangle.getArea().toStringAsFixed(2)
+        ? r"A = \frac{1}{2} \cdot \text{|AC|} \cdot \text{|AB|} = " + triangle.getArea().toStringAsFixed(2)
         : triangle.b.dx == triangle.c.dx
-        ? r"A = \frac{1}{2}|AC| \cdot |BC| = " + triangle.getArea().toStringAsFixed(2)
-        : r"A = \frac{1}{2}|AC| \cdot |BD| = " + triangle.getArea().toStringAsFixed(2);
+        ? r"A = \frac{1}{2} \cdot | AC | \cdot | BC | = " + triangle.getArea().toStringAsFixed(2)
+        : r"A = \frac{1}{2} \cdot | AC | \cdot | BD | = " + triangle.getArea().toStringAsFixed(2);
+
+    String trianglePerimeter = r"P = \text{|AB| + |AC| + |BC|} = " + triangle.getPerimeter().toStringAsFixed(2);
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade300,
@@ -55,6 +57,11 @@ class _TriangleAreaPageState extends State<TriangleAreaPage> {
               DisplayExpression(
                 context: context,
                 expression: triangleArea,
+                scale: 1.5,
+              ),
+              DisplayExpression(
+                context: context,
+                expression: trianglePerimeter,
                 scale: 1.5,
               ),
               const SizedBox(height: 4),

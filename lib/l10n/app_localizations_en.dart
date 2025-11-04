@@ -39,6 +39,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triangleAngles => 'Triangle angles';
 
   @override
+  String get trianglesCongruence => 'Rules of congruence of triangles';
+
+  @override
+  String get congruenceType => 'Congruence type';
+
+  @override
+  String get congruenceSSS => 'Side-Side=Side';
+
+  @override
+  String get congruenceSAS => 'Side-Angle-Side';
+
+  @override
+  String get congruenceASA => 'Angle-Side-Angle';
+
+  @override
   String get trigonometryPageTitle => 'Trigonometry';
 
   @override

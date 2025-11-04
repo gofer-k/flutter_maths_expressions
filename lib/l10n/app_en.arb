@@ -10,6 +10,11 @@
   "triangleTheorems": "Triangle theorems",
   "triangleArea": "Triangle area",
   "triangleAngles": "Triangle angles",
+  "trianglesCongruence": "Rules of congruence of triangles",
+  "congruenceType": "Congruence type",
+  "congruenceSSS": "Side-Side=Side",
+  "congruenceSAS": "Side-Angle-Side",
+  "congruenceASA": "Angle-Side-Angle",
 
   "trigonometryPageTitle": "Trigonometry",
   "trigonometryFunctions": "Trigonometry functions",
