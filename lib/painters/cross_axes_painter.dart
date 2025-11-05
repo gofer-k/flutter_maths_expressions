@@ -4,13 +4,17 @@ class CrossAxesPainter extends CustomPainter {
   final Matrix4 canvasTransform;
   final Size viewportSize;
   final Offset canvasOrigin;
-  final double originUnitInPixels;
-  late final double minUnitInPixels;
+  final double originWidthUnitInPixels;
+  final double originHeightUnitInPixels;
+  late final double minWidthUnitInPixels;
+  late final double minHeightUnitInPixels;
 
-  CrossAxesPainter({required this.canvasTransform, required this.viewportSize, required this.originUnitInPixels}) :
+  CrossAxesPainter({required this.canvasTransform, required this.viewportSize,
+    required this.originWidthUnitInPixels, required this.originHeightUnitInPixels}) :
     canvasOrigin = Offset(viewportSize.width / 2, viewportSize.height / 2) {
     // TODO: Refactor this property to base class
-    minUnitInPixels = 0.25 * originUnitInPixels;
+    minWidthUnitInPixels = 0.25 * originWidthUnitInPixels;
+    minHeightUnitInPixels = 0.25 * originHeightUnitInPixels;
   }
 
   @override
@@ -31,10 +35,11 @@ class CrossAxesPainter extends CustomPainter {
     // Transform this point to viewport coordinates
     final Offset viewportOrigin = MatrixUtils.transformPoint(canvasTransform, canvasOrigin);
     final double currentScale = canvasTransform.getMaxScaleOnAxis();
-    final double unitInPixels = originUnitInPixels * currentScale;
+    final double unitWidthInPixels = originWidthUnitInPixels * currentScale;
+    final double unitHeightPixels = originHeightUnitInPixels * currentScale;
 
-    paintAxisY(canvas, axisPaint, unitMarkPaint, unitLabelStyle, viewportOrigin, unitInPixels);
-    paintAxisX(canvas, axisPaint, unitMarkPaint, unitLabelStyle, viewportOrigin, unitInPixels);
+    paintAxisY(canvas, axisPaint, unitMarkPaint, unitLabelStyle, viewportOrigin, unitHeightPixels);
+    paintAxisX(canvas, axisPaint, unitMarkPaint, unitLabelStyle, viewportOrigin, unitWidthInPixels);
   }
 
   void paintAxisY(
@@ -72,7 +77,7 @@ class CrossAxesPainter extends CustomPainter {
         axisPaint,
       );
 
-      if (unitInPixels >= minUnitInPixels) {
+      if (unitInPixels >= minHeightUnitInPixels) {
         drawUnitsY(true, viewportOrigin.dy - unitInPixels, 0, -unitInPixels);
         drawUnitsY(false, viewportOrigin.dy + unitInPixels, viewportSize.height, unitInPixels);
       }
@@ -113,7 +118,7 @@ class CrossAxesPainter extends CustomPainter {
         axisPaint,
       );
 
-      if (unitInPixels >= minUnitInPixels) {
+      if (unitInPixels >= minWidthUnitInPixels) {
         drawUnitsX(true, viewportOrigin.dx + unitInPixels, viewportSize.width, unitInPixels);
         drawUnitsX(false, viewportOrigin.dx - unitInPixels, 0, -unitInPixels);
       }
