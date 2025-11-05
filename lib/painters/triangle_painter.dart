@@ -103,13 +103,13 @@ class TrianglePainter extends FigurePainter {
     paintText(canvas, 'C', cPos, xOffset: 0.0, yOffset: -2.0);
 
     if (showProperties.contains(ShowTriangleProperty.angleA)) {
-      paintArc(canvas, aPos, (bPos - aPos).direction, triangle.getAngleA(), Colors.red);
+      drawAngleArc(canvas, aPos, bPos, cPos, Colors.red);
     }
     if (showProperties.contains(ShowTriangleProperty.angleB)) {
-      paintArc(canvas, bPos, (cPos - bPos).direction, triangle.getAngleB(), Colors.blue);
+      drawAngleArc(canvas, bPos, cPos, aPos, Colors.blue);
     }
     if (showProperties.contains(ShowTriangleProperty.angleC)) {
-      paintArc(canvas, cPos, (aPos - cPos).direction, triangle.getAngleC(), Colors.green);
+      drawAngleArc(canvas, cPos, aPos, bPos, Colors.green);
     }
     if (showProperties.contains(ShowTriangleProperty.height)) {
       final Paint paintHeight = Paint()

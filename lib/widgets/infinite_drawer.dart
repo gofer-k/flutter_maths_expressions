@@ -84,7 +84,8 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
   @override
   Widget build(BuildContext context) {
     const gridSize = Size.square(20);
-    final unitInPixels = 2 * gridSize.width;
+    final widthUnitInPixels = 2 * gridSize.width;
+    final heightUnitInPixels = 2 * gridSize.height;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
@@ -105,8 +106,8 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
                   painter: CrossAxesPainter(
                     canvasTransform: _controller.transform.value,
                     viewportSize: viewportSize,
-                    originUnitInPixels: unitInPixels, // Adjust as needed
-                  ),
+                    originWidthUnitInPixels: widthUnitInPixels,
+                    originHeightUnitInPixels: heightUnitInPixels),
                 ),
               for (final shape in widget.drawableShapes) ...[
                 ClipRect(

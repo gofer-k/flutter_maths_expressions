@@ -14,19 +14,25 @@ class Triangle extends BaseShape {
   Offset c;
 
   Triangle({required this.a, required this.b, required this.c}) {
+    validate(a, b, c);
+  }
+
+  void update(Offset a, Offset b, Offset c) {
+    validate(a, b, c);
+    this.a = a;
+    this.b = b;
+    this.c = c;
+  }
+
+  void validate(Offset a, Offset b, Offset c) {
     assert(a != b && a != c && b != c);
+
     final ab = (a - b).distance;
     final ac = (a - c).distance;
     final bc = (b - c).distance;
     assert(ab + bc > ac);
     assert(ac + bc > ab);
     assert(ab + ac > bc);
-  }
-
-  update(Offset a, Offset b, Offset c) {
-    this.a = a;
-    this.b = b;
-    this.c = c;
   }
 
   @override
@@ -49,54 +55,37 @@ class Triangle extends BaseShape {
     return (a + b + c) / 3.0;
   }
 
-  double getAngleA({AngleType angleType = AngleType.radian}) {
-    // TODO: precisely calculate angle A
-    final ab = b - a;
-    final ac = c - a;
-    final dotProduct = ab.dx * ac.dx + ab.dy * ac.dy;
-    final magnitudeAB = ab.distance;
-    final magnitudeAC = ac.distance;
-
-    // The value to pass to acos can sometimes be slightly out of the [-1, 1]
-    // range due to floating point inaccuracies. Clamping it prevents errors.
-    final cosTheta = (dotProduct / (magnitudeAB * magnitudeAC)).clamp(
-        -1.0, 1.0);
-
-    final result = acos(cosTheta);
+  double _angleBetween(double aDist, double bDist, double cDist, {AngleType angleType = AngleType.radian}) {
+    // Returns angle opposite side 'a' in degrees
+    // Law of Cosines: a^2 = b^2 + c^2 - 2bc * cos(A)
+    final result = acos((bDist * bDist + cDist * cDist - aDist * aDist) / (2 * bDist * cDist));
     return angleType == AngleType.radian ? result : result * 180 / pi;
+  }
+
+  double getAngleA({AngleType angleType = AngleType.radian}) {
+    // Calculate side lengths
+    final aDist = (b - c).distance;
+    final bDist = (a - c).distance;
+    final cDist = (a - b).distance;
+    return _angleBetween(aDist, bDist, cDist, angleType: angleType);
   }
 
   double getAngleB({AngleType angleType = AngleType.radian}) {
-    // TODO: precisely calculate angle B
-    final ab = a - b;
-    final cb = c - b;
-    final dotProduct = ab.dx * cb.dx + ab.dy * cb.dy;
-    final magnitudeAB = ab.distance;
-    final magnitudeCB = cb.distance;
-
-    // The value to pass to acos can sometimes be slightly out of the [-1, 1]
-    // range due to floating point inaccuracies. Clamping it prevents errors.
-    final cosTheta = (dotProduct / (magnitudeAB * magnitudeCB)).clamp(
-        -1.0, 1.0);
-
-    final result = acos(cosTheta);
-    return angleType == AngleType.radian ? result : result * 180 / pi;
+    final aDist = (b - c).distance;
+    final bDist = (a - c).distance;
+    final cDist = (a - b).distance;
+    return _angleBetween(bDist, cDist, aDist, angleType: angleType);
   }
 
   double getAngleC({AngleType angleType = AngleType.radian}) {
-    // TODO: precisely calculate angle C
-    final ab = a - c;
-    final bc = b - c;
-    final dotProduct = ab.dx * bc.dx + ab.dy * bc.dy;
-    final magnitudeAB = ab.distance;
-    final magnitudeBC = bc.distance;
+    final aDist = (b - c).distance;
+    final bDist = (a - c).distance;
+    final cDist = (a - b).distance;
+    return _angleBetween(cDist, aDist, bDist, angleType: angleType);
+  }
 
-    // The value to pass to acos can sometimes be slightly out of the [-1, 1]
-    // range due to floating point inaccuracies. Clamping it prevents errors.
-    final cosTheta = (dotProduct / (magnitudeAB * magnitudeBC)).clamp(
-        -1.0, 1.0);
-
-    final result = acos(cosTheta);
+  static double edgeDirection(Offset beginVertex, Offset endVertex, {AngleType angleType = AngleType.radian}) {
+    final result = (endVertex - beginVertex).direction;
     return angleType == AngleType.radian ? result : result * 180 / pi;
   }
 

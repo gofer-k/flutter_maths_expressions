@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/models/planimetry/base_shape.dart';
 
@@ -36,13 +38,30 @@ abstract class FigurePainter<T> extends CustomPainter {
   }
 
   // TODO: Arc direction is not correct after rotate and translate a shape
-  void paintArc(Canvas canvas, Offset pos, double beginAngle, double endAngle, Color colorStroke, {double arcRadius = 25.0}) {
+  void paintArc(Canvas canvas, Offset pos, double beginLeg, double endAngle, Color colorStroke, {double arcRadius = 25.0}) {
     final Paint arcPaint = Paint()
       ..color = colorStroke
       ..strokeWidth = 1.5
       ..style = PaintingStyle.stroke;
 
     final Rect rect = Rect.fromCircle(center: pos, radius: arcRadius);
-    canvas.drawArc(rect, beginAngle, endAngle, false, arcPaint);
+    canvas.drawArc(rect, beginLeg, endAngle, false, arcPaint);
+  }
+
+  void drawAngleArc(Canvas canvas, Offset center, Offset leg1, Offset leg2, Color colorStroke, {double arcRadius = 25.0}) {
+    final Paint arcPaint = Paint()
+      ..color = colorStroke
+      ..strokeWidth = 1.5
+      ..style = PaintingStyle.stroke;
+
+    final v1 = (leg1 - center).direction;
+    final v2 = (leg2 - center).direction;
+
+    // Ensure sweep is positive and within 0..2π
+    double sweep = (v2 - v1);
+    if (sweep < 0) sweep += 2 * pi;
+
+    final rect = Rect.fromCircle(center: center, radius: arcRadius);
+    canvas.drawArc(rect, v1, sweep, false, arcPaint);
   }
 }
