@@ -45,13 +45,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get congruenceType => 'Congruence type';
 
   @override
-  String get congruenceSSS => 'Side-Side=Side';
+  String get congruenceSSS => 'Side-Side-Side';
 
   @override
   String get congruenceSAS => 'Side-Angle-Side';
 
   @override
   String get congruenceASA => 'Angle-Side-Angle';
+
+  @override
+  String get trianglesSimilarity => 'Rules of similarity of triangles';
+
+  @override
+  String get similarityType => 'Similarity type';
+
+  @override
+  String get similaritySSS => 'Side-Side-Side';
+
+  @override
+  String get similarityAAA => 'Angle-Angle-Angle';
+
+  @override
+  String get similaritySAS => 'Side-Angle-Side';
+
+  @override
+  String get congruenceParameters => 'Parameters of congruence triangles';
+
+  @override
+  String get similarityParameters => 'Parameters of similarity triangles';
+
+  @override
+  String get triangle => 'Triangle';
 
   @override
   String get trigonometryPageTitle => 'Trigonometry';

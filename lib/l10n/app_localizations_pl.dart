@@ -42,16 +42,40 @@ class AppLocalizationsPl extends AppLocalizations {
   String get trianglesCongruence => 'Zasady przystawania trójkątów';
 
   @override
-  String get congruenceType => 'Type przystawania trójkątów';
+  String get congruenceType => 'Typ przystawania trójkątów';
 
   @override
-  String get congruenceSSS => 'Side-Side=Side';
+  String get congruenceSSS => 'Side-Side-Side';
 
   @override
   String get congruenceSAS => 'Bok-Kąt-Bok';
 
   @override
   String get congruenceASA => 'Kąt-Bok-Kąt';
+
+  @override
+  String get trianglesSimilarity => 'żasady podobieństwa trójkątów';
+
+  @override
+  String get similarityType => 'Typ podobieństwa';
+
+  @override
+  String get similaritySSS => 'Bok-Bok-Bok';
+
+  @override
+  String get similarityAAA => 'Kąt-Kąt-Kąt';
+
+  @override
+  String get similaritySAS => 'Bok-Kąt-Bok';
+
+  @override
+  String get congruenceParameters => 'Parametry przystawania trójkątów';
+
+  @override
+  String get similarityParameters => 'Parametry podobieństwa trójkątów';
+
+  @override
+  String get triangle => 'Trójkąt';
 
   @override
   String get trigonometryPageTitle => 'Trygonometria';

@@ -173,7 +173,7 @@ abstract class AppLocalizations {
   /// No description provided for @congruenceSSS.
   ///
   /// In en, this message translates to:
-  /// **'Side-Side=Side'**
+  /// **'Side-Side-Side'**
   String get congruenceSSS;
 
   /// No description provided for @congruenceSAS.
@@ -187,6 +187,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Angle-Side-Angle'**
   String get congruenceASA;
+
+  /// No description provided for @trianglesSimilarity.
+  ///
+  /// In en, this message translates to:
+  /// **'Rules of similarity of triangles'**
+  String get trianglesSimilarity;
+
+  /// No description provided for @similarityType.
+  ///
+  /// In en, this message translates to:
+  /// **'Similarity type'**
+  String get similarityType;
+
+  /// No description provided for @similaritySSS.
+  ///
+  /// In en, this message translates to:
+  /// **'Side-Side-Side'**
+  String get similaritySSS;
+
+  /// No description provided for @similarityAAA.
+  ///
+  /// In en, this message translates to:
+  /// **'Angle-Angle-Angle'**
+  String get similarityAAA;
+
+  /// No description provided for @similaritySAS.
+  ///
+  /// In en, this message translates to:
+  /// **'Side-Angle-Side'**
+  String get similaritySAS;
+
+  /// No description provided for @congruenceParameters.
+  ///
+  /// In en, this message translates to:
+  /// **'Parameters of congruence triangles'**
+  String get congruenceParameters;
+
+  /// No description provided for @similarityParameters.
+  ///
+  /// In en, this message translates to:
+  /// **'Parameters of similarity triangles'**
+  String get similarityParameters;
+
+  /// No description provided for @triangle.
+  ///
+  /// In en, this message translates to:
+  /// **'Triangle'**
+  String get triangle;
 
   /// No description provided for @trigonometryPageTitle.
   ///

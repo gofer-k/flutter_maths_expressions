@@ -89,6 +89,10 @@ class Triangle extends BaseShape {
     return angleType == AngleType.radian ? result : result * 180 / pi;
   }
 
+  static double getLength(Offset begin, Offset end) {
+    return (end - begin).distance;
+  }
+
   double getHeight() {
     final ab = b - a;
     final ac = c - a;
