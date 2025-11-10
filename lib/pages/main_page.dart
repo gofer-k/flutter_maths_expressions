@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
               ),
               navigatingCard(context,
                 // TODO: Replace with a real image
-                Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                Image.network('assets/images/approximation.png'),
                 'Approximation theorems',
                 ApproximationPage(title: l10n.approximation_theorems)),
 

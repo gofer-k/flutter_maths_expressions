@@ -64,13 +64,13 @@ class _ApproximationPageState extends State<ApproximationPage> {
                     DisplayExpression(
                       context: context,
                       decoration: MathTheme.of(context).listItemDecoration,
-                      expression: r"f'(0) = f(0) + \frac{f'(0)}{1!}\dot x + \frac{f''(0)}{2!} \dot x^2 + \dots + \frac{f^{(n-1)}(0)}{(n-1)!} \dot x^(n-1) + R_n",
+                      expression: r"f'(0) = f(0) + \frac{f'(0)}{1!} x + \frac{f''(0)}{2!} x^2 + \dots + \frac{f^{(n-1)}(0)}{(n-1)!} x^{(n-1)} + R_n",
                       scale: MathTheme.of(context).expressionScale?? 1.0,
                     ),
                     DisplayExpression(
                       context: context,
                       decoration: MathTheme.of(context).listItemDecoration,
-                      expression: r"R_n = \frac{x^n}{n!}\dot f^{n}(\xi), \xi = \theta \dot x, \theta in (0,1) ",
+                      expression: r"R_n = \frac{x^n}{n!}f^{n}(\xi) \text{,  } \xi = \theta x \text{,  } \theta \in (0,1) ",
                       scale: MathTheme.of(context).expressionScale?? 1.0,
                     ),
                   ]
@@ -104,13 +104,13 @@ class _ApproximationPageState extends State<ApproximationPage> {
                         DisplayExpression(
                           context: context,
                           decoration: MathTheme.of(context).listItemDecoration,
-                          expression: r"f'(a) = f(a) + \frac{f'(a)}{1!}\dot (x-a) + \frac{f''(a)}{2!} \dot (x-a)^2 + \dots + \frac{f^{(n-1)}(a)}{(n-1)!} \dot (x-a)^{(n-1)} + R_n",
+                          expression: r"f'(a) = f(a) + \frac{f'(a)}{1!}(x-a) + \frac{f''(a)}{2!}(x-a)^2 + \dots + \frac{f^{(n-1)}(a)}{(n-1)!}(x-a)^{(n-1)} + R_n",
                           scale: MathTheme.of(context).expressionScale?? 1.0,
                         ),
                         DisplayExpression(
                           context: context,
                           decoration: MathTheme.of(context).listItemDecoration,
-                          expression: r"R_n = \frac{(x-a)^n}{n!}\dot f^{n}(\xi), \xi = a + \theta \dot (x-a), \theta in (0,1) ",
+                          expression: r"R_n = \frac{(x-a)^n}{n!}f^{n}(\xi) \text{, } \xi = a + \theta (x-a) \text{, } \theta \in (0,1) ",
                           scale: MathTheme.of(context).expressionScale?? 1.0,
                         ),
                       ]
