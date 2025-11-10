@@ -23,6 +23,14 @@
   "congruenceParameters": "Parameters of congruence triangles",
   "similarityParameters": "Parameters of similarity triangles",
   "triangle": "Triangle",
+  "sequencesPageTitle": "Sequences",
+  "sequenceTypes": "Sequence types",
+  "sequenceExamples": "Examples of sequence",
+
+  "approximation_theorems": "ApproximationTheorems",
+  "approx_lagrange_theorem": "Lagrange theorem",
+  "approx_taylor_series": "Taylor series",
+  "approx_maclaurin_series": "Maclaurin series",
 
   "trigonometryPageTitle": "Trigonometry",
   "trigonometryFunctions": "Trigonometry functions",

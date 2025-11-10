@@ -24,6 +24,14 @@
   "congruenceParameters": "Parametry przystawania trójkątów",
   "similarityParameters": "Parametry podobieństwa trójkątów",
   "triangle": "Trójkąt",
+  "sequencesPageTitle": "Ciągi",
+  "sequenceTypes": "Typy ciągóœ",
+  "sequenceExamples": "Przykładowe ciągi",
+
+  "approximation_theorems": "Aproksymacja",
+  "approx_lagrange_theorem": "Twierdzenie Lagrange'a",
+  "approx_taylor_series": "Szereg Taylor'a",
+  "approx_maclaurin_series": "Szereg Maclaurin'a",
 
   "trigonometryPageTitle": "Trygonometria",
   "trigonometryFunctions": "Funkcje trygonometryczne",

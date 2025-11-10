@@ -236,6 +236,48 @@ abstract class AppLocalizations {
   /// **'Triangle'**
   String get triangle;
 
+  /// No description provided for @sequencesPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sequences'**
+  String get sequencesPageTitle;
+
+  /// No description provided for @sequenceTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Sequence types'**
+  String get sequenceTypes;
+
+  /// No description provided for @sequenceExamples.
+  ///
+  /// In en, this message translates to:
+  /// **'Examples of sequence'**
+  String get sequenceExamples;
+
+  /// No description provided for @approximation_theorems.
+  ///
+  /// In en, this message translates to:
+  /// **'ApproximationTheorems'**
+  String get approximation_theorems;
+
+  /// No description provided for @approx_lagrange_theorem.
+  ///
+  /// In en, this message translates to:
+  /// **'Lagrange theorem'**
+  String get approx_lagrange_theorem;
+
+  /// No description provided for @approx_taylor_series.
+  ///
+  /// In en, this message translates to:
+  /// **'Taylor series'**
+  String get approx_taylor_series;
+
+  /// No description provided for @approx_maclaurin_series.
+  ///
+  /// In en, this message translates to:
+  /// **'Maclaurin series'**
+  String get approx_maclaurin_series;
+
   /// No description provided for @trigonometryPageTitle.
   ///
   /// In en, this message translates to:

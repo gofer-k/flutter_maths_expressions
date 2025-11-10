@@ -83,6 +83,7 @@ flutter:
     - assets/images/block_shapes.png
     - assets/images/limits.png
     - assets/images/derivatives.png
+    - assets/images/sequences.png
     - assets/icons/ic_maths_theorems.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

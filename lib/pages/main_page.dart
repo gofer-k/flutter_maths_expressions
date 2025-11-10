@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/pages/derived_page.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/planimetry_page.dart';
+import 'package:flutter_maths_expressions/pages/sequences_page.dart';
 import 'package:flutter_maths_expressions/pages/trigonometry_page.dart';
 
 import '../l10n/app_localizations.dart';
 import '../widgets/background_container.dart';
+import 'approximation_page.dart';
 import 'block_shapes_page.dart';
 import 'limits_page.dart';
 import 'logarithms_page.dart';
@@ -68,9 +70,19 @@ class _HomePageState extends State<HomePage> {
                 LimitsPage(title: l10n.limitsPageTitle),
               ),
               navigatingCard(
+                context, Image.asset("assets/images/sequences.png"), 'Sequences',
+                SequencesPage(title: l10n.sequencesPageTitle),
+              ),
+              navigatingCard(
                 context, Image.asset("assets/images/derivatives.png"), 'Derivative theorems',
                 DerivativePage(title: l10n.derivativePageTitle),
               ),
+              navigatingCard(context,
+                // TODO: Replace with a real image
+                Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                'Approximation theorems',
+                ApproximationPage(title: l10n.approximation_theorems)),
+
             ],
           ),
       ),

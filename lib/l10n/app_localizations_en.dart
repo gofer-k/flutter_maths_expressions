@@ -78,6 +78,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triangle => 'Triangle';
 
   @override
+  String get sequencesPageTitle => 'Sequences';
+
+  @override
+  String get sequenceTypes => 'Sequence types';
+
+  @override
+  String get sequenceExamples => 'Examples of sequence';
+
+  @override
+  String get approximation_theorems => 'ApproximationTheorems';
+
+  @override
+  String get approx_lagrange_theorem => 'Lagrange theorem';
+
+  @override
+  String get approx_taylor_series => 'Taylor series';
+
+  @override
+  String get approx_maclaurin_series => 'Maclaurin series';
+
+  @override
   String get trigonometryPageTitle => 'Trigonometry';
 
   @override

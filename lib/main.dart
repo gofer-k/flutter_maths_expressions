@@ -73,7 +73,8 @@ class MathsExpressionsApp extends StatelessWidget {
                   offset: Offset(0, 3), // changes position of shadow
                 ),
               ],
-            )
+            ),
+            headerTextStyle: Theme.of(context).textTheme.bodyLarge,
           ),
         ],
       ),

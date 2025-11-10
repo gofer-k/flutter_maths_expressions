@@ -78,6 +78,27 @@ class AppLocalizationsPl extends AppLocalizations {
   String get triangle => 'Trójkąt';
 
   @override
+  String get sequencesPageTitle => 'Ciągi';
+
+  @override
+  String get sequenceTypes => 'Typy ciągóœ';
+
+  @override
+  String get sequenceExamples => 'Przykładowe ciągi';
+
+  @override
+  String get approximation_theorems => 'Aproksymacja';
+
+  @override
+  String get approx_lagrange_theorem => 'Twierdzenie Lagrange\'a';
+
+  @override
+  String get approx_taylor_series => 'Szereg Taylor\'a';
+
+  @override
+  String get approx_maclaurin_series => 'Szereg Maclaurin\'a';
+
+  @override
   String get trigonometryPageTitle => 'Trygonometria';
 
   @override
