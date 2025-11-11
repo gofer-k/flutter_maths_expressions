@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/Themes/math_theme.dart';
 import 'package:flutter_maths_expressions/widgets/shrinkable_table.dart';
 
 import '../../../l10n/app_localizations.dart';
@@ -36,10 +37,20 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    // final TextStyle? dropDownLabelStyle = Theme.of(context).textTheme.headlineSmall?.apply(color: Colors.blue.shade700);
+    // final TextStyle? dropDownEntryLabelStyle = Theme.of(context).textTheme.headlineSmall?.apply(color: Colors.blue.shade900, fontSizeFactor: 0.75);
+    // final MenuStyle dropDownMenuStyle = MenuStyle(
+    //     shadowColor: WidgetStateProperty.all(Colors.transparent),
+    //     backgroundColor: WidgetStateProperty.all(Colors.blueGrey.shade200),
+    //     elevation: WidgetStateProperty.all(2),
+    //     shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)))
+    // );
+
+    final dropdownLabel = [l10n.similaritySSS, l10n.similarityAAA, l10n.similaritySAS];
 
     return BackgroundContainer(
-      beginColor: Colors.grey.shade300,
-      // endColor: Colors.grey.shade800,
+      beginColor: Colors.grey.shade50,
+      endColor: Colors.grey.shade700,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -54,25 +65,37 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
           ),
           body: Column(
             children: [
-              Expanded(flex: 2, child: drawableView(DockSide.leftTop)),
-              const SizedBox(height: 4),
+              Expanded(flex: 3, child: drawableView(DockSide.leftTop)),
+              const SizedBox(height: 6),
               Expanded(flex: 1,
-                child: DropdownMenu(
-                    helperText: l10n.similarityType,
-                    initialSelection: type,
-                    dropdownMenuEntries: [
-                      DropdownMenuEntry(value: SimilarityType.sideSideSide, label: l10n.similaritySSS),
-                      DropdownMenuEntry(value: SimilarityType.angleAngleAngle, label: l10n.similarityAAA),
-                      DropdownMenuEntry(value: SimilarityType.sideAngleSide, label: l10n.similaritySAS),
-                    ],
-                    onSelected: (newType) {
-                      setState(() {
-                        if (newType != null && newType != type) {
-                          type = newType;
-                          changeTriangleProperties(type);
-                        }
-                      });
-                    }),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  child: LayoutBuilder(builder: (context, constraints){
+                    final double dropdownWidth = constraints.maxWidth;
+                    return DropdownMenu(
+                      width: dropdownWidth,
+                      menuStyle: MathTheme.of(context).dropDownMenuStyle,
+                      textStyle: MathTheme.of(context).dropDownLabelStyle,
+                      initialSelection: type,
+                      dropdownMenuEntries: List<DropdownMenuEntry<SimilarityType>>.generate(
+                        SimilarityType.values.length, (index) => DropdownMenuEntry(
+                          value: SimilarityType.values[index],
+                          label: dropdownLabel[index],
+                          labelWidget: SizedBox(
+                              width: dropdownWidth,
+                              child: Text(dropdownLabel[index], style: MathTheme.of(context).dropDownEntryLabelStyle))
+                          ),
+                      ),
+                      onSelected: (newType) {
+                        setState(() {
+                          if (newType != null && newType != type) {
+                            type = newType;
+                            changeTriangleProperties(type);
+                          }
+                        });
+                     });
+                  }),
+                ),
               ),
               Expanded(flex: 2, child: displayParameters(context, type)),
             ],
@@ -255,14 +278,14 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${Triangle.getLength(triangle1.a, triangle1.b).toStringAsFixed(2)}",
+          expression: Triangle.getLength(triangle1.a, triangle1.b).toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${Triangle.getLength(triangle2.a, triangle2.b).toStringAsFixed(2)}",
+          expression: Triangle.getLength(triangle2.a, triangle2.b).toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
@@ -301,14 +324,14 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${Triangle.getLength(triangle1.b, triangle1.c).toStringAsFixed(2)}",
+          expression: Triangle.getLength(triangle1.b, triangle1.c).toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${Triangle.getLength(triangle2.b, triangle2.c).toStringAsFixed(2)}",
+          expression: Triangle.getLength(triangle2.b, triangle2.c).toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
@@ -333,7 +356,7 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
     );
     final List<List<Widget>> parameters = [
       [
-        Text("${l10n.triangle}-"), Text("${l10n.triangle}1"), Text("${l10n.triangle}"),
+        Text("${l10n.triangle}-"), Text("${l10n.triangle}1"), Text(l10n.triangle),
       ],
       [
         DisplayExpression(
@@ -346,14 +369,14 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${triangle1.getAngleA().toStringAsFixed(2)}",
+          expression: triangle1.getAngleA().toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${triangle2.getAngleA().toStringAsFixed(2)}",
+          expression: triangle2.getAngleA().toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
@@ -369,14 +392,14 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${triangle1.getAngleB().toStringAsFixed(2)}",
+          expression: triangle1.getAngleB().toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${triangle2.getAngleC().toStringAsFixed(2)}",
+          expression: triangle2.getAngleC().toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
@@ -392,14 +415,14 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${triangle1.getAngleC().toStringAsFixed(2)}",
+          expression: triangle1.getAngleC().toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${triangle2.getAngleC().toStringAsFixed(2)}",
+          expression: triangle2.getAngleC().toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
@@ -432,14 +455,14 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${Triangle.getLength(triangle1.a, triangle1.b).toStringAsFixed(2)}",
+          expression: Triangle.getLength(triangle1.a, triangle1.b).toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${Triangle.getLength(triangle2.a, triangle2.b).toStringAsFixed(2)}",
+          expression: Triangle.getLength(triangle2.a, triangle2.b).toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
@@ -455,14 +478,14 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${triangle1.getAngleB().toStringAsFixed(2)}",
+          expression: triangle1.getAngleB().toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${triangle2.getAngleB().toStringAsFixed(2)}",
+          expression: triangle2.getAngleB().toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
@@ -478,14 +501,14 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${Triangle.getLength(triangle1.b, triangle1.c).toStringAsFixed(2)}",
+          expression: Triangle.getLength(triangle1.b, triangle1.c).toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),
         DisplayExpression(
           context: context,
           decoration: decoration,
-          expression: "${Triangle.getLength(triangle2.b, triangle2.c).toStringAsFixed(2)}",
+          expression: Triangle.getLength(triangle2.b, triangle2.c).toStringAsFixed(2),
           scale: scale,
           textStyle: headerTextStyle,
         ),

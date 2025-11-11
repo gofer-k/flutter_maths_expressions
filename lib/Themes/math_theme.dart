@@ -9,6 +9,9 @@ class MathTheme extends ThemeExtension<MathTheme> {
   final TextStyle? shrinkableTitleTextStyle;
   final BoxDecoration? listItemDecoration;
   final TextStyle? headerTextStyle;
+  final TextStyle? dropDownLabelStyle;
+  final TextStyle? dropDownEntryLabelStyle;
+  final MenuStyle? dropDownMenuStyle;
 
   // Optional: Add a static method to easily access the extension from context
   static MathTheme of(BuildContext context) {
@@ -21,7 +24,10 @@ class MathTheme extends ThemeExtension<MathTheme> {
     this.expressionScale,
     this.shrinkableTitleTextStyle,
     this.listItemDecoration,
-    this.headerTextStyle,});
+    this.headerTextStyle,
+    this.dropDownLabelStyle,
+    this.dropDownEntryLabelStyle,
+    this.dropDownMenuStyle});
 
   @override
   MathTheme copyWith({
@@ -30,14 +36,18 @@ class MathTheme extends ThemeExtension<MathTheme> {
     double? expressionScale,
     TextStyle? shrinkableTitleTextStyle,
     BoxDecoration? listItemDecoration,
-    TextStyle? headerTextStyle}) {
+    TextStyle? headerTextStyle,
+    TextStyle? dropDownLabelStyle,
+    TextStyle? dropDownEntryLabelStyle,
+    MenuStyle? dropDownMenuStyle}) {
     return MathTheme(horizontalPadding: horizontalPadding,
         verticalPadding: verticalPadding,
         expressionScale: expressionScale,
         shrinkableTitleTextStyle: shrinkableTitleTextStyle,
         listItemDecoration: listItemDecoration,
         headerTextStyle: headerTextStyle,
-    );
+        dropDownMenuStyle: dropDownMenuStyle,
+        dropDownEntryLabelStyle: dropDownEntryLabelStyle);
   }
 
   @override
@@ -49,6 +59,9 @@ class MathTheme extends ThemeExtension<MathTheme> {
       horizontalPadding: lerpDouble(horizontalPadding, other.horizontalPadding, t),
       shrinkableTitleTextStyle: TextStyle.lerp(shrinkableTitleTextStyle, other.shrinkableTitleTextStyle, t),
       headerTextStyle: TextStyle.lerp(headerTextStyle, other.headerTextStyle, t),
+      dropDownMenuStyle: MenuStyle.lerp(dropDownMenuStyle, other.dropDownMenuStyle, t),
+      dropDownLabelStyle: TextStyle.lerp(dropDownLabelStyle, other.dropDownLabelStyle, t),
+      dropDownEntryLabelStyle: TextStyle.lerp(dropDownEntryLabelStyle, other.dropDownEntryLabelStyle, t),
     );
   }
 
