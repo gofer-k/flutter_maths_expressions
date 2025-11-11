@@ -78,8 +78,7 @@ class _HomePageState extends State<HomePage> {
                 DerivativePage(title: l10n.derivativePageTitle),
               ),
               navigatingCard(context,
-                // TODO: Replace with a real image
-                Image.network('assets/images/approximation.png'),
+                Image.asset('assets/images/approximation.png'),
                 'Approximation theorems',
                 ApproximationPage(title: l10n.approximation_theorems)),
 
