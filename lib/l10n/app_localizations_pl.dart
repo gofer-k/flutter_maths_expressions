@@ -75,6 +75,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get similarityParameters => 'Parametry podobieństwa trójkątów';
 
   @override
+  String get angle => 'Kąt';
+
+  @override
   String get triangle => 'Trójkąt';
 
   @override

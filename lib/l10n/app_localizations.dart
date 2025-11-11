@@ -230,6 +230,12 @@ abstract class AppLocalizations {
   /// **'Parameters of similarity triangles'**
   String get similarityParameters;
 
+  /// No description provided for @angle.
+  ///
+  /// In en, this message translates to:
+  /// **'Angle'**
+  String get angle;
+
   /// No description provided for @triangle.
   ///
   /// In en, this message translates to:

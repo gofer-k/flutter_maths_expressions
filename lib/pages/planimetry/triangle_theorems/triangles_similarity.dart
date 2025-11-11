@@ -221,13 +221,13 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
     final tableItemDecoration = BoxDecoration(color: Colors.transparent);
     final tableHeaderTextStyle = TextStyle(
       color: Colors.lightBlueAccent,
-      fontWeight: FontWeight.bold,
-      fontSize: 12.0,
+      fontWeight: FontWeight.normal,
+      fontSize: 16.0,
     );
     final shrinkableTitleTextStyle = TextStyle(
       color: Colors.black,
       fontWeight: Theme.of(context).textTheme.titleMedium?.fontWeight,
-      fontSize: Theme.of(context).textTheme.titleMedium?.fontSize,
+      fontSize: 20.0,
     );
 
     switch(type) {
@@ -265,7 +265,9 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
     final l10n = AppLocalizations.of(context)!;
     final List<List<Widget>> parameters = [
       [
-        Text("-"), Text("${l10n.triangle}1"), Text("${l10n.triangle}2"),
+        Text("-"),
+        Text("${l10n.triangle}1", style: TextStyle(fontSize: 20.0),),
+        Text("${l10n.triangle}2", style: TextStyle(fontSize: 20.0)),
       ],
       [
         DisplayExpression(
@@ -356,7 +358,9 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
     );
     final List<List<Widget>> parameters = [
       [
-        Text("${l10n.triangle}-"), Text("${l10n.triangle}1"), Text(l10n.triangle),
+        Text("${l10n.angle}", style: TextStyle(fontSize: 20.0),),
+        Text("${l10n.triangle}1", style: TextStyle(fontSize: 20.0),),
+        Text("${l10n.triangle}2", style: TextStyle(fontSize: 20.0)),
       ],
       [
         DisplayExpression(
@@ -442,7 +446,9 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
     final l10n = AppLocalizations.of(context)!;
     final List<List<Widget>> parameters = [
       [
-        Text("${l10n.triangle}-"), Text("${l10n.triangle}1"), Text("${l10n.triangle}2"),
+        Text("-"),
+        Text("${l10n.triangle}1", style: TextStyle(fontSize: 20.0),),
+        Text("${l10n.triangle}2", style: TextStyle(fontSize: 20.0),),
       ],
       [
         DisplayExpression(
