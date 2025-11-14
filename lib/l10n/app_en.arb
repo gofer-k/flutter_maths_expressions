@@ -22,6 +22,7 @@
   "similaritySAS": "Side-Angle-Side",
   "congruenceParameters": "Parameters of congruence triangles",
   "similarityParameters": "Parameters of similarity triangles",
+  "triangleOithagorasTheorem": "Pithagoras Theorem",
   "angle": "Angle",
   "triangle": "Triangle",
   "sequencesPageTitle": "Sequences",

@@ -193,11 +193,8 @@ class _TrianglesCongruenceState extends State<TrianglesCongruence> {
         break;
       case CongruenceType.sideAngleSide:
         triangle1 = Triangle(a: originTriangle1.a, b: originTriangle1.b, c: originTriangle1.c);
-
-        triangle2 = Triangle(a: originTriangle2.a,
-            // Change target trangle equilateral to Isosceles type
-            b: Offset(originTriangle2.b.dx, originTriangle2.b.dy - (originTriangle1.b.dy + originTriangle2.b.dy) / 2.0),
-            c: originTriangle2.c);
+        triangle2 = Triangle(a: originTriangle2.a, b: originTriangle2.b, c: originTriangle2.c);
+        triangle2.scale(1.5);
         break;
       case CongruenceType.angleSideAngle: {
         triangle1 = Triangle(a: Offset(-4, 1), b: Offset(-3, 3), c: Offset(1, 1));

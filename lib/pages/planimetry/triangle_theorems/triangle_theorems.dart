@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/pythagoras_theorem.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangle_angles.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangle_propertes.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangles_congruence.dart';
@@ -40,6 +41,7 @@ class _TriangleTheoremsPageState extends State<TriangleTheoremsPage> {
             navigatingTheoremPage(context, l10n.triangleAngles, TriangleAnglesPage(title: l10n.triangleAngles)),
             navigatingTheoremPage(context, l10n.trianglesCongruence, TrianglesCongruence(title: l10n.trianglesCongruence)),
             navigatingTheoremPage(context, l10n.trianglesSimilarity, TrianglesSimilarity(title: l10n.trianglesSimilarity)),
+            navigatingTheoremPage(context, l10n.triangleOithagorasTheorem, PythagorasTheorem(title: l10n.triangleOithagorasTheorem)),
           ],
         )
       ),

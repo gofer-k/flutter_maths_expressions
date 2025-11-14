@@ -75,6 +75,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get similarityParameters => 'Parameters of similarity triangles';
 
   @override
+  String get triangleOithagorasTheorem => 'Pithagoras Theorem';
+
+  @override
   String get angle => 'Angle';
 
   @override

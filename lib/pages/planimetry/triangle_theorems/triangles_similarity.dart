@@ -196,11 +196,9 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
         break;
       case SimilarityType.sideAngleSide: {
         triangle1 = Triangle(a: originTriangle1.a, b: originTriangle1.b, c: originTriangle1.c);
-        triangle2 = Triangle(a: originTriangle1.a,
-          // Change target trangle equilateral to Isosceles type
-          b: Offset(originTriangle1.b.dx, originTriangle1.b.dy + 1.5),
-          c: originTriangle1.c);
-        triangle2.translate(1, -7);
+        triangle2 = Triangle(a: originTriangle1.a, b: originTriangle1.b, c: originTriangle1.c);
+        triangle2.scale(1.5);
+        triangle2.translate(3, -7);
         break;
       }
     }

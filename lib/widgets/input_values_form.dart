@@ -62,19 +62,18 @@ class _InputValuesFormState<Value> extends State<InputValuesForm<Value>> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 for (final cellData in formRow) ...[
-                  cellData.readOnly
-                      ? Text(
-                          cellData.label,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        )
-                      : Expanded(
-                          child: _buildVertexField(
-                            cellData.label,
-                            cellData.cellValue,
-                            _controllers[controllerIndex++],
-                            l10n,
-                          ),
-                        ),
+                  Expanded(child: cellData.readOnly
+                    ? Text(
+                        cellData.label,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      )
+                    : _buildVertexField(
+                        cellData.label,
+                        cellData.cellValue,
+                        _controllers[controllerIndex++],
+                        l10n,
+                      ),
+                    ),
                   const SizedBox(height: spaceWidth, width: spaceWidth),
                 ],
               ],
