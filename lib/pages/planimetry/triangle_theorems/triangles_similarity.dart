@@ -37,15 +37,6 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    // final TextStyle? dropDownLabelStyle = Theme.of(context).textTheme.headlineSmall?.apply(color: Colors.blue.shade700);
-    // final TextStyle? dropDownEntryLabelStyle = Theme.of(context).textTheme.headlineSmall?.apply(color: Colors.blue.shade900, fontSizeFactor: 0.75);
-    // final MenuStyle dropDownMenuStyle = MenuStyle(
-    //     shadowColor: WidgetStateProperty.all(Colors.transparent),
-    //     backgroundColor: WidgetStateProperty.all(Colors.blueGrey.shade200),
-    //     elevation: WidgetStateProperty.all(2),
-    //     shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)))
-    // );
-
     final dropdownLabel = [l10n.similaritySSS, l10n.similarityAAA, l10n.similaritySAS];
 
     return BackgroundContainer(
@@ -216,7 +207,6 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
   }
   
   Widget displayParameters(BuildContext context, SimilarityType type) {
-    // TODO improve table and text style
     final tableCellScale = 1.5;
     final tableItemDecoration = BoxDecoration(color: Colors.transparent);
     final tableHeaderTextStyle = TextStyle(
@@ -351,11 +341,6 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
       required TextStyle headerTextStyle,
       required TextStyle titleTextStyle}) {
     final l10n = AppLocalizations.of(context)!;
-    final titleTextStyle = TextStyle(
-      color: Colors.black,
-      fontWeight: Theme.of(context).textTheme.titleMedium?.fontWeight,
-      fontSize: Theme.of(context).textTheme.titleMedium?.fontSize,
-    );
     final List<List<Widget>> parameters = [
       [
         Text("${l10n.angle}", style: TextStyle(fontSize: 20.0),),

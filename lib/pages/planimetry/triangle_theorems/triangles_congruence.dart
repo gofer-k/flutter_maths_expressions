@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../../Themes/math_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/dock_side.dart';
 import '../../../models/planimetry/congruence_type.dart';
@@ -9,7 +10,9 @@ import '../../../models/planimetry/triangle.dart';
 import '../../../painters/drawable_shape.dart';
 import '../../../painters/triangle_painter.dart';
 import '../../../widgets/background_container.dart';
+import '../../../widgets/display_expression.dart';
 import '../../../widgets/infinite_drawer.dart';
+import '../../../widgets/shrinkable_table.dart';
 
 class TrianglesCongruence extends StatefulWidget {
   final String title;
@@ -37,10 +40,11 @@ class _TrianglesCongruenceState extends State<TrianglesCongruence> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final dropdownLabel = [l10n.congruenceSSS, l10n.congruenceSAS, l10n.congruenceASA];
 
     return BackgroundContainer(
-      beginColor: Colors.grey.shade300,
-      // endColor: Colors.grey.shade800,
+      beginColor: Colors.grey.shade50,
+      endColor: Colors.grey.shade700,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -55,26 +59,39 @@ class _TrianglesCongruenceState extends State<TrianglesCongruence> {
           ),
           body: Column(
             children: [
-              Expanded(flex: 2, child: drawableView(DockSide.leftTop)),
-              const SizedBox(height: 4),
+              Expanded(flex: 3, child: drawableView(DockSide.leftTop)),
+              const SizedBox(height: 6),
               Expanded(flex: 1,
-                child: DropdownMenu(
-                  helperText: l10n.congruenceType,
-                  initialSelection: type,
-                  dropdownMenuEntries: [
-                    DropdownMenuEntry(value: CongruenceType.sideSideSide, label: l10n.congruenceSSS),
-                    DropdownMenuEntry(value: CongruenceType.sideAngleSide, label: l10n.congruenceSAS),
-                    DropdownMenuEntry(value: CongruenceType.angleSideAngle, label: l10n.congruenceASA),
-                  ],
-                  onSelected: (newType) {
-                    setState(() {
-                      if (newType != null && newType != type) {
-                        type = newType;
-                        changeTriangleProperties(type);
-                      }
-                    });
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  child: LayoutBuilder(builder: (context, constraints){
+                    final double dropdownWidth = constraints.maxWidth;
+                    return DropdownMenu(
+                        width: dropdownWidth,
+                        menuStyle: MathTheme.of(context).dropDownMenuStyle,
+                        textStyle: MathTheme.of(context).dropDownLabelStyle,
+                        initialSelection: type,
+                        dropdownMenuEntries: List<DropdownMenuEntry<CongruenceType>>.generate(
+                          CongruenceType.values.length, (index) => DropdownMenuEntry(
+                            value: CongruenceType.values[index],
+                            label: dropdownLabel[index],
+                            labelWidget: SizedBox(
+                                width: dropdownWidth,
+                                child: Text(dropdownLabel[index], style: MathTheme.of(context).dropDownEntryLabelStyle))
+                        ),
+                        ),
+                        onSelected: (newType) {
+                          setState(() {
+                            if (newType != null && newType != type) {
+                              type = newType;
+                              changeTriangleProperties(type);
+                            }
+                          });
+                        });
                   }),
+                ),
               ),
+              Expanded(flex: 2, child: displayParameters(context, type)),
             ],
           ),
         ),
@@ -190,6 +207,310 @@ class _TrianglesCongruenceState extends State<TrianglesCongruence> {
         break;
       }
     }
+  }
+
+  Widget displayParameters(BuildContext context, CongruenceType type) {
+    final tableCellScale = 1.5;
+    final tableItemDecoration = BoxDecoration(color: Colors.transparent);
+    final tableHeaderTextStyle = TextStyle(
+      color: Colors.lightBlueAccent,
+      fontWeight: FontWeight.normal,
+      fontSize: 16.0,
+    );
+    final shrinkableTitleTextStyle = TextStyle(
+      color: Colors.black,
+      fontWeight: Theme.of(context).textTheme.titleMedium?.fontWeight,
+      fontSize: 20.0,
+    );
+
+    switch(type) {
+      case CongruenceType.sideSideSide:
+        return displayParametersCongruenceTypeSSS(
+            context: context,
+            scale: tableCellScale,
+            decoration: tableItemDecoration,
+            headerTextStyle: tableHeaderTextStyle,
+            titleTextStyle: shrinkableTitleTextStyle);
+      case CongruenceType.sideAngleSide:
+        return displayParametersCongruenceTypeSAS(
+            context: context,
+            scale: tableCellScale,
+            decoration: tableItemDecoration,
+            headerTextStyle: tableHeaderTextStyle,
+            titleTextStyle: shrinkableTitleTextStyle);
+      case CongruenceType.angleSideAngle:
+        return displayParametersCongruenceTypeASA(
+            context: context,
+            scale: tableCellScale,
+            decoration: tableItemDecoration,
+            headerTextStyle: tableHeaderTextStyle,
+            titleTextStyle: shrinkableTitleTextStyle
+        );
+    }
+  }
+
+  Widget displayParametersCongruenceTypeSSS({required BuildContext context,
+    required double scale,
+    required BoxDecoration decoration,
+    required TextStyle headerTextStyle,
+    required TextStyle titleTextStyle}) {
+
+    final l10n = AppLocalizations.of(context)!;
+    final List<List<Widget>> parameters = [
+      [
+        Text("-"),
+        Text("${l10n.triangle}1", style: TextStyle(fontSize: 20.0),),
+        Text("${l10n.triangle}2", style: TextStyle(fontSize: 20.0)),
+      ],
+      [
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: r"|AB|",
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: Triangle.getLength(triangle1.a, triangle1.b).toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: Triangle.getLength(triangle2.a, triangle2.b).toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+      ],
+      [
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: r"|AC|",
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: "${Triangle.getLength(triangle1.a, triangle1.c)..toStringAsFixed(2)}",
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: "${Triangle.getLength(triangle2.a, triangle2.c)..toStringAsFixed(2)}",
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+      ],
+      [
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: r"|BC|",
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: Triangle.getLength(triangle1.b, triangle1.c).toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: Triangle.getLength(triangle2.b, triangle2.c).toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+      ]
+    ];
+
+    return ShrinkableTable(title: l10n.similarityParameters,
+        contents: parameters, titleStyle: titleTextStyle);
+  }
+
+  Widget displayParametersCongruenceTypeSAS(
+      {required BuildContext context,
+        required double scale,
+        required BoxDecoration decoration,
+        required TextStyle headerTextStyle,
+        required TextStyle titleTextStyle}) {
+    final l10n = AppLocalizations.of(context)!;
+    final List<List<Widget>> parameters = [
+      [
+        Text("-", style: TextStyle(fontSize: 20.0),),
+        Text("${l10n.triangle}1", style: TextStyle(fontSize: 20.0),),
+        Text("${l10n.triangle}2", style: TextStyle(fontSize: 20.0)),
+      ],
+      [
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: r"|AB|",
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: Triangle.getLength(triangle1.a, triangle1.b).toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: Triangle.getLength(triangle2.a, triangle2.b).toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+      ],
+      [
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: r"\sphericalangle ABC",
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: triangle1.getAngleB().toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: triangle2.getAngleB().toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+      ],
+      [
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: r"|BC|",
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: Triangle.getLength(triangle1.b, triangle1.c).toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: Triangle.getLength(triangle2.b, triangle2.c).toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+      ]
+    ];
+
+    return ShrinkableTable(title: l10n.similarityParameters,
+        contents: parameters, titleStyle: titleTextStyle);
+  }
+
+  Widget displayParametersCongruenceTypeASA({
+    required BuildContext context,
+    required double scale,
+    required BoxDecoration decoration,
+    required TextStyle headerTextStyle,
+    required TextStyle titleTextStyle}) {
+    final l10n = AppLocalizations.of(context)!;
+    final List<List<Widget>> parameters = [
+      [
+        Text("-"),
+        Text("${l10n.triangle}1", style: TextStyle(fontSize: 20.0),),
+        Text("${l10n.triangle}2", style: TextStyle(fontSize: 20.0),),
+      ],
+      [
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: r"\sphericalangle BAC",
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: triangle1.getAngleA().toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: triangle2.getAngleA().toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+      ],
+      [
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: r"AC|",
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: Triangle.getLength(triangle1.a, triangle1.c).toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: Triangle.getLength(triangle2.a, triangle2.c).toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+      ],
+      [
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: r"\sphericalangle ACB",
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: triangle1.getAngleC().toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+        DisplayExpression(
+          context: context,
+          decoration: decoration,
+          expression: triangle2.getAngleC().toStringAsFixed(2),
+          scale: scale,
+          textStyle: headerTextStyle,
+        ),
+      ],
+    ];
+
+    return ShrinkableTable(title: l10n.similarityParameters,
+        contents: parameters, titleStyle: titleTextStyle);
   }
 }
 
