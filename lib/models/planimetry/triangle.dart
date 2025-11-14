@@ -115,6 +115,10 @@ class Triangle extends BaseShape {
     return a + ab * (magnitudeAB * cos(acos(cosTheta))) / magnitudeAB;
   }
 
+  Offset getMedianPoint(Offset begin, Offset end) {
+    return Offset((begin.dx + end.dx) / 2, (begin.dy + end.dy) / 2);
+  }
+
   void scale(double value) {
     a *= value;
     b *= value;

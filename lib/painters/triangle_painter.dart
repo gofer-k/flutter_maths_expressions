@@ -10,7 +10,8 @@ enum ShowTriangleProperty {
   angleB,
   angleC,
   height,
-  heightPoint
+  heightPoint,
+  medianPont
 }
 
 class TrianglePainter extends FigurePainter {
@@ -80,6 +81,7 @@ class TrianglePainter extends FigurePainter {
 
     // Convert local triangle coordinates to pixel coordinates
     final triangle = shape as Triangle;
+    final medianPoint = triangle.getMedianPoint(triangle.a, triangle.c);
 
     final Offset aPos =
     Offset(triangle.a.dx * originUnitInPixels, -triangle.a.dy * originUnitInPixels);
@@ -87,6 +89,8 @@ class TrianglePainter extends FigurePainter {
     Offset(triangle.b.dx * originUnitInPixels, -triangle.b.dy * originUnitInPixels);
     final Offset cPos =
     Offset(triangle.c.dx * originUnitInPixels, -triangle.c.dy * originUnitInPixels);
+    final Offset mPos =
+    Offset(medianPoint.dx * originUnitInPixels, -medianPoint.dy * originUnitInPixels);
 
     // 4. Convert local triangle coordinates to "scaled local" coordinates.
     // These are the coordinates in pixels as if the zoom level was 1.0,
@@ -126,6 +130,18 @@ class TrianglePainter extends FigurePainter {
 
         canvas.drawLine(bPos, dPos, paintHeight);
         paintText(canvas, "D", dPos, xOffset: -4.0, yOffset: -2.0);
+      } catch(e) {
+        logger.e;
+      }
+    }
+    if (showProperties.contains(ShowTriangleProperty.medianPont)) {
+      final Paint paintHeight = Paint()
+        ..color = Colors.green
+        ..strokeWidth = 2.0
+        ..style = PaintingStyle.stroke;
+      try {
+        canvas.drawLine(bPos, mPos, paintHeight);
+        paintText(canvas, "M", mPos, xOffset: -4.0, yOffset: -2.0);
       } catch(e) {
         logger.e;
       }

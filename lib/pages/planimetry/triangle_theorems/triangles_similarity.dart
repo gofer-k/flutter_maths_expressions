@@ -341,7 +341,7 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
     final l10n = AppLocalizations.of(context)!;
     final List<List<Widget>> parameters = [
       [
-        Text("${l10n.angle}", style: TextStyle(fontSize: 20.0),),
+        Text(l10n.angle, style: TextStyle(fontSize: 20.0),),
         Text("${l10n.triangle}1", style: TextStyle(fontSize: 20.0),),
         Text("${l10n.triangle}2", style: TextStyle(fontSize: 20.0)),
       ],

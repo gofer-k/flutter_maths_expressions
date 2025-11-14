@@ -75,7 +75,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get similarityParameters => 'Parametry podobieństwa trójkątów';
 
   @override
-  String get triangleOithagorasTheorem => 'Twierdzenie Pitagorasa';
+  String get trianglePythagorasTheorem => 'Twierdzenie Pitagorasa';
+
+  @override
+  String get triangleMedianTheorem => 'Twierdzenie mediany na trójkącie';
 
   @override
   String get angle => 'Kąt';

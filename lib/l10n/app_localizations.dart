@@ -230,11 +230,17 @@ abstract class AppLocalizations {
   /// **'Parameters of similarity triangles'**
   String get similarityParameters;
 
-  /// No description provided for @triangleOithagorasTheorem.
+  /// No description provided for @trianglePythagorasTheorem.
   ///
   /// In en, this message translates to:
   /// **'Pithagoras Theorem'**
-  String get triangleOithagorasTheorem;
+  String get trianglePythagorasTheorem;
+
+  /// No description provided for @triangleMedianTheorem.
+  ///
+  /// In en, this message translates to:
+  /// **'Media theorem'**
+  String get triangleMedianTheorem;
 
   /// No description provided for @angle.
   ///
