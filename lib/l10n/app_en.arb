@@ -24,6 +24,7 @@
   "similarityParameters": "Parameters of similarity triangles",
   "trianglePythagorasTheorem": "Pithagoras Theorem",
   "triangleMedianTheorem": "Media theorem",
+  "triangleCentroidPoint": "Triangle centroid theorem",
   "angle": "Angle",
   "triangle": "Triangle",
   "sequencesPageTitle": "Sequences",

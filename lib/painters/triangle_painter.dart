@@ -11,7 +11,8 @@ enum ShowTriangleProperty {
   angleC,
   height,
   heightPoint,
-  medianPont
+  medianPont,
+  centroidPoint,
 }
 
 class TrianglePainter extends FigurePainter {
@@ -89,8 +90,6 @@ class TrianglePainter extends FigurePainter {
     Offset(triangle.b.dx * originUnitInPixels, -triangle.b.dy * originUnitInPixels);
     final Offset cPos =
     Offset(triangle.c.dx * originUnitInPixels, -triangle.c.dy * originUnitInPixels);
-    final Offset mPos =
-    Offset(medianPoint.dx * originUnitInPixels, -medianPoint.dy * originUnitInPixels);
 
     // 4. Convert local triangle coordinates to "scaled local" coordinates.
     // These are the coordinates in pixels as if the zoom level was 1.0,
@@ -135,18 +134,93 @@ class TrianglePainter extends FigurePainter {
       }
     }
     if (showProperties.contains(ShowTriangleProperty.medianPont)) {
-      final Paint paintHeight = Paint()
+      final Paint paintMedianLine = Paint()
         ..color = Colors.green
         ..strokeWidth = 2.0
         ..style = PaintingStyle.stroke;
       try {
-        canvas.drawLine(bPos, mPos, paintHeight);
+        final Offset mPos =
+        Offset(medianPoint.dx * originUnitInPixels, -medianPoint.dy * originUnitInPixels);
+
+        canvas.drawLine(bPos, mPos, paintMedianLine);
         paintText(canvas, "M", mPos, xOffset: -4.0, yOffset: -2.0);
       } catch(e) {
         logger.e;
       }
     }
+    if (showProperties.contains(ShowTriangleProperty.centroidPoint)) {
+      // Define the geometry of the dashes
+      const double dashWidth = 5.0; // Length of each dash
+      const double dashSpace = 3.0; // Space bet
 
+      final displayMedianLine = (Offset begin, Offset end) {
+        final Paint paintMedianLine = Paint()
+          ..color = Colors.green
+          ..strokeWidth = 2.0;
+        // Calculate the vector from start to end
+        final Offset delta = end - begin;
+        final double distance = delta.distance;
+
+        // Create a direction vector (normalized)
+        final Offset direction = delta / distance;
+        double drawnLength = 0.0;
+        // Move to the starting point
+        Offset currentPoint = begin;
+
+        while (drawnLength < distance) {
+          // Calculate the end of the current dash
+          final double dashEnd = drawnLength + dashWidth;
+          final double remaining = distance - drawnLength;
+          final double currentDashLength = dashEnd > distance
+              ? remaining
+              : dashWidth;
+
+          final Offset nextPoint = currentPoint + direction * currentDashLength;
+
+          // Draw the dash
+          canvas.drawLine(currentPoint, nextPoint, paintMedianLine);
+
+          // Move the current point for the next dash (past the dash and the space)
+          currentPoint += direction * (dashWidth + dashSpace);
+          drawnLength += dashWidth + dashSpace;
+        }
+      };
+      {
+        final Offset medianPoint = triangle.getMedianPoint(
+            triangle.b, triangle.c);
+        final Offset medianPos =
+        Offset(medianPoint.dx * originUnitInPixels,
+            -medianPoint.dy * originUnitInPixels);
+        displayMedianLine(aPos, medianPos);
+      }
+      {
+        final Offset medianPoint = triangle.getMedianPoint(
+            triangle.a, triangle.c);
+        final Offset medianPos =
+        Offset(medianPoint.dx * originUnitInPixels,
+            -medianPoint.dy * originUnitInPixels);
+        displayMedianLine(bPos, medianPos);
+      }
+      {
+        final Offset medianPoint = triangle.getMedianPoint(
+            triangle.a, triangle.b);
+        final Offset medianPos =
+        Offset(medianPoint.dx * originUnitInPixels,
+            -medianPoint.dy * originUnitInPixels);
+        displayMedianLine(cPos, medianPos);
+      }
+      {
+        final Offset centroidPoint = triangle.getCentroidPoint();
+        final Offset centroidPos =
+        Offset(centroidPoint.dx * originUnitInPixels, -centroidPoint.dy * originUnitInPixels);
+
+        final Paint paintCentroidPoint = Paint()
+          ..color = Colors.red
+          ..strokeWidth = 2.0
+          ..style = PaintingStyle.fill;
+        canvas.drawCircle(centroidPos, 5.0, paintCentroidPoint);
+      }
+    }
     // Restore the canvas to its state before canvas.save()
     canvas.restore();
   }

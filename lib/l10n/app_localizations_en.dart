@@ -81,6 +81,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triangleMedianTheorem => 'Media theorem';
 
   @override
+  String get triangleCentroidPoint => 'Triangle centroid theorem';
+
+  @override
   String get angle => 'Angle';
 
   @override

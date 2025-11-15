@@ -242,6 +242,12 @@ abstract class AppLocalizations {
   /// **'Media theorem'**
   String get triangleMedianTheorem;
 
+  /// No description provided for @triangleCentroidPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Triangle centroid theorem'**
+  String get triangleCentroidPoint;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:

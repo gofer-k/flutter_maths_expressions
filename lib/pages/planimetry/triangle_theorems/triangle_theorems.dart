@@ -6,6 +6,7 @@ import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/tri
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangles_similarity.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../widgets/background_container.dart';
+import 'centroid_theorem.dart';
 import 'median_theorem.dart';
 
 class TriangleTheoremsPage extends StatefulWidget {
@@ -44,6 +45,7 @@ class _TriangleTheoremsPageState extends State<TriangleTheoremsPage> {
             navigatingTheoremPage(context, l10n.trianglesSimilarity, TrianglesSimilarity(title: l10n.trianglesSimilarity)),
             navigatingTheoremPage(context, l10n.trianglePythagorasTheorem, PythagorasTheorem(title: l10n.trianglePythagorasTheorem)),
             navigatingTheoremPage(context, l10n.triangleMedianTheorem, MedianTheoremPage(title: l10n.triangleMedianTheorem)),
+            navigatingTheoremPage(context, l10n.triangleCentroidPoint, CentroidTheorem(title: l10n.triangleCentroidPoint)),
           ],
         )
       ),

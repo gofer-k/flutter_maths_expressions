@@ -119,6 +119,10 @@ class Triangle extends BaseShape {
     return Offset((begin.dx + end.dx) / 2, (begin.dy + end.dy) / 2);
   }
 
+  Offset getCentroidPoint() {
+    return (a + b + c) / 3.0;
+  }
+
   void scale(double value) {
     a *= value;
     b *= value;

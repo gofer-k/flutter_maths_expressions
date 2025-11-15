@@ -81,6 +81,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get triangleMedianTheorem => 'Twierdzenie mediany na trójkącie';
 
   @override
+  String get triangleCentroidPoint => 'Punkt ciężkości trójkąta';
+
+  @override
   String get angle => 'Kąt';
 
   @override

@@ -25,6 +25,7 @@
   "similarityParameters": "Parametry podobieństwa trójkątów",
   "trianglePythagorasTheorem": "Twierdzenie Pitagorasa",
   "triangleMedianTheorem": "Twierdzenie mediany na trójkącie",
+  "triangleCentroidPoint": "Punkt ciężkości trójkąta",
   "triangle": "Trójkąt",
   "angle": "Kąt",
   "sequencesPageTitle": "Ciągi",
