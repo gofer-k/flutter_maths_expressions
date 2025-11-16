@@ -248,6 +248,12 @@ abstract class AppLocalizations {
   /// **'Triangle centroid theorem'**
   String get triangleCentroidPoint;
 
+  /// No description provided for @triangleBisectorTheorem.
+  ///
+  /// In en, this message translates to:
+  /// **'Bisector theorem'**
+  String get triangleBisectorTheorem;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:

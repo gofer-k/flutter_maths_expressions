@@ -13,6 +13,7 @@ enum ShowTriangleProperty {
   heightPoint,
   medianPont,
   centroidPoint,
+  bisector
 }
 
 class TrianglePainter extends FigurePainter {
@@ -60,6 +61,39 @@ class TrianglePainter extends FigurePainter {
   //
   //   textPainter.paint(canvas, centeredOffset);
   // }
+
+  void _displayDashedLine({required Canvas canvas, required Offset begin, required Offset end, double dashWidth = 5.0, double dashSpace = 3.0}) {
+    final Paint paintDashedLine = Paint()
+      ..color = Colors.green
+      ..strokeWidth = 2.0;
+    // Calculate the vector from start to end
+    final Offset delta = end - begin;
+    final double distance = delta.distance;
+
+    // Create a direction vector (normalized)
+    final Offset direction = delta / distance;
+    double drawnLength = 0.0;
+    // Move to the starting point
+    Offset currentPoint = begin;
+
+    while (drawnLength < distance) {
+      // Calculate the end of the current dash
+      final double dashEnd = drawnLength + dashWidth;
+      final double remaining = distance - drawnLength;
+      final double currentDashLength = dashEnd > distance
+          ? remaining
+          : dashWidth;
+
+      final Offset nextPoint = currentPoint + direction * currentDashLength;
+
+      // Draw the dash
+      canvas.drawLine(currentPoint, nextPoint, paintDashedLine);
+
+      // Move the current point for the next dash (past the dash and the space)
+      currentPoint += direction * (dashWidth + dashSpace);
+      drawnLength += dashWidth + dashSpace;
+    }
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -149,49 +183,13 @@ class TrianglePainter extends FigurePainter {
       }
     }
     if (showProperties.contains(ShowTriangleProperty.centroidPoint)) {
-      // Define the geometry of the dashes
-      const double dashWidth = 5.0; // Length of each dash
-      const double dashSpace = 3.0; // Space bet
-
-      final displayMedianLine = (Offset begin, Offset end) {
-        final Paint paintMedianLine = Paint()
-          ..color = Colors.green
-          ..strokeWidth = 2.0;
-        // Calculate the vector from start to end
-        final Offset delta = end - begin;
-        final double distance = delta.distance;
-
-        // Create a direction vector (normalized)
-        final Offset direction = delta / distance;
-        double drawnLength = 0.0;
-        // Move to the starting point
-        Offset currentPoint = begin;
-
-        while (drawnLength < distance) {
-          // Calculate the end of the current dash
-          final double dashEnd = drawnLength + dashWidth;
-          final double remaining = distance - drawnLength;
-          final double currentDashLength = dashEnd > distance
-              ? remaining
-              : dashWidth;
-
-          final Offset nextPoint = currentPoint + direction * currentDashLength;
-
-          // Draw the dash
-          canvas.drawLine(currentPoint, nextPoint, paintMedianLine);
-
-          // Move the current point for the next dash (past the dash and the space)
-          currentPoint += direction * (dashWidth + dashSpace);
-          drawnLength += dashWidth + dashSpace;
-        }
-      };
       {
         final Offset medianPoint = triangle.getMedianPoint(
             triangle.b, triangle.c);
         final Offset medianPos =
         Offset(medianPoint.dx * originUnitInPixels,
             -medianPoint.dy * originUnitInPixels);
-        displayMedianLine(aPos, medianPos);
+        _displayDashedLine(canvas: canvas, begin: aPos, end: medianPos);
         paintText(canvas, r"M_a", medianPos, xOffset: 4.0, yOffset: -20.0);
       }
       {
@@ -200,7 +198,7 @@ class TrianglePainter extends FigurePainter {
         final Offset medianPos =
         Offset(medianPoint.dx * originUnitInPixels,
             -medianPoint.dy * originUnitInPixels);
-        displayMedianLine(bPos, medianPos);
+        _displayDashedLine(canvas: canvas, begin: bPos, end: medianPos);
         paintText(canvas, r"M_b", medianPos, xOffset: -8.0, yOffset: 2.0);
       }
       {
@@ -209,7 +207,7 @@ class TrianglePainter extends FigurePainter {
         final Offset medianPos =
         Offset(medianPoint.dx * originUnitInPixels,
             -medianPoint.dy * originUnitInPixels);
-        displayMedianLine(cPos, medianPos);
+        _displayDashedLine(canvas: canvas, begin: cPos, end: medianPos);
         paintText(canvas, r"M_c", medianPos, xOffset: -36.0, yOffset: -20.0);
       }
       {
@@ -223,6 +221,22 @@ class TrianglePainter extends FigurePainter {
           ..style = PaintingStyle.fill;
         canvas.drawCircle(centroidPos, 5.0, paintCentroidPoint);
         paintText(canvas, r"C_p", centroidPos, xOffset: 2.0, yOffset: 1.0);
+      }
+    }
+    if (showProperties.contains(ShowTriangleProperty.bisector)) {
+      try {
+        final Offset bisectorPoint = triangle.getBisectorPoint(triangle.b, triangle.a, triangle.c);
+        final Offset bisectorPos =
+        Offset(bisectorPoint.dx * originUnitInPixels, -bisectorPoint.dy * originUnitInPixels);
+
+        _displayDashedLine(canvas: canvas, begin: bPos, end: bisectorPos);
+        paintText(canvas, "P", bisectorPos, xOffset: -4.0, yOffset: -2.0);
+        drawAngleArc(canvas, bPos, bisectorPos, aPos, Colors.red);
+        drawAngleArc(canvas, bPos, bisectorPos, aPos, Colors.red, arcRadius: 30);
+        drawAngleArc(canvas, bPos, cPos, bisectorPos, Colors.blue);
+        drawAngleArc(canvas, bPos, cPos, bisectorPos, Colors.blue, arcRadius: 30);
+      } catch(e) {
+        logger.e;
       }
     }
     // Restore the canvas to its state before canvas.save()

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/bisector_theorem.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/pythagoras_theorem.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangle_angles.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangle_propertes.dart';
@@ -46,6 +47,7 @@ class _TriangleTheoremsPageState extends State<TriangleTheoremsPage> {
             navigatingTheoremPage(context, l10n.trianglePythagorasTheorem, PythagorasTheorem(title: l10n.trianglePythagorasTheorem)),
             navigatingTheoremPage(context, l10n.triangleMedianTheorem, MedianTheoremPage(title: l10n.triangleMedianTheorem)),
             navigatingTheoremPage(context, l10n.triangleCentroidPoint, CentroidTheorem(title: l10n.triangleCentroidPoint)),
+            navigatingTheoremPage(context, l10n.triangleBisectorTheorem, BisectorTheorem(title: l10n.triangleBisectorTheorem,))
           ],
         )
       ),

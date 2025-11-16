@@ -84,6 +84,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triangleCentroidPoint => 'Triangle centroid theorem';
 
   @override
+  String get triangleBisectorTheorem => 'Bisector theorem';
+
+  @override
   String get angle => 'Angle';
 
   @override

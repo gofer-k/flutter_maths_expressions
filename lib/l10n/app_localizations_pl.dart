@@ -84,6 +84,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get triangleCentroidPoint => 'Punkt ciężkości trójkąta';
 
   @override
+  String get triangleBisectorTheorem => 'Dwusieczna kąta trójkąta';
+
+  @override
   String get angle => 'Kąt';
 
   @override

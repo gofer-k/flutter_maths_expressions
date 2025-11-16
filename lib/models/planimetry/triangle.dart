@@ -123,6 +123,13 @@ class Triangle extends BaseShape {
     return (a + b + c) / 3.0;
   }
 
+  Offset getBisectorPoint(Offset origin, Offset left, Offset right) {
+    final leftBranchLength = (left - origin).distance;
+    final rightBranchlength = (right - origin).distance;
+    final ratio = leftBranchLength / (leftBranchLength + rightBranchlength);
+    return left + (right - left) * ratio;
+  }
+
   void scale(double value) {
     a *= value;
     b *= value;
