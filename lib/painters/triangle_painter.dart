@@ -192,6 +192,7 @@ class TrianglePainter extends FigurePainter {
         Offset(medianPoint.dx * originUnitInPixels,
             -medianPoint.dy * originUnitInPixels);
         displayMedianLine(aPos, medianPos);
+        paintText(canvas, r"M_a", medianPos, xOffset: 4.0, yOffset: -20.0);
       }
       {
         final Offset medianPoint = triangle.getMedianPoint(
@@ -200,6 +201,7 @@ class TrianglePainter extends FigurePainter {
         Offset(medianPoint.dx * originUnitInPixels,
             -medianPoint.dy * originUnitInPixels);
         displayMedianLine(bPos, medianPos);
+        paintText(canvas, r"M_b", medianPos, xOffset: -8.0, yOffset: 2.0);
       }
       {
         final Offset medianPoint = triangle.getMedianPoint(
@@ -208,6 +210,7 @@ class TrianglePainter extends FigurePainter {
         Offset(medianPoint.dx * originUnitInPixels,
             -medianPoint.dy * originUnitInPixels);
         displayMedianLine(cPos, medianPos);
+        paintText(canvas, r"M_c", medianPos, xOffset: -36.0, yOffset: -20.0);
       }
       {
         final Offset centroidPoint = triangle.getCentroidPoint();
@@ -219,6 +222,7 @@ class TrianglePainter extends FigurePainter {
           ..strokeWidth = 2.0
           ..style = PaintingStyle.fill;
         canvas.drawCircle(centroidPos, 5.0, paintCentroidPoint);
+        paintText(canvas, r"C_p", centroidPos, xOffset: 2.0, yOffset: 1.0);
       }
     }
     // Restore the canvas to its state before canvas.save()

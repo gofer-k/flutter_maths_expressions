@@ -26,8 +26,21 @@ class _CentroidTheoremState extends State<CentroidTheorem> {
 
   @override
   Widget build(BuildContext context) {
+    final centroidPoint = triangle.getCentroidPoint();
+    final medianA = triangle.getMedianPoint(triangle.b, triangle.c);
+    final medianB = triangle.getMedianPoint(triangle.a, triangle.c);
+    final relCa = (triangle.a - centroidPoint).distance / (medianA - centroidPoint).distance;
+    final relCb = (triangle.b - centroidPoint).distance / (medianB - centroidPoint).distance;
+    // final medianPoint = triangle.getMedianPoint(begin, end);
+    // final centroidLength = triangle.getMedianPoint(begin, end);
+    //
     final l10n = AppLocalizations.of(context)!;
-    String centroid = r"\text{Centroid point} = \frac{A + B + C}{3}";
+    String centroid = r"C_p = \frac{A + B + C}{3} = (" +
+        centroidPoint.dx.toStringAsFixed(2) + ", " +
+        centroidPoint.dy.toStringAsFixed(2) + ")";
+    String sRelCa = r"\frac{|A C_p|}{|C_p M_A|} = " + relCa.toStringAsFixed(2);
+    String sRelCb = r"\frac{|B C_p|}{|C_p M_B|} = " + relCb.toStringAsFixed(2);
+    String sRelCc = r"\frac{|C C_p|}{|C_p M_B|} = " + relCb.toStringAsFixed(2);
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
@@ -51,6 +64,24 @@ class _CentroidTheoremState extends State<CentroidTheorem> {
               DisplayExpression(
                 context: context,
                 expression: centroid,
+                scale: 1.5,
+              ),
+              const SizedBox(height: 4),
+              DisplayExpression(
+                context: context,
+                expression: sRelCa,
+                scale: 1.5,
+              ),
+              const SizedBox(height: 4),
+              DisplayExpression(
+                context: context,
+                expression: sRelCb,
+                scale: 1.5,
+              ),
+              const SizedBox(height: 4),
+              DisplayExpression(
+                context: context,
+                expression: sRelCc,
                 scale: 1.5,
               ),
               const SizedBox(height: 4),
@@ -91,8 +122,6 @@ class _CentroidTheoremState extends State<CentroidTheorem> {
   }
 
   Widget inputValuesForm(l10n, triangle) {
-    final centroidPoint = triangle.getCentroidPoint();
-
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Shrinkable(
@@ -101,13 +130,6 @@ class _CentroidTheoremState extends State<CentroidTheorem> {
         expanded: true,
         body: InputValuesForm<double>(
           contents: [
-            [
-              CellData(label: "Centroid", readOnly: true),
-              CellData(label: centroidPoint.dx.toStringAsFixed(2), readOnly: true,
-              ),
-              CellData(label: centroidPoint.dy.toStringAsFixed(2), readOnly: true,
-              ),
-            ],
             [
               CellData(label: "A", readOnly: true),
               CellData(
