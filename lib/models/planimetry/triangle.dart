@@ -130,6 +130,13 @@ class Triangle extends BaseShape {
     return left + (right - left) * ratio;
   }
 
+  List<Offset> getMidsegment(Offset origin, Offset begin, Offset end) {
+    return [
+      getMedianPoint(begin, origin),
+      getMedianPoint(end, origin),
+    ];
+  }
+
   void scale(double value) {
     a *= value;
     b *= value;

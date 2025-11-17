@@ -13,7 +13,8 @@ enum ShowTriangleProperty {
   heightPoint,
   medianPont,
   centroidPoint,
-  bisector
+  bisector,
+  midsegment
 }
 
 class TrianglePainter extends FigurePainter {
@@ -235,6 +236,29 @@ class TrianglePainter extends FigurePainter {
         drawAngleArc(canvas, bPos, bisectorPos, aPos, Colors.red, arcRadius: 30);
         drawAngleArc(canvas, bPos, cPos, bisectorPos, Colors.blue);
         drawAngleArc(canvas, bPos, cPos, bisectorPos, Colors.blue, arcRadius: 30);
+      } catch(e) {
+        logger.e;
+      }
+    }
+    if (showProperties.contains(ShowTriangleProperty.midsegment)) {
+      try {
+        final Paint paintPoint = Paint()
+          ..color = Colors.red
+          ..strokeWidth = 2.0
+          ..style = PaintingStyle.fill;
+
+        final midSegment = triangle.getMidsegment(triangle.b, triangle.a, triangle.c);
+        final Offset dPos =
+        Offset(midSegment.first.dx * originUnitInPixels,
+            -midSegment.first.dy * originUnitInPixels);
+        final Offset ePos =
+        Offset(midSegment.last.dx * originUnitInPixels,
+            -midSegment.last.dy * originUnitInPixels);
+        _displayDashedLine(canvas: canvas, begin: dPos, end: ePos);
+        canvas.drawCircle(dPos, 5.0, paintPoint);
+        canvas.drawCircle(ePos, 5.0, paintPoint);
+        paintText(canvas, "D", midSegment.first, xOffset: -4.0, yOffset: -2.0);
+        paintText(canvas, "E", midSegment.first, xOffset: -4.0, yOffset: -2.0);
       } catch(e) {
         logger.e;
       }

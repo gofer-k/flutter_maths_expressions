@@ -9,6 +9,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../../widgets/background_container.dart';
 import 'centroid_theorem.dart';
 import 'median_theorem.dart';
+import 'midsegment_theorem.dart';
 
 class TriangleTheoremsPage extends StatefulWidget {
   final String title;
@@ -47,7 +48,8 @@ class _TriangleTheoremsPageState extends State<TriangleTheoremsPage> {
             navigatingTheoremPage(context, l10n.trianglePythagorasTheorem, PythagorasTheorem(title: l10n.trianglePythagorasTheorem)),
             navigatingTheoremPage(context, l10n.triangleMedianTheorem, MedianTheoremPage(title: l10n.triangleMedianTheorem)),
             navigatingTheoremPage(context, l10n.triangleCentroidPoint, CentroidTheorem(title: l10n.triangleCentroidPoint)),
-            navigatingTheoremPage(context, l10n.triangleBisectorTheorem, BisectorTheorem(title: l10n.triangleBisectorTheorem,))
+            navigatingTheoremPage(context, l10n.triangleBisectorTheorem, BisectorTheorem(title: l10n.triangleBisectorTheorem,)),
+            navigatingTheoremPage(context, l10n.triangleMidsegmentTheorem, MidsegmentTheorem(title: l10n.triangleMidsegmentTheorem)),
           ],
         )
       ),
