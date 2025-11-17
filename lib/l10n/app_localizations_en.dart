@@ -93,6 +93,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triangleCircumCenterTheorem => 'Circumcenter triangle theorem';
 
   @override
+  String get triangleInCenterTheorem => 'Incenter triangle theorem';
+
+  @override
   String get angle => 'Angle';
 
   @override

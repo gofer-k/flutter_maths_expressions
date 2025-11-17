@@ -9,6 +9,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../../widgets/background_container.dart';
 import 'CircumcenterTheorem.dart';
 import 'centroid_theorem.dart';
+import 'incenter_theorem.dart';
 import 'median_theorem.dart';
 import 'midsegment_theorem.dart';
 
@@ -52,6 +53,7 @@ class _TriangleTheoremsPageState extends State<TriangleTheoremsPage> {
             navigatingTheoremPage(context, l10n.triangleBisectorTheorem, BisectorTheorem(title: l10n.triangleBisectorTheorem,)),
             navigatingTheoremPage(context, l10n.triangleMidsegmentTheorem, MidsegmentTheorem(title: l10n.triangleMidsegmentTheorem)),
             navigatingTheoremPage(context, l10n.triangleCircumCenterTheorem, CircumcenterTheorem(title: l10n.triangleCircumCenterTheorem)),
+            navigatingTheoremPage(context, l10n.triangleInCenterTheorem, IncenterTheoremPage(title: l10n.triangleInCenterTheorem))
           ],
         )
       ),

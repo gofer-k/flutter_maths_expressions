@@ -90,7 +90,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get triangleMidsegmentTheorem => 'Twierdzenie środek odcinka trójkąta';
 
   @override
-  String get triangleCircumCenterTheorem => 'Środek okręgu opisanego';
+  String get triangleCircumCenterTheorem => 'Środek opisanego okręgu';
+
+  @override
+  String get triangleInCenterTheorem => 'Środek wpisanego okręgu';
 
   @override
   String get angle => 'Kąt';

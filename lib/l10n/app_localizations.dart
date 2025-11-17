@@ -266,6 +266,12 @@ abstract class AppLocalizations {
   /// **'Circumcenter triangle theorem'**
   String get triangleCircumCenterTheorem;
 
+  /// No description provided for @triangleInCenterTheorem.
+  ///
+  /// In en, this message translates to:
+  /// **'Incenter triangle theorem'**
+  String get triangleInCenterTheorem;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:

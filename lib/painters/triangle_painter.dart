@@ -15,7 +15,8 @@ enum ShowTriangleProperty {
   centroidPoint,
   bisector,
   midsegment,
-  circumcenter
+  circumcenter,
+  incenter
 }
 
 class TrianglePainter extends FigurePainter {
@@ -296,6 +297,46 @@ class TrianglePainter extends FigurePainter {
 
         final rc = (oPos - aPos).distance;
         canvas.drawCircle(oPos, rc, Paint()
+          ..color = Colors.grey.shade800
+          ..strokeWidth = 2.0
+          ..style = PaintingStyle.stroke);
+      } catch(e) {
+        logger.e;
+      }
+    }
+    if (showProperties.contains(ShowTriangleProperty.incenter)) {
+      try {
+        final Paint paintPoint = Paint()
+          ..color = Colors.red
+          ..strokeWidth = 2.0
+          ..style = PaintingStyle.fill;
+
+        final incenter = triangle.getIncenter();
+        final Offset oPos =
+        Offset(incenter.dx * originUnitInPixels, -incenter.dy * originUnitInPixels);
+        final bisectorAPoint = triangle.getBisectorPoint(triangle.a, triangle.b, triangle.c);
+        final Offset bisectorAPos =
+        Offset(bisectorAPoint.dx * originUnitInPixels, -bisectorAPoint.dy * originUnitInPixels);
+        {
+          _displayDashedLine(canvas: canvas, begin: oPos, end: bisectorAPos);
+        }
+        {
+          final bisectorPoint = triangle.getBisectorPoint(triangle.b, triangle.c, triangle.a);
+          final Offset bisectorPos =
+          Offset(bisectorPoint.dx * originUnitInPixels, -bisectorPoint.dy * originUnitInPixels);
+          _displayDashedLine(canvas: canvas, begin: oPos, end: bisectorPos);
+        }
+        {
+          final bisectorPoint = triangle.getBisectorPoint(triangle.c, triangle.a, triangle.b);
+          final Offset bisectorPos =
+          Offset(bisectorPoint.dx * originUnitInPixels, -bisectorPoint.dy * originUnitInPixels);
+          _displayDashedLine(canvas: canvas, begin: oPos, end: bisectorPos);
+        }
+        canvas.drawCircle(oPos, 5.0, paintPoint);
+        paintText(canvas, "O", oPos, xOffset: -4.0, yOffset: -2.0);
+
+        final ri = (oPos - bisectorAPos).distance;
+        canvas.drawCircle(oPos, ri, Paint()
           ..color = Colors.grey.shade800
           ..strokeWidth = 2.0
           ..style = PaintingStyle.stroke);

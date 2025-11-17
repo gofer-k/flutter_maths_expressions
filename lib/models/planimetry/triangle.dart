@@ -209,4 +209,14 @@ class Triangle extends BaseShape {
     }
     return 0.0;
   }
+
+  Offset getIncenter() {
+    final ab = (a - b).distance;
+    final ac = (a - c).distance;
+    final bc = (b - c).distance;
+    final sumLengths = ab + ac + bc;
+    return Offset(
+        (bc * a.dx + ab * c.dx + ac * b.dx) / sumLengths,
+        (bc * a.dy + ab * c.dy + ac * b.dy) / sumLengths);
+  }
 }
