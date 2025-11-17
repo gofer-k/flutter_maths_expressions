@@ -87,6 +87,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get triangleBisectorTheorem => 'Dwusieczna kąta trójkąta';
 
   @override
+  String get triangleMidsegmentTheorem => 'Twierdzenie środek odcinka trójkąta';
+
+  @override
+  String get triangleCircumCenterTheorem => 'Środek okręgu opisanego';
+
+  @override
   String get angle => 'Kąt';
 
   @override

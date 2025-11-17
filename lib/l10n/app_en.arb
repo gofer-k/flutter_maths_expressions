@@ -27,6 +27,7 @@
   "triangleCentroidPoint": "Triangle centroid theorem",
   "triangleBisectorTheorem": "Bisector theorem",
   "triangleMidsegmentTheorem": "Midsegment theorem",
+  "triangleCircumCenterTheorem": "Circumcenter triangle theorem",
   "angle": "Angle",
   "triangle": "Triangle",
   "sequencesPageTitle": "Sequences",

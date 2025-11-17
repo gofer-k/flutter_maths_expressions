@@ -28,6 +28,7 @@
   "triangleCentroidPoint": "Punkt ciężkości trójkąta",
   "triangleBisectorTheorem": "Dwusieczna kąta trójkąta",
   "triangleMidsegmentTheorem": "Twierdzenie środek odcinka trójkąta",
+  "triangleCircumCenterTheorem": "Środek okręgu opisanego",
   "triangle": "Trójkąt",
   "angle": "Kąt",
   "sequencesPageTitle": "Ciągi",

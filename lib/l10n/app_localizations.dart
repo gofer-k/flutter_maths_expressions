@@ -254,6 +254,18 @@ abstract class AppLocalizations {
   /// **'Bisector theorem'**
   String get triangleBisectorTheorem;
 
+  /// No description provided for @triangleMidsegmentTheorem.
+  ///
+  /// In en, this message translates to:
+  /// **'Midsegment theorem'**
+  String get triangleMidsegmentTheorem;
+
+  /// No description provided for @triangleCircumCenterTheorem.
+  ///
+  /// In en, this message translates to:
+  /// **'Circumcenter triangle theorem'**
+  String get triangleCircumCenterTheorem;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:

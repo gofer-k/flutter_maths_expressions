@@ -58,8 +58,8 @@ class Triangle extends BaseShape {
   double _angleBetween(double aDist, double bDist, double cDist, {AngleType angleType = AngleType.radian}) {
     // Returns angle opposite side 'a' in degrees
     // Law of Cosines: a^2 = b^2 + c^2 - 2bc * cos(A)
-    final result = acos((bDist * bDist + cDist * cDist - aDist * aDist) / (2 * bDist * cDist));
-    return angleType == AngleType.radian ? result : result * 180 / pi;
+    final result = acos((bDist * bDist + cDist * cDist - aDist * aDist) / (2.0 * bDist * cDist));
+    return angleType == AngleType.radian ? result : result * 180.0 / pi;
   }
 
   double getAngleA({AngleType angleType = AngleType.radian}) {
@@ -86,7 +86,7 @@ class Triangle extends BaseShape {
 
   static double edgeDirection(Offset beginVertex, Offset endVertex, {AngleType angleType = AngleType.radian}) {
     final result = (endVertex - beginVertex).direction;
-    return angleType == AngleType.radian ? result : result * 180 / pi;
+    return angleType == AngleType.radian ? result : result * 180.0 / pi;
   }
 
   static double getLength(Offset begin, Offset end) {
@@ -116,7 +116,7 @@ class Triangle extends BaseShape {
   }
 
   Offset getMedianPoint(Offset begin, Offset end) {
-    return Offset((begin.dx + end.dx) / 2, (begin.dy + end.dy) / 2);
+    return Offset((begin.dx + end.dx) / 2.0, (begin.dy + end.dy) / 2.0);
   }
 
   Offset getCentroidPoint() {
@@ -135,6 +135,37 @@ class Triangle extends BaseShape {
       getMedianPoint(begin, origin),
       getMedianPoint(end, origin),
     ];
+  }
+
+  Offset getCircumcenter() {
+    final midAB = getMedianPoint(a, b);
+    final midBC = getMedianPoint(b, c);
+
+    final perpSlopeAB = _perpendicularSlope(a, b);
+    final perpSlopeBC = _perpendicularSlope(b, c);
+
+    // y-intercept of the perpendicular bisector of AB
+    final cAB = midAB.dy - perpSlopeAB * midAB.dx;
+    // y-intercept of the perpendicular bisector of BC
+    final cBC = midBC.dy - perpSlopeBC * midBC.dx;
+    // Handle vertical or horizontal lines to avoid division by zero or infinite slopes
+    if (a.dx == b.dx) { // Side AB is vertical
+      final x = midAB.dx;
+      final y = perpSlopeBC * x + cBC;
+      return Offset(x, y);
+    }
+    if (b.dx == c.dx) { // Side BC is vertical
+      final x = midBC.dx;
+      final y = perpSlopeAB * x + cAB;
+      return Offset(x, y);
+    }
+
+    // x-coordinate of the circumcenter
+    final circumcenterX = (cBC - cAB) / (perpSlopeAB - perpSlopeBC);
+    // y-coordinate of the circumcenter
+    final circumcenterY = perpSlopeAB * circumcenterX + cAB;
+
+    return Offset(circumcenterX, circumcenterY);
   }
 
   void scale(double value) {
@@ -157,10 +188,25 @@ class Triangle extends BaseShape {
   }
 
   Offset _rotatePoint(Offset origin, Offset center, double angle, {AngleType angleType = AngleType.radian}) {
-    final targetAngle = angleType == AngleType.radian ? angle : angle * 180 / pi;
+    final targetAngle = angleType == AngleType.radian ? angle : angle * 180.0 / pi;
     final origToCenter = origin - center;
     return Offset(
       origToCenter.dx * cos(targetAngle) - origToCenter.dy * sin(targetAngle),
       origToCenter.dx * sin(targetAngle) + origToCenter.dy * cos(targetAngle));
+  }
+
+  double _slopeLine(Offset begin, Offset end) {
+    if (end.dx != begin.dx) {
+      return (end.dy - begin.dy) / (end.dx - begin.dx);
+    }
+    return 0.0;
+  }
+
+  double _perpendicularSlope(Offset begin, Offset end) {
+    final slope = _slopeLine(begin, end);
+    if (slope != 0.0) {
+      return -1.0 / slope;
+    }
+    return 0.0;
   }
 }

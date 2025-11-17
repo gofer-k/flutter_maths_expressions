@@ -14,7 +14,8 @@ enum ShowTriangleProperty {
   medianPont,
   centroidPoint,
   bisector,
-  midsegment
+  midsegment,
+  circumcenter
 }
 
 class TrianglePainter extends FigurePainter {
@@ -117,8 +118,6 @@ class TrianglePainter extends FigurePainter {
 
     // Convert local triangle coordinates to pixel coordinates
     final triangle = shape as Triangle;
-    final medianPoint = triangle.getMedianPoint(triangle.a, triangle.c);
-
     final Offset aPos =
     Offset(triangle.a.dx * originUnitInPixels, -triangle.a.dy * originUnitInPixels);
     final Offset bPos =
@@ -174,6 +173,7 @@ class TrianglePainter extends FigurePainter {
         ..strokeWidth = 2.0
         ..style = PaintingStyle.stroke;
       try {
+        final medianPoint = triangle.getMedianPoint(triangle.a, triangle.c);
         final Offset mPos =
         Offset(medianPoint.dx * originUnitInPixels, -medianPoint.dy * originUnitInPixels);
 
@@ -259,6 +259,46 @@ class TrianglePainter extends FigurePainter {
         canvas.drawCircle(ePos, 5.0, paintPoint);
         paintText(canvas, "D", midSegment.first, xOffset: -4.0, yOffset: -2.0);
         paintText(canvas, "E", midSegment.first, xOffset: -4.0, yOffset: -2.0);
+      } catch(e) {
+        logger.e;
+      }
+    }
+    if (showProperties.contains(ShowTriangleProperty.circumcenter)) {
+      try {
+        final Paint paintPoint = Paint()
+          ..color = Colors.red
+          ..strokeWidth = 2.0
+          ..style = PaintingStyle.fill;
+
+        final circumcenter = triangle.getCircumcenter();
+        final Offset oPos =
+        Offset(circumcenter.dx * originUnitInPixels, -circumcenter.dy * originUnitInPixels);
+        {
+          final medPoint = triangle.getMedianPoint(triangle.a, triangle.b);
+          final Offset mPos =
+          Offset(medPoint.dx * originUnitInPixels, -medPoint.dy * originUnitInPixels);
+          _displayDashedLine(canvas: canvas, begin: oPos, end: mPos);
+        }
+        {
+          final medPoint = triangle.getMedianPoint(triangle.a, triangle.c);
+          final Offset mPos =
+          Offset(medPoint.dx * originUnitInPixels, -medPoint.dy * originUnitInPixels);
+          _displayDashedLine(canvas: canvas, begin: oPos, end: mPos);
+        }
+        {
+          final medPoint = triangle.getMedianPoint(triangle.b, triangle.c);
+          final Offset mPos =
+          Offset(medPoint.dx * originUnitInPixels, -medPoint.dy * originUnitInPixels);
+          _displayDashedLine(canvas: canvas, begin: oPos, end: mPos);
+        }
+        canvas.drawCircle(oPos, 5.0, paintPoint);
+        paintText(canvas, "O", oPos, xOffset: -4.0, yOffset: -2.0);
+
+        final rc = (oPos - aPos).distance;
+        canvas.drawCircle(oPos, rc, Paint()
+          ..color = Colors.grey.shade800
+          ..strokeWidth = 2.0
+          ..style = PaintingStyle.stroke);
       } catch(e) {
         logger.e;
       }
