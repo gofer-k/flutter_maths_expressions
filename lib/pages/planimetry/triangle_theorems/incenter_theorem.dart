@@ -31,9 +31,18 @@ class _IncenterTheoremPageState extends State<IncenterTheoremPage> {
     final incenter = triangle.getIncenter();
     final bisectorPoint = triangle.getBisectorPoint(triangle.a, triangle.b, triangle.c);
     final ri = (incenter - bisectorPoint).distance;
+    final halfPerimeter = triangle.getPerimeter() / 2.0;
+    final heronFormulaResult = triangle.getHeronFormula();
 
+    String szProperties = r"a = |BC|, b = |AC|, c = |AB|, m = |BM|";
     String szIncenter = r"Incenter (" + incenter.dx.toStringAsFixed(2) +
-        r", " + incenter.dy.toStringAsFixed(2) + r"), r_i = " + ri.toStringAsFixed(2);
+        r", " + incenter.dy.toStringAsFixed(2) + r")";
+
+    String szHalfPerimeter = r"s = \frac{a+b+c}{2} = " + halfPerimeter.toStringAsFixed(2);
+    String szArea = r"A = \sqrt{P_h \dot (P_h - a)(P_h - b)(P_h - c} = "+
+        heronFormulaResult.toStringAsFixed(2);
+    String szInradius = r" r = \frac{A}{s} = " + ri.toStringAsFixed(2);
+
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
       endColor: Colors.grey.shade300,
@@ -55,7 +64,27 @@ class _IncenterTheoremPageState extends State<IncenterTheoremPage> {
               const SizedBox(height: 4),
               DisplayExpression(
                 context: context,
+                expression: szProperties,
+                scale: 1.5,
+              ),
+              DisplayExpression(
+                context: context,
                 expression: szIncenter,
+                scale: 1.5,
+              ),
+              DisplayExpression(
+                context: context,
+                expression: szHalfPerimeter,
+                scale: 1.5,
+              ),
+              DisplayExpression(
+                context: context,
+                expression: szArea,
+                scale: 1.5,
+              ),
+              DisplayExpression(
+                context: context,
+                expression: szInradius,
                 scale: 1.5,
               ),
               const SizedBox(height: 4),
