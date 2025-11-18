@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/Themes/math_theme.dart';
 import 'package:flutter_maths_expressions/models/planimetry/base_shape.dart';
 import 'package:flutter_maths_expressions/widgets/display_expression.dart';
 import 'package:flutter_maths_expressions/widgets/infinite_drawer.dart';
@@ -27,17 +28,29 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    String triangleArea = triangle.b.dx == triangle.a.dx
-        ? r"A = \frac{1}{2} \cdot \text{|AC|} \cdot \text{|AB|} = " + triangle.getArea().toStringAsFixed(2)
-        : triangle.b.dx == triangle.c.dx
-        ? r"A = \frac{1}{2} \cdot | AC | \cdot | BC | = " + triangle.getArea().toStringAsFixed(2)
-        : r"A = \frac{1}{2} \cdot | AC | \cdot | BD | = " + triangle.getArea().toStringAsFixed(2);
+    final perimeter = triangle.getPerimeter();
+    final area = triangle.getArea();
+    final heronFormulaResult = triangle.getHeronFormula();
 
-    String trianglePerimeter = r"P = \text{|AB| + |AC| + |BC|} = " + triangle.getPerimeter().toStringAsFixed(2);
+    final ab = (triangle.a - triangle.b).distance;
+    final ac = (triangle.a - triangle.c).distance;
+    final bc = (triangle.b - triangle.c).distance;
+
+    String triangleArea = triangle.b.dx == triangle.a.dx
+        ? r"A = \frac{1}{2} \cdot \text{|AC|} \cdot \text{|AB|} = " + area.toStringAsFixed(2)
+        : triangle.b.dx == triangle.c.dx
+        ? r"A = \frac{1}{2} \cdot | AC | \cdot | BC | = " + area.toStringAsFixed(2)
+        : r"A = \frac{1}{2} \cdot | AC | \cdot | BD | = " + area.toStringAsFixed(2);
+
+    String trianglePerimeter = r"P = \text{|AB| + |AC| + |BC|} = " + perimeter.toStringAsFixed(2);
+
+    String szHeronProperties = r"P_h = \frac{P}{2}, a = |BC|, b = |AC|, c = |AB|";
+    String szHeronFormula = r"A = \sqrt{P_h \dot (P_h - a)(P_h - b)(P_h - c} = "+
+      heronFormulaResult.toStringAsFixed(2);
 
     return BackgroundContainer(
-      beginColor: Colors.grey.shade300,
-      // endColor: Colors.grey.shade800,
+      beginColor: Colors.grey.shade50,
+      endColor: Colors.grey.shade700,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -59,10 +72,29 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
                 expression: triangleArea,
                 scale: 1.5,
               ),
+              const SizedBox(height: 4),
               DisplayExpression(
                 context: context,
                 expression: trianglePerimeter,
                 scale: 1.5,
+              ),
+              const SizedBox(height: 12),
+              Text(l10n.triangleHeronsFormula,
+                style: MathTheme.of(context).shrinkableTitleTextStyle,),
+              FittedBox(fit: BoxFit.fitWidth,
+                child: DisplayExpression(
+                  context: context,
+                  expression: szHeronProperties,
+                  scale: 1.5,
+                ),
+              ),
+              const SizedBox(height: 4),
+              FittedBox(fit: BoxFit.fitWidth,
+                child: DisplayExpression(
+                  context: context,
+                  expression: szHeronFormula,
+                  scale: 1.5,
+                ),
               ),
               const SizedBox(height: 4),
               Expanded(flex: 2, child: inputValuesForm(l10n)),

@@ -272,6 +272,12 @@ abstract class AppLocalizations {
   /// **'Incenter triangle theorem'**
   String get triangleInCenterTheorem;
 
+  /// No description provided for @triangleHeronsFormula.
+  ///
+  /// In en, this message translates to:
+  /// **'Heron\'s formula'**
+  String get triangleHeronsFormula;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:

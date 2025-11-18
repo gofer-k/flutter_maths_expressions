@@ -96,6 +96,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triangleInCenterTheorem => 'Incenter triangle theorem';
 
   @override
+  String get triangleHeronsFormula => 'Heron\'s formula';
+
+  @override
   String get angle => 'Angle';
 
   @override

@@ -96,6 +96,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get triangleInCenterTheorem => 'Środek wpisanego okręgu';
 
   @override
+  String get triangleHeronsFormula => 'Wzór Herona';
+
+  @override
   String get angle => 'Kąt';
 
   @override
