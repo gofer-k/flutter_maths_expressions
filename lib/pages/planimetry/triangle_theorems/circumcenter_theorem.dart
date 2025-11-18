@@ -31,8 +31,11 @@ class _CircumcenterTheoremState extends State<CircumcenterTheorem> {
     final circumcenter = triangle.getCircumcenter();
     final rc = (circumcenter - triangle.a).distance;
 
+    String szProperties = r"a = |BC|, b = |AC|, c = |AB|, m = |BM|";
     String szCircumcenter = r"Circumcemter (" + circumcenter.dx.toStringAsFixed(2) +
-        r", " + circumcenter.dy.toStringAsFixed(2) + r"), r_c = " + rc.toStringAsFixed(2);
+        r", " + circumcenter.dy.toStringAsFixed(2) + r")";
+    String szCircumradius = r" R = \frac{a \cdot b \cdot c}{4A} = " + rc.toStringAsFixed(2);
+
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
       endColor: Colors.grey.shade300,
@@ -54,7 +57,17 @@ class _CircumcenterTheoremState extends State<CircumcenterTheorem> {
               const SizedBox(height: 4),
               DisplayExpression(
                 context: context,
+                expression: szProperties,
+                scale: 1.5,
+              ),
+              DisplayExpression(
+                context: context,
                 expression: szCircumcenter,
+                scale: 1.5,
+              ),
+              DisplayExpression(
+                context: context,
+                expression: szCircumradius,
                 scale: 1.5,
               ),
               const SizedBox(height: 4),
