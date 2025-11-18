@@ -99,6 +99,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triangleHeronsFormula => 'Heron\'s formula';
 
   @override
+  String get triangleLawSines => 'Law of sines';
+
+  @override
   String get angle => 'Angle';
 
   @override

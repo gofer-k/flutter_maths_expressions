@@ -99,6 +99,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get triangleHeronsFormula => 'Wzór Herona';
 
   @override
+  String get triangleLawSines => 'Prawo sinusów';
+
+  @override
   String get angle => 'Kąt';
 
   @override

@@ -94,12 +94,12 @@ class Triangle extends BaseShape {
   }
 
   double getHeronFormula() {
-    final half_perimeter = getPerimeter() / 2.0;
+    final halfPerimeter = getPerimeter() / 2.0;
     final ab = (a - b).distance;
     final ac = (a - c).distance;
     final bc = (b - c).distance;
     // Heron formula
-    return sqrt(half_perimeter * (half_perimeter - ab) * (half_perimeter - ac) * (half_perimeter - bc));
+    return sqrt(halfPerimeter * (halfPerimeter - ab) * (halfPerimeter - ac) * (halfPerimeter - bc));
   }
 
   double getHeight() {

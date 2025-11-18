@@ -1,52 +1,49 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_maths_expressions/Themes/math_theme.dart';
-import 'package:flutter_maths_expressions/models/planimetry/base_shape.dart';
-import 'package:flutter_maths_expressions/widgets/display_expression.dart';
-import 'package:flutter_maths_expressions/widgets/infinite_drawer.dart';
-import 'package:flutter_maths_expressions/widgets/input_values_form.dart';
-import 'package:flutter_maths_expressions/widgets/shrinkable.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../models/dock_side.dart';
+import '../../../models/planimetry/base_shape.dart';
 import '../../../models/planimetry/triangle.dart';
 import '../../../painters/drawable_shape.dart';
 import '../../../painters/triangle_painter.dart';
 import '../../../widgets/background_container.dart';
+import '../../../widgets/display_expression.dart';
+import '../../../widgets/infinite_drawer.dart';
+import '../../../widgets/input_values_form.dart';
+import '../../../widgets/shrinkable.dart';
 
-class TrianglePropertiesPage extends StatefulWidget {
+class TriangleLawSines extends StatefulWidget {
   final String title;
-
-  const TrianglePropertiesPage({super.key, required this.title});
+  const TriangleLawSines({super.key, required this.title});
 
   @override
-  State<StatefulWidget> createState() => _TrianglePropertiesPageState();
+  State<StatefulWidget> createState() => _TriangleLawSinesState();
 }
 
-class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
-  final triangle = Triangle(a: Offset(-1, -1), b: Offset(3, 3), c: Offset(4, -1));
+class _TriangleLawSinesState extends State<TriangleLawSines> {
+  final triangle = Triangle(a: Offset(-4, -2), b: Offset(1, 3), c: Offset(4, -2));
   DockSide dock = DockSide.leftTop;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final perimeter = triangle.getPerimeter();
-    final area = triangle.getArea();
-    final heronFormulaResult = triangle.getHeronFormula();
+    final ab = (triangle.a - triangle.b).distance;
+    final ac = (triangle.a - triangle.c).distance;
+    final bc = (triangle.b - triangle.c).distance;
+    final sinAlpha = sin(triangle.getAngleA(angleType: AngleType.radian));
+    final sinBeta = sin(triangle.getAngleB(angleType: AngleType.radian));
+    final sinGamma = sin(triangle.getAngleC(angleType: AngleType.radian));
 
-    String triangleArea = triangle.b.dx == triangle.a.dx
-        ? r"A = \frac{1}{2} \cdot \text{|AC|} \cdot \text{|AB|} = " + area.toStringAsFixed(2)
-        : triangle.b.dx == triangle.c.dx
-        ? r"A = \frac{1}{2} \cdot | AC | \cdot | BC | = " + area.toStringAsFixed(2)
-        : r"A = \frac{1}{2} \cdot | AC | \cdot | BD | = " + area.toStringAsFixed(2);
-
-    String trianglePerimeter = r"P = \text{|AB| + |AC| + |BC|} = " + perimeter.toStringAsFixed(2);
-
-    String szHeronProperties = r"P_h = \frac{P}{2}, a = |BC|, b = |AC|, c = |AB|";
-    String szHeronFormula = r"A = \sqrt{P_h \dot (P_h - a)(P_h - b)(P_h - c} = "+
-      heronFormulaResult.toStringAsFixed(2);
+    String szLawSines = r"\frac{|BC|}{\sin(\alpha)} = \frac{|AC|}{\sin(\beta)} = \frac{|AB|}{\sin(\gamma)} =";
+    String szLawSinesCont = r"\frac{" + bc.toStringAsFixed(1) + r"}{" + sinAlpha.toStringAsFixed(1) +
+        r"} = \frac{" + ac.toStringAsFixed(1) + r"}{" + sinBeta.toStringAsFixed(1) +
+        r"} = \frac{" + ab.toStringAsFixed(1) + r"}{" + sinGamma.toStringAsFixed(1) + r"}";
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
-      endColor: Colors.grey.shade700,
+      endColor: Colors.grey.shade300,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -61,39 +58,21 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
           ),
           body: Column(
             children: [
-              Expanded(flex: 2, child: drawableView(DockSide.leftTop)),
+              Expanded(flex: 2, child: drawableView(dock)),
               const SizedBox(height: 4),
               DisplayExpression(
                 context: context,
-                expression: triangleArea,
+                expression: szLawSines,
                 scale: 1.5,
               ),
               const SizedBox(height: 4),
               DisplayExpression(
                 context: context,
-                expression: trianglePerimeter,
+                expression: szLawSinesCont,
                 scale: 1.5,
               ),
-              const SizedBox(height: 12),
-              Text(l10n.triangleHeronsFormula,
-                style: MathTheme.of(context).shrinkableTitleTextStyle,),
-              FittedBox(fit: BoxFit.fitWidth,
-                child: DisplayExpression(
-                  context: context,
-                  expression: szHeronProperties,
-                  scale: 1.5,
-                ),
-              ),
               const SizedBox(height: 4),
-              FittedBox(fit: BoxFit.fitWidth,
-                child: DisplayExpression(
-                  context: context,
-                  expression: szHeronFormula,
-                  scale: 1.5,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Expanded(flex: 2, child: inputValuesForm(l10n)),
+              Expanded(flex: 1, child: inputValuesForm(l10n)),
             ],
           ),
         ),
@@ -135,7 +114,6 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
                 ShowTriangleProperty.angleA,
                 ShowTriangleProperty.angleB,
                 ShowTriangleProperty.angleC,
-                ShowTriangleProperty.height,
               ],
               canvasTransform: canvasTransform,
               viewportSize: viewportSize,
@@ -224,13 +202,13 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
   void convertUIDataToTriangle(InputData<double> input) {
     // Extract the coordinates for each point (A, B, C) from the input data.
     final aPointData = input.firstWhere(
-      (pointData) => pointData.any((cellData) => cellData.label == "A"),
+          (pointData) => pointData.any((cellData) => cellData.label == "A"),
     );
     final bPointData = input.firstWhere(
-      (pointData) => pointData.any((cellData) => cellData.label == "B"),
+          (pointData) => pointData.any((cellData) => cellData.label == "B"),
     );
     final cPointData = input.firstWhere(
-      (pointData) => pointData.any((cellData) => cellData.label == "C"),
+          (pointData) => pointData.any((cellData) => cellData.label == "C"),
     );
 
     final a = Offset(

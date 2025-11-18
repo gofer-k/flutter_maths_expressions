@@ -278,6 +278,12 @@ abstract class AppLocalizations {
   /// **'Heron\'s formula'**
   String get triangleHeronsFormula;
 
+  /// No description provided for @triangleLawSines.
+  ///
+  /// In en, this message translates to:
+  /// **'Law of sines'**
+  String get triangleLawSines;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:
