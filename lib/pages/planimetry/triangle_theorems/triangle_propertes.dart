@@ -38,6 +38,8 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
         ? r"A = \frac{1}{2} \cdot | AC | \cdot | BC | = " + area.toStringAsFixed(2)
         : r"A = \frac{1}{2} \cdot | AC | \cdot | BD | = " + area.toStringAsFixed(2);
 
+    String triangleArea2 = r"A = \frac{1}{2} \cdot \text{|AB|} \cdot \text{|BB|} \cdot \sin(\beta) = " + area.toStringAsFixed(2);
+
     String trianglePerimeter = r"P = \text{|AB| + |AC| + |BC|} = " + perimeter.toStringAsFixed(2);
 
     String szHeronProperties = r"P_h = \frac{P}{2}, a = |BC|, b = |AC|, c = |AB|";
@@ -68,13 +70,21 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
                 expression: triangleArea,
                 scale: 1.5,
               ),
+              const SizedBox(height: 2),
+              DisplayExpression(
+                context: context,
+                expression: triangleArea2,
+                scale: 1.5,
+              ),
               const SizedBox(height: 4),
+              Divider(),
               DisplayExpression(
                 context: context,
                 expression: trianglePerimeter,
                 scale: 1.5,
               ),
               const SizedBox(height: 12),
+              Divider(),
               Text(l10n.triangleHeronsFormula,
                 style: MathTheme.of(context).shrinkableTitleTextStyle,),
               FittedBox(fit: BoxFit.fitWidth,
