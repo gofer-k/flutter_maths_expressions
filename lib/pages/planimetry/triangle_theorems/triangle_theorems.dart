@@ -9,6 +9,7 @@ import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/tri
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangles_similarity.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../widgets/background_container.dart';
+import 'apollonius_theorem.dart';
 import 'circumcenter_theorem.dart';
 import 'centroid_theorem.dart';
 import 'incenter_theorem.dart';
@@ -57,7 +58,8 @@ class _TriangleTheoremsPageState extends State<TriangleTheoremsPage> {
             navigatingTheoremPage(context, l10n.triangleCircumCenterTheorem, CircumcenterTheorem(title: l10n.triangleCircumCenterTheorem)),
             navigatingTheoremPage(context, l10n.triangleInCenterTheorem, IncenterTheoremPage(title: l10n.triangleInCenterTheorem)),
             navigatingTheoremPage(context, l10n.triangleLawSines, TriangleLawSines(title: l10n.triangleLawSines)),
-            navigatingTheoremPage(context, l10n.triangleLawCosines, TriangleLawCosines(title: l10n.triangleLawCosines))
+            navigatingTheoremPage(context, l10n.triangleLawCosines, TriangleLawCosines(title: l10n.triangleLawCosines)),
+            navigatingTheoremPage(context, l10n.triangleApolloniusTheorem, ApolloniusTheorem(title: l10n.triangleApolloniusTheorem))
           ],
         )
       ),

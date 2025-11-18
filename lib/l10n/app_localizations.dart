@@ -290,6 +290,12 @@ abstract class AppLocalizations {
   /// **'Law of cosines'**
   String get triangleLawCosines;
 
+  /// No description provided for @triangleApolloniusTheorem.
+  ///
+  /// In en, this message translates to:
+  /// **'Apollonius\' theorem'**
+  String get triangleApolloniusTheorem;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:
