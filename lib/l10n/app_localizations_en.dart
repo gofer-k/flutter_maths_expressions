@@ -102,6 +102,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triangleLawSines => 'Law of sines';
 
   @override
+  String get triangleLawCosines => 'Law of cosines';
+
+  @override
   String get angle => 'Angle';
 
   @override

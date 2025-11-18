@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/bisector_theorem.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/pythagoras_theorem.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangle_angles.dart';
+import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangle_law_cosines.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangle_law_sines.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangle_propertes.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangles_congruence.dart';
@@ -55,7 +56,8 @@ class _TriangleTheoremsPageState extends State<TriangleTheoremsPage> {
             navigatingTheoremPage(context, l10n.triangleMidsegmentTheorem, MidsegmentTheorem(title: l10n.triangleMidsegmentTheorem)),
             navigatingTheoremPage(context, l10n.triangleCircumCenterTheorem, CircumcenterTheorem(title: l10n.triangleCircumCenterTheorem)),
             navigatingTheoremPage(context, l10n.triangleInCenterTheorem, IncenterTheoremPage(title: l10n.triangleInCenterTheorem)),
-            navigatingTheoremPage(context, l10n.triangleLawSines, TriangleLawSines(title: l10n.triangleLawSines))
+            navigatingTheoremPage(context, l10n.triangleLawSines, TriangleLawSines(title: l10n.triangleLawSines)),
+            navigatingTheoremPage(context, l10n.triangleLawCosines, TriangleLawCosines(title: l10n.triangleLawCosines))
           ],
         )
       ),

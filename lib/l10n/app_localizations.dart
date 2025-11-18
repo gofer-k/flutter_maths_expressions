@@ -284,6 +284,12 @@ abstract class AppLocalizations {
   /// **'Law of sines'**
   String get triangleLawSines;
 
+  /// No description provided for @triangleLawCosines.
+  ///
+  /// In en, this message translates to:
+  /// **'Law of cosines'**
+  String get triangleLawCosines;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:
