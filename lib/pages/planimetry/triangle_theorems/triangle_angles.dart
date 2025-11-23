@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../Themes/math_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/dock_side.dart';
 import '../../../models/planimetry/base_shape.dart';
@@ -148,10 +149,10 @@ class _TriangleAnglesPageState extends State<TriangleAnglesPage> {
 
   Widget inputValuesForm(AppLocalizations l10n) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 8),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
-        titleStyle: TextStyle(fontWeight: FontWeight.normal),
+        titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
         expanded: true,
         body: InputValuesForm<double>(
           contents: [
