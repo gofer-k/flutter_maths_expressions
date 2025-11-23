@@ -75,7 +75,7 @@ class MathsExpressionsApp extends StatelessWidget {
               ],
             ),
             headerTextStyle: Theme.of(context).textTheme.bodyLarge,
-            dropDownLabelStyle: Theme.of(context).textTheme.headlineSmall?.apply(color: Colors.blue.shade700),
+            dropDownLabelStyle: Theme.of(context).textTheme.headlineSmall?.apply(color: Colors.blue.shade700, fontSizeFactor: 0.75),
             dropDownEntryLabelStyle: Theme.of(context).textTheme.headlineSmall?.apply(color: Colors.blue.shade900, fontSizeFactor: 0.75),
             dropDownMenuStyle: MenuStyle(
               shadowColor: WidgetStateProperty.all(Colors.transparent),

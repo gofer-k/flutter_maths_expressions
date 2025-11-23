@@ -161,7 +161,7 @@ abstract class AppLocalizations {
   /// No description provided for @trianglesCongruence.
   ///
   /// In en, this message translates to:
-  /// **'Rules of congruence of triangles'**
+  /// **'Rules of congruence'**
   String get trianglesCongruence;
 
   /// No description provided for @congruenceType.
@@ -191,7 +191,7 @@ abstract class AppLocalizations {
   /// No description provided for @trianglesSimilarity.
   ///
   /// In en, this message translates to:
-  /// **'Rules of similarity of triangles'**
+  /// **'Rules of similarity'**
   String get trianglesSimilarity;
 
   /// No description provided for @similarityType.
@@ -221,19 +221,19 @@ abstract class AppLocalizations {
   /// No description provided for @congruenceParameters.
   ///
   /// In en, this message translates to:
-  /// **'Parameters of congruence triangles'**
+  /// **'Parameters of congruence'**
   String get congruenceParameters;
 
   /// No description provided for @similarityParameters.
   ///
   /// In en, this message translates to:
-  /// **'Parameters of similarity triangles'**
+  /// **'Parameters of similarity'**
   String get similarityParameters;
 
   /// No description provided for @trianglePythagorasTheorem.
   ///
   /// In en, this message translates to:
-  /// **'Pithagoras Theorem'**
+  /// **'Pythagoras Theorem'**
   String get trianglePythagorasTheorem;
 
   /// No description provided for @triangleMedianTheorem.

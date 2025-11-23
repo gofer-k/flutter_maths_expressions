@@ -39,7 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triangleAngles => 'Triangle angles';
 
   @override
-  String get trianglesCongruence => 'Rules of congruence of triangles';
+  String get trianglesCongruence => 'Rules of congruence';
 
   @override
   String get congruenceType => 'Congruence type';
@@ -54,7 +54,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get congruenceASA => 'Angle-Side-Angle';
 
   @override
-  String get trianglesSimilarity => 'Rules of similarity of triangles';
+  String get trianglesSimilarity => 'Rules of similarity';
 
   @override
   String get similarityType => 'Similarity type';
@@ -69,13 +69,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get similaritySAS => 'Side-Angle-Side';
 
   @override
-  String get congruenceParameters => 'Parameters of congruence triangles';
+  String get congruenceParameters => 'Parameters of congruence';
 
   @override
-  String get similarityParameters => 'Parameters of similarity triangles';
+  String get similarityParameters => 'Parameters of similarity';
 
   @override
-  String get trianglePythagorasTheorem => 'Pithagoras Theorem';
+  String get trianglePythagorasTheorem => 'Pythagoras Theorem';
 
   @override
   String get triangleMedianTheorem => 'Media theorem';

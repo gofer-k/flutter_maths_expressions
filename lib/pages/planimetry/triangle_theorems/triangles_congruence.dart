@@ -24,8 +24,8 @@ class TrianglesCongruence extends StatefulWidget {
 }
 
 class _TrianglesCongruenceState extends State<TrianglesCongruence> {
-  final originTriangle1 = Triangle(a: Offset(-3, 1), b: Offset(-1, 4), c: Offset(1, 1));
-  final originTriangle2 = Triangle(a: Offset(-1, -5), b: Offset(1, -2), c: Offset(3, -5));
+  final originTriangle1 = Triangle(a: Offset(-3, 0.5), b: Offset(-1, 3.5), c: Offset(1, 0.5));
+  final originTriangle2 = Triangle(a: Offset(-3, 0.5), b: Offset(-1, 3.5), c: Offset(1, 0.5));
   late Triangle triangle1;
   late Triangle triangle2;
   late CongruenceType type = CongruenceType.sideSideSide;
@@ -52,9 +52,12 @@ class _TrianglesCongruenceState extends State<TrianglesCongruence> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
-            title: Text(
-              widget.title,
-              style: Theme.of(context).textTheme.headlineMedium,
+            title: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                widget.title,
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
             ),
           ),
           body: Column(
@@ -189,12 +192,19 @@ class _TrianglesCongruenceState extends State<TrianglesCongruence> {
       case CongruenceType.sideSideSide:
         triangle1 = Triangle(a: originTriangle1.a, b: originTriangle1.b, c: originTriangle1.c);
         triangle2 = Triangle(a: originTriangle2.a, b: originTriangle2.b, c: originTriangle2.c);
-        triangle2.scale(0.75);
+        triangle2.translate(3, -3);
         break;
       case CongruenceType.sideAngleSide:
         triangle1 = Triangle(a: originTriangle1.a, b: originTriangle1.b, c: originTriangle1.c);
-        triangle2 = Triangle(a: originTriangle2.a, b: originTriangle2.b, c: originTriangle2.c);
-        triangle2.scale(1.5);
+        final k = 2.0;
+        final a = Offset(
+            (triangle1.b.dx + k * triangle1.a.dx) / (1 + k),
+            (triangle1.b.dy + k * triangle1.a.dy) / (1 + k));
+        final c = Offset(
+            (triangle1.b.dx + k * triangle1.c.dx) / (1 + k),
+            (triangle1.b.dy + k * triangle1.c.dy) / (1 + k));
+        triangle2 = Triangle(a: a, b: originTriangle1.b, c: c);
+        triangle2.translate(2, -5);
         break;
       case CongruenceType.angleSideAngle: {
         triangle1 = Triangle(a: Offset(-4, 1), b: Offset(-3, 3), c: Offset(1, 1));
