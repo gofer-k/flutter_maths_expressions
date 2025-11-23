@@ -12,6 +12,7 @@ import '../../../models/planimetry/triangle.dart';
 import '../../../painters/drawable_shape.dart';
 import '../../../painters/triangle_painter.dart';
 import '../../../widgets/background_container.dart';
+import '../../../widgets/shrinkable_list_Item.dart';
 
 class TrianglePropertiesPage extends StatefulWidget {
   final String title;
@@ -35,16 +36,62 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
     String triangleArea = triangle.b.dx == triangle.a.dx
         ? r"A = \frac{1}{2} \cdot \text{|AC|} \cdot \text{|AB|} = " + area.toStringAsFixed(2)
         : triangle.b.dx == triangle.c.dx
-        ? r"A = \frac{1}{2} \cdot | AC | \cdot | BC | = " + area.toStringAsFixed(2)
-        : r"A = \frac{1}{2} \cdot | AC | \cdot | BD | = " + area.toStringAsFixed(2);
+        ? r"A = \frac{1}{2} | AC | \cdot | BC | = " + area.toStringAsFixed(2)
+        : r"A = \frac{1}{2} | AC | \cdot | BD | = " + area.toStringAsFixed(2);
 
-    String triangleArea2 = r"A = \frac{1}{2} \cdot \text{|AB|} \cdot \text{|BB|} \cdot \sin(\beta) = " + area.toStringAsFixed(2);
+    String triangleArea2 = r"A = \frac{1}{2} \text{|AB|} \cdot \text{|BB|} \sin(\beta) = " + area.toStringAsFixed(2);
 
     String trianglePerimeter = r"P = \text{|AB| + |AC| + |BC|} = " + perimeter.toStringAsFixed(2);
 
     String szHeronProperties = r"P_h = \frac{P}{2}, a = |BC|, b = |AC|, c = |AB|";
-    String szHeronFormula = r"A = \sqrt{P_h \dot (P_h - a)(P_h - b)(P_h - c} = "+
+    String szHeronFormula = r"A = \sqrt{P_h (P_h - a)(P_h - b)(P_h - c}) = "+
       heronFormulaResult.toStringAsFixed(2);
+
+    final List<Widget> areaExpressions = [
+      FittedBox(
+        fit: BoxFit.fitWidth,
+        child: DisplayExpression(
+          context: context,
+          decoration: MathTheme.of(context).listItemDecoration,
+          expression: triangleArea,
+          scale: MathTheme.of(context).expressionScale?? 1.0,
+        ),
+      ),
+      const SizedBox(height: 2),
+      FittedBox(
+        fit: BoxFit.fitWidth,
+        child:  DisplayExpression(
+          context: context,
+          expression: triangleArea2,
+          scale: MathTheme.of(context).expressionScale?? 1.0,
+        ),
+      ),
+    ];
+    final List<Widget> heronFormula = [
+      FittedBox(
+        fit: BoxFit.fitWidth,
+          child: DisplayExpression(
+          context: context,
+          expression: trianglePerimeter,
+          scale: MathTheme.of(context).expressionScale?? 1.0,
+        ),
+      ),
+      FittedBox(fit: BoxFit.fitWidth,
+        child: DisplayExpression(
+          context: context,
+          expression: szHeronProperties,
+          scale: MathTheme.of(context).expressionScale?? 1.0,
+        ),
+      ),
+      const SizedBox(height: 4),
+      FittedBox(fit: BoxFit.fitWidth,
+        child: DisplayExpression(
+          context: context,
+          expression: szHeronFormula,
+          scale: MathTheme.of(context).expressionScale?? 1.0,
+        ),
+      ),
+    ];
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
@@ -63,44 +110,17 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
           ),
           body: Column(
             children: [
-              Expanded(flex: 2, child: drawableView(DockSide.leftTop)),
+              Expanded(flex: 3, child: drawableView(DockSide.leftTop)),
               const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: triangleArea,
-                scale: 1.5,
+              ShrinkableListItem(
+                title:  l10n.triangleArea,
+                details: areaExpressions,
+                titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
               ),
-              const SizedBox(height: 2),
-              DisplayExpression(
-                context: context,
-                expression: triangleArea2,
-                scale: 1.5,
-              ),
-              const SizedBox(height: 4),
-              Divider(),
-              DisplayExpression(
-                context: context,
-                expression: trianglePerimeter,
-                scale: 1.5,
-              ),
-              const SizedBox(height: 12),
-              Divider(),
-              Text(l10n.triangleHeronsFormula,
-                style: MathTheme.of(context).shrinkableTitleTextStyle,),
-              FittedBox(fit: BoxFit.fitWidth,
-                child: DisplayExpression(
-                  context: context,
-                  expression: szHeronProperties,
-                  scale: 1.5,
-                ),
-              ),
-              const SizedBox(height: 4),
-              FittedBox(fit: BoxFit.fitWidth,
-                child: DisplayExpression(
-                  context: context,
-                  expression: szHeronFormula,
-                  scale: 1.5,
-                ),
+              ShrinkableListItem(
+                title:  l10n.triangleHeronsFormula,
+                details: heronFormula,
+                titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
               ),
               const SizedBox(height: 4),
               Expanded(flex: 2, child: inputValuesForm(l10n)),
@@ -159,10 +179,10 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
 
   Widget inputValuesForm(AppLocalizations l10n) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 8),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
-        titleStyle: TextStyle(fontWeight: FontWeight.normal),
+        titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
         expanded: true,
         body: InputValuesForm<double>(
           contents: [
