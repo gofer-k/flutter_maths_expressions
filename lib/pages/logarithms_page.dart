@@ -20,22 +20,6 @@ class _LogarithmsPageState extends State<LogarithmsPage> {
     final rightColScale = 2.0;
     final horizontalPaddingItem = 4.0;
     final verticalPaddingItem = 4.0;
-    // final listItemDecoration = BoxDecoration(
-    //   color: Colors.grey.shade300, // Background color of the "card"
-    //   border: Border.all(
-    //     color: Colors.grey.shade400, // Color of the outline
-    //     width: 1.0,                // Thickness of the outline
-    //     ),
-    //   borderRadius: BorderRadius.circular(8.0), // Rounded corners for the card-like look
-    //   boxShadow: [ // Optional: Add shadow similar to a Card
-    //     BoxShadow(
-    //       color: Colors.grey.withAlpha(128),
-    //       spreadRadius: 2,
-    //       blurRadius: 5,
-    //       offset: Offset(0, 3), // changes position of shadow
-    //     ),
-    //   ],
-    // );
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade300,
