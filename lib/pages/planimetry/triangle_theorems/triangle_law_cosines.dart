@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../../Themes/math_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/dock_side.dart';
 import '../../../models/planimetry/base_shape.dart';
@@ -13,6 +14,7 @@ import '../../../widgets/display_expression.dart';
 import '../../../widgets/infinite_drawer.dart';
 import '../../../widgets/input_values_form.dart';
 import '../../../widgets/shrinkable.dart';
+import '../../../widgets/shrinkable_list_Item.dart';
 
 class TriangleLawCosines extends StatefulWidget {
   final String title;
@@ -49,7 +51,7 @@ class _TriangleLawCosinesState extends State<TriangleLawCosines> {
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
-      endColor: Colors.grey.shade300,
+      endColor: Colors.grey.shade500,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -66,29 +68,31 @@ class _TriangleLawCosinesState extends State<TriangleLawCosines> {
             children: [
               Expanded(flex: 2, child: drawableView(dock)),
               const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: szProperties,
-                scale: 1.5,
-              ),
-              const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: szLawCosines,
-                scale: 1.5,
-              ),
-              const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: szLawCosines2,
-                scale: 1.5,
-              ),
-              const SizedBox(height: 4),
-              const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: szLawCosines3,
-                scale: 1.5,
+              ShrinkableListItem(
+                title:  l10n.parameters,
+                details: [
+                  DisplayExpression(
+                    context: context,
+                    expression: szProperties,
+                    scale: 1.5,
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: szLawCosines,
+                    scale: 1.5,
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: szLawCosines2,
+                    scale: 1.5,
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: szLawCosines3,
+                    scale: 1.5,
+                  ),
+                ],
+                titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
               ),
               const SizedBox(height: 4),
               Expanded(flex: 1, child: inputValuesForm(l10n)),
@@ -146,10 +150,10 @@ class _TriangleLawCosinesState extends State<TriangleLawCosines> {
 
   Widget inputValuesForm(AppLocalizations l10n) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
-        titleStyle: TextStyle(fontWeight: FontWeight.normal),
+        titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
         expanded: true,
         body: InputValuesForm<double>(
           contents: [

@@ -12,6 +12,7 @@ import '../../../widgets/display_expression.dart';
 import '../../../widgets/infinite_drawer.dart';
 import '../../../widgets/input_values_form.dart';
 import '../../../widgets/shrinkable.dart';
+import '../../../widgets/shrinkable_list_Item.dart';
 
 class TriangleAnglesPage extends StatefulWidget {
   final String title;
@@ -40,7 +41,8 @@ class _TriangleAnglesPageState extends State<TriangleAnglesPage> {
     String strSumAngles = r"\alpha + \beta + \gamma = " + sumAngles.toStringAsFixed(1)  +  r"^o";
 
     return BackgroundContainer(
-      beginColor: Colors.grey.shade300,
+      beginColor: Colors.grey.shade50,
+      endColor: Colors.grey.shade500,
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -56,15 +58,24 @@ class _TriangleAnglesPageState extends State<TriangleAnglesPage> {
             children: [
               Expanded(flex: 2, child: drawableView(DockSide.leftTop)),
               const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: triangleAngles,
-                scale: 1.5,
-              ),
-              DisplayExpression(
-                context: context,
-                expression: strSumAngles,
-                scale: 1.5,
+              ShrinkableListItem(
+                title:  l10n.parameters,
+                details: [
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: DisplayExpression(
+                      context: context,
+                      expression: triangleAngles,
+                      scale: MathTheme.of(context).expressionScale?? 1.0,
+                    ),
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: strSumAngles,
+                    scale: MathTheme.of(context).expressionScale?? 1.0,
+                  ),
+                ],
+                titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
               ),
               const SizedBox(height: 4),
               Expanded(flex: 2, child: inputValuesForm(l10n)),
@@ -149,7 +160,7 @@ class _TriangleAnglesPageState extends State<TriangleAnglesPage> {
 
   Widget inputValuesForm(AppLocalizations l10n) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
         titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,

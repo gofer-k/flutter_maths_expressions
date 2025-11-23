@@ -40,7 +40,7 @@ class _PythagorasTheoremState extends State<PythagorasTheorem>{
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
-      endColor: Colors.grey.shade300,
+      endColor: Colors.grey.shade500,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -123,7 +123,7 @@ class _PythagorasTheoremState extends State<PythagorasTheorem>{
 
   inputValuesForm(AppLocalizations l10n) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
         titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,

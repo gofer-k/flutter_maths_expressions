@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../../Themes/math_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/dock_side.dart';
 import '../../../models/planimetry/base_shape.dart';
@@ -43,7 +44,7 @@ class _TriangleLawSinesState extends State<TriangleLawSines> {
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
-      endColor: Colors.grey.shade300,
+      endColor: Colors.grey.shade500,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -127,10 +128,10 @@ class _TriangleLawSinesState extends State<TriangleLawSines> {
 
   Widget inputValuesForm(AppLocalizations l10n) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
-        titleStyle: TextStyle(fontWeight: FontWeight.normal),
+        titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
         expanded: true,
         body: InputValuesForm<double>(
           contents: [

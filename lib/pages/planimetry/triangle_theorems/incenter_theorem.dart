@@ -11,6 +11,7 @@ import '../../../widgets/display_expression.dart';
 import '../../../widgets/infinite_drawer.dart';
 import '../../../widgets/input_values_form.dart';
 import '../../../widgets/shrinkable.dart';
+import '../../../widgets/shrinkable_list_Item.dart';
 
 class IncenterTheoremPage extends StatefulWidget {
   final String title;
@@ -45,7 +46,7 @@ class _IncenterTheoremPageState extends State<IncenterTheoremPage> {
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
-      endColor: Colors.grey.shade300,
+      endColor: Colors.grey.shade500,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -62,30 +63,40 @@ class _IncenterTheoremPageState extends State<IncenterTheoremPage> {
             children: [
               Expanded(flex: 2, child: drawableView(dock)),
               const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: szProperties,
-                scale: 1.5,
-              ),
-              DisplayExpression(
-                context: context,
-                expression: szIncenter,
-                scale: 1.5,
-              ),
-              DisplayExpression(
-                context: context,
-                expression: szHalfPerimeter,
-                scale: 1.5,
-              ),
-              DisplayExpression(
-                context: context,
-                expression: szArea,
-                scale: 1.5,
-              ),
-              DisplayExpression(
-                context: context,
-                expression: szInradius,
-                scale: 1.5,
+              ShrinkableListItem(
+                title:  l10n.parameters,
+                details: [
+                  FittedBox(fit: BoxFit.fitWidth,
+                      child: DisplayExpression(
+                      context: context,
+                      expression: szProperties,
+                      scale: 1.5,
+                    ),
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: szIncenter,
+                    scale: 1.5,
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: szHalfPerimeter,
+                    scale: 1.5,
+                  ),
+                  FittedBox(fit: BoxFit.fitWidth,
+                    child: DisplayExpression(
+                      context: context,
+                      expression: szArea,
+                      scale: 1.5,
+                    ),
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: szInradius,
+                    scale: 1.5,
+                  ),
+                ],
+                titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
               ),
               const SizedBox(height: 4),
               Expanded(flex: 1, child: inputValuesForm(l10n, triangle)),
@@ -126,7 +137,7 @@ class _IncenterTheoremPageState extends State<IncenterTheoremPage> {
 
   inputValuesForm(AppLocalizations l10n, Triangle triangle) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
         titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,

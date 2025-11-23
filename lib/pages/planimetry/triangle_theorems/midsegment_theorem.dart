@@ -35,7 +35,7 @@ class _MidSegmentTheoremState extends State<MidsegmentTheorem> {
         ac.toStringAsFixed(2) + r"}{" + de.toStringAsFixed(2) + r"} = " + midsegmentRelVal.toStringAsFixed(2);
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
-      endColor: Colors.grey.shade300,
+      endColor: Colors.grey.shade500,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -96,7 +96,7 @@ class _MidSegmentTheoremState extends State<MidsegmentTheorem> {
 
   inputValuesForm(AppLocalizations l10n, Triangle triangle) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
         titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,

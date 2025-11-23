@@ -11,6 +11,7 @@ import '../../../widgets/display_expression.dart';
 import '../../../widgets/infinite_drawer.dart';
 import '../../../widgets/input_values_form.dart';
 import '../../../widgets/shrinkable.dart';
+import '../../../widgets/shrinkable_list_Item.dart';
 
 class MedianTheoremPage extends StatefulWidget {
   final String title;
@@ -38,7 +39,7 @@ class _MedianTheoremPageState extends State<MedianTheoremPage> {
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
-      endColor: Colors.grey.shade300,
+      endColor: Colors.grey.shade500,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -55,20 +56,26 @@ class _MedianTheoremPageState extends State<MedianTheoremPage> {
             children: [
               Expanded(flex: 2, child: drawableView(DockSide.leftTop)),
               const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: areaABC,
-                scale: 1.5,
-              ),
-              DisplayExpression(
-                context: context,
-                expression: areaABD,
-                scale: 1.5,
-              ),
-              DisplayExpression(
-                context: context,
-                expression: areaMBC,
-                scale: 1.5,
+              ShrinkableListItem(
+                title:  l10n.parameters,
+                details: [
+                  DisplayExpression(
+                    context: context,
+                    expression: areaABC,
+                    scale: 1.5,
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: areaABD,
+                    scale: 1.5,
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: areaMBC,
+                    scale: 1.5,
+                  ),
+                ],
+                titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
               ),
               const SizedBox(height: 4),
               Expanded(flex: 1, child: inputValuesForm(l10n, triangle)),
@@ -111,7 +118,7 @@ class _MedianTheoremPageState extends State<MedianTheoremPage> {
     final medianPoint = triangle.getMedianPoint(triangle.a, triangle.c);
 
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
         titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,

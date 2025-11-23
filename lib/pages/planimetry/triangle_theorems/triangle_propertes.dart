@@ -52,7 +52,6 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
         fit: BoxFit.fitWidth,
         child: DisplayExpression(
           context: context,
-          decoration: MathTheme.of(context).listItemDecoration,
           expression: triangleArea,
           scale: MathTheme.of(context).expressionScale?? 1.0,
         ),
@@ -95,7 +94,7 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
-      endColor: Colors.grey.shade700,
+      endColor: Colors.grey.shade500,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -113,7 +112,7 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
               Expanded(flex: 3, child: drawableView(DockSide.leftTop)),
               const SizedBox(height: 4),
               ShrinkableListItem(
-                title:  l10n.triangleArea,
+                title:  l10n.parameters,
                 details: areaExpressions,
                 titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
               ),
@@ -179,7 +178,7 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
 
   Widget inputValuesForm(AppLocalizations l10n) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
         titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,

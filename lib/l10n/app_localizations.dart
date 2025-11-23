@@ -239,13 +239,13 @@ abstract class AppLocalizations {
   /// No description provided for @triangleMedianTheorem.
   ///
   /// In en, this message translates to:
-  /// **'Media theorem'**
+  /// **'Median theorem'**
   String get triangleMedianTheorem;
 
   /// No description provided for @triangleCentroidPoint.
   ///
   /// In en, this message translates to:
-  /// **'Triangle centroid theorem'**
+  /// **'Centroid theorem'**
   String get triangleCentroidPoint;
 
   /// No description provided for @triangleBisectorTheorem.
@@ -263,13 +263,13 @@ abstract class AppLocalizations {
   /// No description provided for @triangleCircumCenterTheorem.
   ///
   /// In en, this message translates to:
-  /// **'Circumcenter triangle theorem'**
+  /// **'Circumcenter'**
   String get triangleCircumCenterTheorem;
 
   /// No description provided for @triangleInCenterTheorem.
   ///
   /// In en, this message translates to:
-  /// **'Incenter triangle theorem'**
+  /// **'Incenter'**
   String get triangleInCenterTheorem;
 
   /// No description provided for @triangleHeronsFormula.
@@ -469,6 +469,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hyperbolic cylinder'**
   String get shapeTypeHyperbolicCylinder;
+
+  /// No description provided for @parameters.
+  ///
+  /// In en, this message translates to:
+  /// **'Parameters'**
+  String get parameters;
 
   /// No description provided for @vertex.
   ///

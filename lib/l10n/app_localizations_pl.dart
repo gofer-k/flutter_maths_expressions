@@ -39,7 +39,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get triangleAngles => 'Kąty trójkąta';
 
   @override
-  String get trianglesCongruence => 'Zasady przystawania trójkątów';
+  String get trianglesCongruence => 'Zasady przystawania';
 
   @override
   String get congruenceType => 'Typ przystawania trójkątów';
@@ -54,7 +54,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get congruenceASA => 'Kąt-Bok-Kąt';
 
   @override
-  String get trianglesSimilarity => 'żasady podobieństwa trójkątów';
+  String get trianglesSimilarity => 'żasady podobieństwa';
 
   @override
   String get similarityType => 'Typ podobieństwa';
@@ -69,10 +69,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get similaritySAS => 'Bok-Kąt-Bok';
 
   @override
-  String get congruenceParameters => 'Parametry przystawania trójkątów';
+  String get congruenceParameters => 'Parametry przystawania';
 
   @override
-  String get similarityParameters => 'Parametry podobieństwa trójkątów';
+  String get similarityParameters => 'Parametry podobieństwa';
 
   @override
   String get trianglePythagorasTheorem => 'Twierdzenie Pitagorasa';
@@ -81,13 +81,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get triangleMedianTheorem => 'Twierdzenie mediany na trójkącie';
 
   @override
-  String get triangleCentroidPoint => 'Punkt ciężkości trójkąta';
+  String get triangleCentroidPoint => 'Punkt ciężkości';
 
   @override
-  String get triangleBisectorTheorem => 'Dwusieczna kąta trójkąta';
+  String get triangleBisectorTheorem => 'Dwusieczna kąta';
 
   @override
-  String get triangleMidsegmentTheorem => 'Twierdzenie środek odcinka trójkąta';
+  String get triangleMidsegmentTheorem => 'Twierdzenie środek odc. trójkąta';
 
   @override
   String get triangleCircumCenterTheorem => 'Środek opisanego okręgu';
@@ -196,6 +196,9 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get shapeTypeHyperbolicCylinder => 'Cylinder hiperboliczny';
+
+  @override
+  String get parameters => 'Parameters';
 
   @override
   String get vertex => 'Punkt';

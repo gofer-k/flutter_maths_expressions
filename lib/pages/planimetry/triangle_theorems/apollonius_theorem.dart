@@ -11,6 +11,7 @@ import '../../../widgets/display_expression.dart';
 import '../../../widgets/infinite_drawer.dart';
 import '../../../widgets/input_values_form.dart';
 import '../../../widgets/shrinkable.dart';
+import '../../../widgets/shrinkable_list_Item.dart';
 
 class ApolloniusTheorem extends StatefulWidget {
   final String title;
@@ -43,7 +44,7 @@ class _ApolloniusTheoremState extends State<ApolloniusTheorem> {
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
-      endColor: Colors.grey.shade300,
+      endColor: Colors.grey.shade500,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -51,29 +52,38 @@ class _ApolloniusTheoremState extends State<ApolloniusTheorem> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
-            title: Text(
-              widget.title,
-              style: Theme.of(context).textTheme.headlineMedium,
+            title: FittedBox(fit: BoxFit.fitWidth,
+              child: Text(widget.title,
+                style: Theme.of(context).textTheme.headlineMedium,
+                ),
             ),
           ),
           body: Column(
             children: [
               Expanded(flex: 2, child: drawableView(DockSide.leftTop)),
               const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: szProperties,
-                scale: 1.5,
-              ),
-              DisplayExpression(
-                context: context,
-                expression: szApolloniusTheorem,
-                scale: 1.5,
-              ),
-              DisplayExpression(
-                context: context,
-                expression: szApolloniusTheoremResult,
-                scale: 1.5,
+              ShrinkableListItem(
+                title:  l10n.parameters,
+                details: [
+                  FittedBox(fit: BoxFit.fitWidth,
+                    child: DisplayExpression(
+                      context: context,
+                      expression: szProperties,
+                      scale: 1.5,
+                    ),
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: szApolloniusTheorem,
+                    scale: 1.5,
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: szApolloniusTheoremResult,
+                    scale: 1.5,
+                  ),
+                ],
+                titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
               ),
               const SizedBox(height: 4),
               Expanded(flex: 1, child: inputValuesForm(l10n, triangle)),
@@ -116,7 +126,7 @@ class _ApolloniusTheoremState extends State<ApolloniusTheorem> {
     final medianPoint = triangle.getMedianPoint(triangle.a, triangle.c);
 
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
         titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,

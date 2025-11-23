@@ -11,6 +11,7 @@ import '../../../widgets/display_expression.dart';
 import '../../../widgets/infinite_drawer.dart';
 import '../../../widgets/input_values_form.dart';
 import '../../../widgets/shrinkable.dart';
+import '../../../widgets/shrinkable_list_Item.dart';
 
 class CircumcenterTheorem extends StatefulWidget {
   final String title;
@@ -22,7 +23,7 @@ class CircumcenterTheorem extends StatefulWidget {
 }
 
 class _CircumcenterTheoremState extends State<CircumcenterTheorem> {
-  final triangle = Triangle(a: Offset(-4, -2), b: Offset(1, 3), c: Offset(4, -2));
+  final triangle = Triangle(a: Offset(-3.5, -1), b: Offset(1, 3), c: Offset(3.5, -1));
   DockSide dock = DockSide.leftTop;
 
   @override
@@ -38,7 +39,7 @@ class _CircumcenterTheoremState extends State<CircumcenterTheorem> {
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
-      endColor: Colors.grey.shade300,
+      endColor: Colors.grey.shade500,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -55,20 +56,28 @@ class _CircumcenterTheoremState extends State<CircumcenterTheorem> {
             children: [
               Expanded(flex: 2, child: drawableView(dock)),
               const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: szProperties,
-                scale: 1.5,
-              ),
-              DisplayExpression(
-                context: context,
-                expression: szCircumcenter,
-                scale: 1.5,
-              ),
-              DisplayExpression(
-                context: context,
-                expression: szCircumradius,
-                scale: 1.5,
+              ShrinkableListItem(
+                title:  l10n.parameters,
+                details: [
+                  FittedBox(fit: BoxFit.fitWidth,
+                    child: DisplayExpression(
+                      context: context,
+                      expression: szProperties,
+                      scale: 1.5,
+                    ),
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: szCircumcenter,
+                    scale: 1.5,
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: szCircumradius,
+                    scale: 1.5,
+                  ),
+                ],
+                titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
               ),
               const SizedBox(height: 4),
               Expanded(flex: 1, child: inputValuesForm(l10n, triangle)),
@@ -109,7 +118,7 @@ class _CircumcenterTheoremState extends State<CircumcenterTheorem> {
 
   inputValuesForm(AppLocalizations l10n, Triangle triangle) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
         titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,

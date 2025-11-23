@@ -38,7 +38,7 @@ class _BisectorTheoremState extends State<BisectorTheorem> {
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
-      endColor: Colors.grey.shade300,
+      endColor: Colors.grey.shade500,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -116,7 +116,7 @@ class _BisectorTheoremState extends State<BisectorTheorem> {
     final bisectorPoint = triangle.getBisectorPoint(triangle.b, triangle.a, triangle.c);
 
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
         titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,

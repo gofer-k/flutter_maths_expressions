@@ -11,6 +11,7 @@ import '../../../widgets/display_expression.dart';
 import '../../../widgets/infinite_drawer.dart';
 import '../../../widgets/input_values_form.dart';
 import '../../../widgets/shrinkable.dart';
+import '../../../widgets/shrinkable_list_Item.dart';
 
 class CentroidTheorem extends StatefulWidget {
   final String title;
@@ -21,7 +22,7 @@ class CentroidTheorem extends StatefulWidget {
 }
 
 class _CentroidTheoremState extends State<CentroidTheorem> {
-  final triangle = Triangle(a: Offset(-3, -2), b: Offset(1, 3), c: Offset(5, -2));
+  final triangle = Triangle(a: Offset(-3, -2), b: Offset(0, 2), c: Offset(4, -2));
   DockSide dock = DockSide.leftTop;
 
   @override
@@ -31,9 +32,6 @@ class _CentroidTheoremState extends State<CentroidTheorem> {
     final medianB = triangle.getMedianPoint(triangle.a, triangle.c);
     final relCa = (triangle.a - centroidPoint).distance / (medianA - centroidPoint).distance;
     final relCb = (triangle.b - centroidPoint).distance / (medianB - centroidPoint).distance;
-    // final medianPoint = triangle.getMedianPoint(begin, end);
-    // final centroidLength = triangle.getMedianPoint(begin, end);
-    //
     final l10n = AppLocalizations.of(context)!;
     String centroid = r"C_p = \frac{A + B + C}{3} = (" +
         centroidPoint.dx.toStringAsFixed(2) + ", " +
@@ -44,7 +42,7 @@ class _CentroidTheoremState extends State<CentroidTheorem> {
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
-      endColor: Colors.grey.shade300,
+      endColor: Colors.grey.shade500,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -61,28 +59,34 @@ class _CentroidTheoremState extends State<CentroidTheorem> {
             children: [
               Expanded(flex: 2, child: drawableView(dock)),
               const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: centroid,
-                scale: 1.5,
-              ),
-              const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: sRelCa,
-                scale: 1.5,
-              ),
-              const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: sRelCb,
-                scale: 1.5,
-              ),
-              const SizedBox(height: 4),
-              DisplayExpression(
-                context: context,
-                expression: sRelCc,
-                scale: 1.5,
+              ShrinkableListItem(
+                title:  l10n.parameters,
+                details: [
+                  FittedBox(fit: BoxFit.fitWidth,
+                    child: DisplayExpression(
+                      context: context,
+                      expression: centroid,
+                      scale: MathTheme.of(context).expressionScale?? 1.0,
+                    ),
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: sRelCa,
+                    scale: 1.5,
+                  ),
+                  DisplayExpression(
+                    context: context,
+                    expression: sRelCb,
+                    scale: 1.5,
+                  ),
+                  // const SizedBox(height: 4),
+                  DisplayExpression(
+                    context: context,
+                    expression: sRelCc,
+                    scale: 1.5,
+                  ),
+                ],
+                titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,
               ),
               const SizedBox(height: 4),
               Expanded(flex: 1, child: inputValuesForm(l10n, triangle)),
@@ -123,7 +127,7 @@ class _CentroidTheoremState extends State<CentroidTheorem> {
 
   Widget inputValuesForm(l10n, triangle) {
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       child: Shrinkable(
         title: l10n.vertexInputTitle,
         titleStyle: MathTheme.of(context).shrinkableTitleTextStyle,

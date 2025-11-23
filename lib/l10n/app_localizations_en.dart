@@ -78,10 +78,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trianglePythagorasTheorem => 'Pythagoras Theorem';
 
   @override
-  String get triangleMedianTheorem => 'Media theorem';
+  String get triangleMedianTheorem => 'Median theorem';
 
   @override
-  String get triangleCentroidPoint => 'Triangle centroid theorem';
+  String get triangleCentroidPoint => 'Centroid theorem';
 
   @override
   String get triangleBisectorTheorem => 'Bisector theorem';
@@ -90,10 +90,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triangleMidsegmentTheorem => 'Midsegment theorem';
 
   @override
-  String get triangleCircumCenterTheorem => 'Circumcenter triangle theorem';
+  String get triangleCircumCenterTheorem => 'Circumcenter';
 
   @override
-  String get triangleInCenterTheorem => 'Incenter triangle theorem';
+  String get triangleInCenterTheorem => 'Incenter';
 
   @override
   String get triangleHeronsFormula => 'Heron\'s formula';
@@ -195,6 +195,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shapeTypeHyperbolicCylinder => 'Hyperbolic cylinder';
+
+  @override
+  String get parameters => 'Parameters';
 
   @override
   String get vertex => 'Vertex';
