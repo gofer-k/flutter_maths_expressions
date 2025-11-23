@@ -70,20 +70,61 @@ class _TriangleTheoremsPageState extends State<TriangleTheoremsPage> {
     BuildContext context, String label, T widget) {
     final edgeMargin = 2.0;
     return Container(
-      padding: EdgeInsets.symmetric(vertical: edgeMargin),
-      child: TextButton(
-        onPressed: () async {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: ((context) {
-                return widget;
-              }),
+      // padding: EdgeInsets.symmetric(vertical: edgeMargin),
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.blue.shade200, Colors.blue.shade400],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => widget),
+            );
+          },
+          borderRadius: BorderRadius.circular(12),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  label,
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
+              ],
             ),
-          );
-        },
-        child: Text(label),
-      )
+          ),
+        ),
+      ),
+    // child: TextButton(
+    //     onPressed: () async {
+    //       Navigator.push(
+    //         context,
+    //         MaterialPageRoute(
+    //           builder: ((context) {
+    //             return widget;
+    //           }),
+    //         ),
+    //       );
+    //     },
+    //     child: Text(label),
+    //   )
     );
   }
 }
