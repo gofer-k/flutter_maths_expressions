@@ -8,6 +8,7 @@ import '../../../models/dock_side.dart';
 import '../../../painters/angle_painter.dart';
 import '../../../painters/drawable_shape.dart';
 import '../../../widgets/background_container.dart';
+import '../../../widgets/display_expression.dart';
 import '../../../widgets/infinite_drawer.dart';
 
 class AngleTypesPage extends StatefulWidget {
@@ -25,8 +26,11 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
       leadingLine: Line(a: Offset(0.0, 0.0), b: Offset(4.0, 0.0)),
       followingLine: Line(a: Offset(0.0, 0.0), b: Offset(0.0, 4.0)));
 
-  late Angle angle = originAngle;
+  // late Angle angle = originAngle;
+  late Angle leadingAngle = originAngle;
+  late Angle followingAngle;
   late Line cuttingAngleLine;
+
   late ShowAngleType type = ShowAngleType.angle;
 
   @override
@@ -56,6 +60,30 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
           body: Column(
             children: [
               Expanded(flex: 2, child: drawableView(dock)),
+              const SizedBox(height: 4),
+              LayoutBuilder(builder: (context, constraints){
+                if (type == ShowAngleType.complementary) {
+                  final complementaryAngles = leadingAngle.getComplementaryAngles(angleType: AngleType.degrees);
+                  return DisplayExpression(
+                    context: context,
+                    expression: r"\alpha = " + complementaryAngles.first.toStringAsFixed(1) +
+                      r"^\circ, \beta = " + complementaryAngles.last.toStringAsFixed(1) + r"^\circ",
+                    scale: 1.5);
+                }
+                else if (type == ShowAngleType.supplementary) {
+                  final supplementaryAngles = leadingAngle.getSupplementaryAngle(angleType: AngleType.degrees);
+                  return DisplayExpression(
+                    context: context,
+                    expression: r"\alpha = " + supplementaryAngles.first.toStringAsFixed(1) +
+                        r"^\circ, \beta = " + supplementaryAngles.last.toStringAsFixed(1) + r"^\circ",
+                    scale: 1.5);
+                }
+                return DisplayExpression(
+                  context: context,
+                  expression: r"\alpha = " + leadingAngle.getAngle(angleType: AngleType.degrees).toStringAsFixed(1) + r"^\circ",
+                  scale: 1.5,
+                );
+              }),
               const SizedBox(height: 4),
               Expanded(flex: 1,
                 child: Container(
@@ -99,21 +127,11 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
     switch(type) {
       case ShowAngleType.complementary:
       case ShowAngleType.supplementary:
-        drawableAngles.add(
-           generateDrawableAngle(
-             Angle(leadingLine: angle.leadingLine,
-                 followingLine: cuttingAngleLine),
-             Colors.green)
-        );
-        drawableAngles.add(
-            generateDrawableAngle(
-                Angle(leadingLine: cuttingAngleLine,
-                    followingLine: angle.followingLine),
-                Colors.red)
-        );
+        drawableAngles.add(generateDrawableAngle(leadingAngle, Colors.green));
+        drawableAngles.add(generateDrawableAngle(followingAngle, Colors.red));
         break;
       case ShowAngleType.angle:
-        drawableAngles.add(generateDrawableAngle(originAngle, Colors.green));
+        drawableAngles.add(generateDrawableAngle(leadingAngle, Colors.green));
         break;
     }
 
@@ -127,7 +145,16 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
   DrawableShape<AnglePainter> generateDrawableAngle(Angle angle, Color color) {
     return DrawableShape<AnglePainter>(
       shape: angle,
-      labelsSpans: [],
+      labelsSpans: [
+        TextSpan(
+          text: "α, ",
+          style: TextStyle(color: Colors.green, fontSize: 28),
+        ),
+        TextSpan(
+          text: "β, ",
+          style: TextStyle(color: Colors.red, fontSize: 28),
+        ),
+      ],
       createPainter:
           (
           Matrix4 canvasTransform,
@@ -150,28 +177,34 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
   void changeAngleProperties(ShowAngleType type) {
     switch(type) {
       case ShowAngleType.complementary:
-        angle = originAngle;
-        cuttingAngleLine = Line(
-          a: angle.leadingLine.a,
-          b: Offset(  // Angle pi/4
-            angle.leadingLine.b.dx + angle.followingLine.b.dx,
-            angle.leadingLine.b.dy + angle.followingLine.b.dy)
-        );
-      break;
-      case ShowAngleType.supplementary:
-        angle = Angle(
-          leadingLine: originAngle.leadingLine,
-          followingLine: Line(a: Offset(0.0, 0.0), b: Offset(-4.0, 0.0)) // horizontal line
-        );
-        cuttingAngleLine = Line(
+        final line = Line(
           a: originAngle.leadingLine.a,
           b: Offset(  // Angle pi/4
               originAngle.leadingLine.b.dx + originAngle.followingLine.b.dx,
-              originAngle.leadingLine.b.dy + originAngle.followingLine.b.dy),
+              originAngle.leadingLine.b.dy + originAngle.followingLine.b.dy)
         );
+        leadingAngle = Angle(
+          leadingLine: originAngle.leadingLine,
+          followingLine: line);
+        followingAngle = Angle(
+          leadingLine: line,
+          followingLine: originAngle.followingLine);
+      break;
+      case ShowAngleType.supplementary:
+        final line = Line(
+            a: originAngle.leadingLine.a,
+            b: Offset(  // Angle pi/4
+                originAngle.leadingLine.b.dx + originAngle.followingLine.b.dx,
+                originAngle.leadingLine.b.dy + originAngle.followingLine.b.dy)
+        );
+        leadingAngle = Angle(
+          leadingLine: originAngle.leadingLine,
+          followingLine: line);
+        followingAngle = Angle(
+          leadingLine: line,
+          followingLine: Line(a: Offset(0.0, 0.0), b: Offset(-4.0, 0.0)));
       break;
       case ShowAngleType.angle:
-        angle = originAngle;
         break;
     }
   }
