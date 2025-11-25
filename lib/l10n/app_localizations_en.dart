@@ -111,6 +111,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get anglesTheorems => 'Angles theorems';
 
   @override
+  String get angleComplementary => 'Complementary angles';
+
+  @override
+  String get angleSupplementary => 'Supplementary angles';
+
+  @override
   String get angle => 'Angle';
 
   @override

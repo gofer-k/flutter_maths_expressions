@@ -111,6 +111,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get anglesTheorems => 'Twierdzenia kątów';
 
   @override
+  String get angleComplementary => 'kąty dopełniające';
+
+  @override
+  String get angleSupplementary => 'Kąty przyległe';
+
+  @override
   String get angle => 'Kąt';
 
   @override

@@ -302,6 +302,18 @@ abstract class AppLocalizations {
   /// **'Angles theorems'**
   String get anglesTheorems;
 
+  /// No description provided for @angleComplementary.
+  ///
+  /// In en, this message translates to:
+  /// **'Complementary angles'**
+  String get angleComplementary;
+
+  /// No description provided for @angleSupplementary.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplementary angles'**
+  String get angleSupplementary;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:
