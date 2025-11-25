@@ -1,12 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter_maths_expressions/models/planimetry/angle.dart';
 import 'package:flutter_maths_expressions/models/planimetry/base_shape.dart';
-
-enum AngleType {
-  radian,
-  degrees,
-}
 
 class Triangle extends BaseShape {
   Offset a;

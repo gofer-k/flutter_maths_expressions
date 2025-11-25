@@ -37,7 +37,6 @@ abstract class FigurePainter<T> extends CustomPainter {
     textPainter.paint(canvas, adjustedPosition);
   }
 
-  // TODO: Arc direction is not correct after rotate and translate a shape
   void paintArc(Canvas canvas, Offset pos, double beginLeg, double endAngle, Color colorStroke, {double arcRadius = 25.0}) {
     final Paint arcPaint = Paint()
       ..color = colorStroke
@@ -48,20 +47,25 @@ abstract class FigurePainter<T> extends CustomPainter {
     canvas.drawArc(rect, beginLeg, endAngle, false, arcPaint);
   }
 
-  void drawAngleArc(Canvas canvas, Offset center, Offset leg1, Offset leg2, Color colorStroke, {double arcRadius = 25.0}) {
+  void drawAngleArc(Canvas canvas, Offset center, Offset leg1, Offset leg2, Color colorStroke, {double arcRadius = 25.0, bool clockWise = true}) {
     final Paint arcPaint = Paint()
       ..color = colorStroke
       ..strokeWidth = 1.5
       ..style = PaintingStyle.stroke;
+
+    final rect = Rect.fromCircle(center: center, radius: arcRadius);
 
     final v1 = (leg1 - center).direction;
     final v2 = (leg2 - center).direction;
 
     // Ensure sweep is positive and within 0..2π
     double sweep = (v2 - v1);
-    if (sweep < 0) sweep += 2 * pi;
-
-    final rect = Rect.fromCircle(center: center, radius: arcRadius);
+    if (clockWise) {
+      if (sweep < 0) sweep += 2 * pi;
+    }
+    else {
+      if (sweep > 0) sweep -= 2 * pi;
+    }
     canvas.drawArc(rect, v1, sweep, false, arcPaint);
   }
 }

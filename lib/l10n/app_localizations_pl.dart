@@ -108,6 +108,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get triangleApolloniusTheorem => 'Twierdzenie Apolloniusa';
 
   @override
+  String get anglesTheorems => 'Twierdzenia kątów';
+
+  @override
   String get angle => 'Kąt';
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/pages/planimetry/angle_theorems/angle_types.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangle_theorems.dart';
 
 import '../../l10n/app_localizations.dart';
@@ -46,6 +47,8 @@ class _PlanimetryPageState extends State<PlanimetryPage> {
             // TODO miss image
             navigatingCard(
               context, null, l10n.triangleTheorems, TriangleTheoremsPage(title: l10n.triangleTheorems)),
+            navigatingCard(
+                context, null, l10n.anglesTheorems, AngleTypesPage(title: l10n.anglesTheorems)),
           ],
         ),
       ),

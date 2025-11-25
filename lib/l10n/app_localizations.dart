@@ -296,6 +296,12 @@ abstract class AppLocalizations {
   /// **'Apollonius\' theorem'**
   String get triangleApolloniusTheorem;
 
+  /// No description provided for @anglesTheorems.
+  ///
+  /// In en, this message translates to:
+  /// **'Angles theorems'**
+  String get anglesTheorems;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:

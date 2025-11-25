@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../Themes/math_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/dock_side.dart';
+import '../../../models/planimetry/angle.dart';
 import '../../../models/planimetry/base_shape.dart';
 import '../../../models/planimetry/triangle.dart';
 import '../../../painters/drawable_shape.dart';

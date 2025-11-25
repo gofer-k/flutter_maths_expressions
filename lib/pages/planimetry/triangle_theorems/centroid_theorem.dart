@@ -79,7 +79,6 @@ class _CentroidTheoremState extends State<CentroidTheorem> {
                     expression: sRelCb,
                     scale: 1.5,
                   ),
-                  // const SizedBox(height: 4),
                   DisplayExpression(
                     context: context,
                     expression: sRelCc,

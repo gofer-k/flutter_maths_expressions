@@ -68,7 +68,6 @@ class _TriangleTheoremsPageState extends State<TriangleTheoremsPage> {
 
   Widget navigatingTheoremPage<T extends StatefulWidget>(
     BuildContext context, String label, T widget) {
-    final edgeMargin = 2.0;
     return Container(
       // padding: EdgeInsets.symmetric(vertical: edgeMargin),
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

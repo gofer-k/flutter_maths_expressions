@@ -33,6 +33,8 @@
   "triangleLawSines": "Law of sines",
   "triangleLawCosines": "Law of cosines",
   "triangleApolloniusTheorem": "Apollonius' theorem",
+
+  "anglesTheorems": "Angles theorems",
   "angle": "Angle",
   "triangle": "Triangle",
   "sequencesPageTitle": "Sequences",

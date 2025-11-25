@@ -90,25 +90,6 @@ class LinePainter extends FigurePainter {
     if (showProperties.contains(ShowLineProperty.lineAngle)) {
       // paintArc(canvas, cPos, (aPos - cPos).direction, triangle.getAngleC(), Colors.green);
     }
-    if (showProperties.contains(ShowLineProperty.angleBetweenLines)) {
-      // final Paint paintHeight = Paint()
-      //   ..color = Colors.black26
-      //   ..strokeWidth = 2.0
-      //   ..style = PaintingStyle.stroke;
-      // try {
-      //   final m = (cPos.dy - aPos.dy) / (cPos.dx - aPos.dx);
-      //   final m2 = m * m;
-      //   final xD = (m2 * aPos.dx - m * (bPos.dy - aPos.dy) + bPos.dx) / (m2 + 1);
-      //   final dPos = Offset(
-      //       (m2 * aPos.dx - m * (bPos.dy - aPos.dy) + bPos.dx) / (m2 + 1),
-      //       m * xD - m * aPos.dx + aPos.dy);
-      //
-      //   canvas.drawLine(bPos, dPos, paintHeight);
-      //   paintText(canvas, "D", dPos, xOffset: -4.0, yOffset: -2.0);
-      // } catch(e) {
-      // }
-    }
-
     // Restore the canvas to its state before canvas.save()
     canvas.restore();
   }
