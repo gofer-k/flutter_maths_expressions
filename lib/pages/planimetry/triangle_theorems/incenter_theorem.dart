@@ -115,16 +115,17 @@ class _IncenterTheoremPageState extends State<IncenterTheoremPage> {
           (
           Matrix4 canvasTransform,
           Size viewportSize,
-          double unitInPixels,
+          double widthUnitInPixels,
+          double heightUnitInPixels,
           triangle,
           ) {
         return TrianglePainter(
-          unitInPixels,
+          widthUnitInPixels,
+          heightUnitInPixels,
           triangle,
           [ ShowTriangleProperty.incenter],
           canvasTransform: canvasTransform,
           viewportSize: viewportSize,
-          originUnitInPixels: unitInPixels,
         );
       },
     );

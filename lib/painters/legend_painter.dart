@@ -9,7 +9,7 @@ class LegendPainter extends FigurePainter {
     required super.canvasTransform,
     required super.viewportSize,
     required this.labelsSpans,
-    required this.startPosition}) : super(0.0, null);
+    required this.startPosition}) : super(0.0, 0.0, null);
 
   @override
   void paint(Canvas canvas, Size size) {

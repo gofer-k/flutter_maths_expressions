@@ -154,11 +154,13 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
               (
               Matrix4 canvasTransform,
               Size viewportSize,
-              double unitInPixels,
+              double widthUnitInPixels,
+              double heightUnitInPixels,
               BaseShape triangle,
               ) {
             return TrianglePainter(
-              unitInPixels,
+              widthUnitInPixels,
+              heightUnitInPixels,
               triangle,
               [
                 ShowTriangleProperty.angleA,
@@ -168,7 +170,6 @@ class _TrianglePropertiesPageState extends State<TrianglePropertiesPage> {
               ],
               canvasTransform: canvasTransform,
               viewportSize: viewportSize,
-              originUnitInPixels: unitInPixels,
             );
           },
         ),

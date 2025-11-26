@@ -123,11 +123,13 @@ class _TrianglesCongruenceState extends State<TrianglesCongruence> {
           (
           Matrix4 canvasTransform,
           Size viewportSize,
-          double unitInPixels,
+          double widthUnitInPixels,
+          double heightUnitInPixels,
           triangle1,
           ) {
         return TrianglePainter(
-          unitInPixels,
+          widthUnitInPixels,
+          heightUnitInPixels,
           triangle1,
           [
             ShowTriangleProperty.angleA,
@@ -136,7 +138,6 @@ class _TrianglesCongruenceState extends State<TrianglesCongruence> {
           ],
           canvasTransform: canvasTransform,
           viewportSize: viewportSize,
-          originUnitInPixels: unitInPixels,
         );
       },
     );
@@ -160,11 +161,13 @@ class _TrianglesCongruenceState extends State<TrianglesCongruence> {
           (
           Matrix4 canvasTransform,
           Size viewportSize,
-          double unitInPixels,
+          double widthUnitInPixels,
+          double heightUnitInPixels,
           triangle1,
           ) {
         return TrianglePainter(
-          unitInPixels,
+          widthUnitInPixels,
+          heightUnitInPixels,
           triangle1,
           [
             ShowTriangleProperty.angleA,
@@ -173,7 +176,6 @@ class _TrianglesCongruenceState extends State<TrianglesCongruence> {
           ],
           canvasTransform: canvasTransform,
           viewportSize: viewportSize,
-          originUnitInPixels: unitInPixels,
         );
       },
     );

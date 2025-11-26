@@ -97,11 +97,13 @@ class _PythagorasTheoremState extends State<PythagorasTheorem>{
           (
           Matrix4 canvasTransform,
           Size viewportSize,
-          double unitInPixels,
+          double widthUnitInPixels,
+          double heightUnitInPixels,
           triangle1,
           ) {
         return TrianglePainter(
-          unitInPixels,
+          widthUnitInPixels,
+          heightUnitInPixels,
           triangle1,
           [
             ShowTriangleProperty.angleA,
@@ -110,7 +112,6 @@ class _PythagorasTheoremState extends State<PythagorasTheorem>{
           ],
           canvasTransform: canvasTransform,
           viewportSize: viewportSize,
-          originUnitInPixels: unitInPixels,
         );
       },
     );

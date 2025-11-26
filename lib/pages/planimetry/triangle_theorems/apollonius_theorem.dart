@@ -102,16 +102,17 @@ class _ApolloniusTheoremState extends State<ApolloniusTheorem> {
           (
           Matrix4 canvasTransform,
           Size viewportSize,
-          double unitInPixels,
-          triangle1,
+          double widthUnitInPixels,
+          double heightUnitInPixels,
+          triangle,
           ) {
         return TrianglePainter(
-          unitInPixels,
-          triangle1,
+          widthUnitInPixels,
+          heightUnitInPixels,
+          triangle,
           [ ShowTriangleProperty.medianPont],
           canvasTransform: canvasTransform,
-          viewportSize: viewportSize,
-          originUnitInPixels: unitInPixels,
+          viewportSize: viewportSize
         );
       },
     );

@@ -6,10 +6,15 @@ import 'package:flutter_maths_expressions/models/planimetry/base_shape.dart';
 abstract class FigurePainter<T> extends CustomPainter {
   late final Matrix4 canvasTransform;
   late final Size viewportSize;
-  late final double? unitInPixels;
+  late double widthUnitInPixels;
+  late double heightUnitInPixels;
   late final BaseShape? shape;
 
-  FigurePainter(this.unitInPixels, this.shape, {required this.canvasTransform, required this.viewportSize});
+  FigurePainter(this.widthUnitInPixels, this.heightUnitInPixels, this.shape, {required this.canvasTransform, required this.viewportSize});
+
+  Offset convertLocalToGlobal(Offset local) {
+    return Offset(local.dx * widthUnitInPixels, -local.dy * heightUnitInPixels);
+  }
 
   void paintText(Canvas canvas, String text, Offset position, {double xOffset = 4.0, double yOffset = 4.0}) {
     final textStyle = TextStyle(

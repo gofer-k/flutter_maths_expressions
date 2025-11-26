@@ -94,16 +94,17 @@ class _MedianTheoremPageState extends State<MedianTheoremPage> {
         (
         Matrix4 canvasTransform,
         Size viewportSize,
-        double unitInPixels,
+        double widthUnitInPixels,
+        double heightUnitInPixels,
         triangle1,
         ) {
         return TrianglePainter(
-          unitInPixels,
+          widthUnitInPixels,
+          heightUnitInPixels,
           triangle1,
           [ ShowTriangleProperty.medianPont, ShowTriangleProperty.height ],
           canvasTransform: canvasTransform,
           viewportSize: viewportSize,
-          originUnitInPixels: unitInPixels,
         );
       },
     );

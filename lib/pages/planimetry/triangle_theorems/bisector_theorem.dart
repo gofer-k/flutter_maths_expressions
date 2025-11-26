@@ -92,16 +92,17 @@ class _BisectorTheoremState extends State<BisectorTheorem> {
           (
           Matrix4 canvasTransform,
           Size viewportSize,
-          double unitInPixels,
+          double widthUnitInPixels,
+          double heightUnitInPixels,
           triangle,
           ) {
         return TrianglePainter(
-          unitInPixels,
+          widthUnitInPixels,
+          heightUnitInPixels,
           triangle,
           [ ShowTriangleProperty.bisector],
           canvasTransform: canvasTransform,
           viewportSize: viewportSize,
-          originUnitInPixels: unitInPixels,
         );
       },
     );

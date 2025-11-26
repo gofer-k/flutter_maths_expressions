@@ -16,6 +16,41 @@ class Angle extends BaseShape {
 
   Angle({required this.leadingLine, required this.followingLine});
 
+  @override
+  bool contains(Offset localPoint, double tolerance) {
+    // Check match local point to the sha[e control points
+    if (leadingLine.contains(localPoint, tolerance)) {
+      return true;
+    }
+    if (followingLine.contains(localPoint, tolerance)) {
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  bool movePointBy(Offset localPoint, Offset delta, double tolerance) {
+    if (leadingLine.movePointBy(leadingLine.a, delta, tolerance)) {
+      return true;
+    }
+    if (leadingLine.movePointBy(leadingLine.b, delta, tolerance)) {
+      return true;
+    }
+    if (followingLine.movePointBy(followingLine.a, delta, tolerance)) {
+      return true;
+    }
+    if (followingLine.movePointBy(followingLine.b, delta, tolerance)) {
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  void moveLineBy(Offset delta) {
+    leadingLine.moveBy(delta);
+    followingLine.moveBy(delta);
+  }
+
   Offset getOriginPoint() {
     return leadingLine.getIntersection(followingLine);
   }

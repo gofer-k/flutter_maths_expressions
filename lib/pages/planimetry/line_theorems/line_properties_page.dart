@@ -83,18 +83,19 @@ class _LinePropertiesPageState extends State<LinePropertiesPage> {
               (
               Matrix4 canvasTransform,
               Size viewportSize,
-              double unitInPixels,
+              double widthUnitInPixels,
+              double heightUnitInPixels,
               BaseShape triangle,
               ) {
             return LinePainter(
-              unitInPixels,
+              widthUnitInPixels,
+              heightUnitInPixels,
               triangle,
               [
                 // TODO: fill in properties to display
               ],
               canvasTransform: canvasTransform,
               viewportSize: viewportSize,
-              originUnitInPixels: unitInPixels,
             );
           },
         ),

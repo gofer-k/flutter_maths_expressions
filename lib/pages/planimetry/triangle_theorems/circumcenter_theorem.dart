@@ -96,16 +96,17 @@ class _CircumcenterTheoremState extends State<CircumcenterTheorem> {
           (
           Matrix4 canvasTransform,
           Size viewportSize,
-          double unitInPixels,
+          double widthUnitInPixels,
+          double heightUnitInPixels,
           triangle,
           ) {
         return TrianglePainter(
-          unitInPixels,
+          widthUnitInPixels,
+          heightUnitInPixels,
           triangle,
           [ ShowTriangleProperty.circumcenter],
           canvasTransform: canvasTransform,
           viewportSize: viewportSize,
-          originUnitInPixels: unitInPixels,
         );
       },
     );

@@ -12,22 +12,24 @@ enum ShowAngleType {
 }
 
 class AnglePainter extends FigurePainter {
-  final double originUnitInPixels;
   final Color angleColor;
-  late final double minUnitInPixels;
+  final bool enableDrapDrop;
+  late final double minWidthUnitInPixels;
+  late final double minHeightUnitInPixels;
 
-  AnglePainter(super.unitInPixels, super.shape,
+  AnglePainter(super.widthUnitInPixels, super.heightUnitInPixels, super.shape,
       { required super.canvasTransform,
         required super.viewportSize,
-        required this.originUnitInPixels,
-        required this.angleColor
+        required this.angleColor,
+        this.enableDrapDrop = false,
       }) {
-    minUnitInPixels = 0.25 * originUnitInPixels;
+    minWidthUnitInPixels = 0.25 * widthUnitInPixels;
+    minHeightUnitInPixels = 0.25 * heightUnitInPixels;
   }
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (minUnitInPixels <= 0) return;
+    if (minWidthUnitInPixels <= 0 || minHeightUnitInPixels <= 0) return;
 
     // canvas.save(); // 1. Save the current canvas state
 
@@ -42,46 +44,36 @@ class AnglePainter extends FigurePainter {
         ..strokeWidth = 2.0
         ..style = PaintingStyle.stroke;
     
-    // final Paint paintPoint = Paint()
-    //   ..color = Colors.green
-    //   ..strokeWidth = 2.0
-    //   ..style = PaintingStyle.fill;
+    final Paint paintPoint = Paint()
+      ..color = Colors.black87
+      ..strokeWidth = 2.0
+      ..style = PaintingStyle.fill;
 
     final angle = shape as Angle;
     final leadingLine = angle.leadingLine;
     final followingLine = angle.followingLine;
 
     final Offset aPos =
-    Offset(leadingLine.a.dx * originUnitInPixels, -leadingLine.a.dy * originUnitInPixels);
+    Offset(leadingLine.a.dx * minWidthUnitInPixels, -leadingLine.a.dy * minHeightUnitInPixels);
     final Offset bPos =
-    Offset(leadingLine.b.dx * originUnitInPixels, -leadingLine.b.dy * originUnitInPixels);
+    Offset(leadingLine.b.dx * minWidthUnitInPixels, -leadingLine.b.dy * minHeightUnitInPixels);
     final Offset cPos =
-    Offset(followingLine.a.dx * originUnitInPixels, -followingLine.a.dy * originUnitInPixels);
+    Offset(followingLine.a.dx * minWidthUnitInPixels, -followingLine.a.dy * minHeightUnitInPixels);
     final Offset dPos =
-    Offset(followingLine.b.dx * originUnitInPixels, -followingLine.b.dy * originUnitInPixels);
+    Offset(followingLine.b.dx * minWidthUnitInPixels, -followingLine.b.dy * minHeightUnitInPixels);
 
     final Offset intersectinPoint = leadingLine.getIntersection(followingLine);
     final Offset intersectinPos =
-    Offset(intersectinPoint.dx * originUnitInPixels, -intersectinPoint.dx * originUnitInPixels);
+    Offset(intersectinPoint.dx * minWidthUnitInPixels, -intersectinPoint.dx * minHeightUnitInPixels);
 
     canvas.drawLine(aPos, bPos, paintLine);
-    // canvas.drawCircle(aPos, 5.0, paintPoint);
-    // canvas.drawCircle(bPos, 5.0, Paint()
-    //   ..color = Colors.amber
-    //   ..strokeWidth = 2.0
-    //   ..style = PaintingStyle.fill);
+    canvas.drawCircle(aPos, 5.0, paintPoint);
+    canvas.drawCircle(bPos, 5.0, paintPoint);
 
     canvas.drawLine(cPos, dPos, paintLine);
-    // canvas.drawCircle(cPos, 5.0, paintPoint);
-    // canvas.drawCircle(dPos, 5.0, Paint()
-    //   ..color = Colors.deepOrange
-    //   ..strokeWidth = 2.0
-    //   ..style = PaintingStyle.fill);
-    // canvas.drawCircle(intersectinPos, 5.0, Paint()
-    //   ..color = Colors.purple
-    //   ..strokeWidth = 2.0
-    //   ..style = PaintingStyle.fill
-    // );
+    canvas.drawCircle(cPos, 5.0, paintPoint);
+    canvas.drawCircle(dPos, 5.0, paintPoint);
+    canvas.drawCircle(intersectinPos, 5.0, paintPoint);
     final angleVal = angle.getAngle();
     drawAngleArc(canvas, intersectinPos,
         bPos,
@@ -93,6 +85,7 @@ class AnglePainter extends FigurePainter {
   bool shouldRepaint(covariant AnglePainter oldDelegate) {
     return oldDelegate.canvasTransform != canvasTransform ||
         oldDelegate.shape != shape ||
-        oldDelegate.originUnitInPixels != originUnitInPixels;
+        oldDelegate.minHeightUnitInPixels != minHeightUnitInPixels ||
+        oldDelegate.minWidthUnitInPixels != minWidthUnitInPixels;
   }
 }

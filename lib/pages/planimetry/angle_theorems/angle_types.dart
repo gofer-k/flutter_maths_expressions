@@ -156,20 +156,19 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
         ),
       ],
       createPainter:
-          (
+        (
           Matrix4 canvasTransform,
           Size viewportSize,
-          double unitInPixels,
+          double widthUnitInPixels,
+          double heightUnitInPixels,
           angle,
           ) {
         return AnglePainter(
-          unitInPixels,
-          angle,
-          angleColor: color,
-          canvasTransform: canvasTransform,
-          viewportSize: viewportSize,
-          originUnitInPixels: unitInPixels,
-        );
+            widthUnitInPixels,
+            heightUnitInPixels, angle,
+            canvasTransform: canvasTransform,
+            viewportSize: viewportSize,
+            angleColor: color);
       },
     );
   }

@@ -10,15 +10,15 @@ enum ShowLineProperty {
 }
 
 class LinePainter extends FigurePainter {
-  final double originUnitInPixels;
-  late final double minUnitInPixels;
+  late final double minWidthUnitInPixels;
+  late final double minHeighthUnitInPixels;
   final List<ShowLineProperty> showProperties;
 
-  LinePainter(super.unitInPixels, super.shape, this.showProperties,
+  LinePainter(super.minWidthUnitInPixels, super.heightUnitInPixels, super.shape, this.showProperties,
       {required super.canvasTransform,
-        required super.viewportSize,
-        required this.originUnitInPixels}) {
-    minUnitInPixels = 0.25 * originUnitInPixels;
+        required super.viewportSize}) {
+    minWidthUnitInPixels = 0.25 * minWidthUnitInPixels;
+    minHeighthUnitInPixels = 0.25 * heightUnitInPixels;
   }
 
   // void _paintAngleText(Canvas canvas, String text, Offset vertex, double startAngle, double sweepAngle, Color colorText) {
@@ -56,7 +56,7 @@ class LinePainter extends FigurePainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (minUnitInPixels <= 0) return;
+    if (minWidthUnitInPixels <= 0 || minHeighthUnitInPixels <= 0) return;
 
     final Paint paint = Paint()
       ..color = Colors.black
@@ -75,9 +75,9 @@ class LinePainter extends FigurePainter {
     final line = shape as Line;
 
     final Offset aPos =
-    Offset(line.a.dx * originUnitInPixels, -line.a.dy * originUnitInPixels);
+    Offset(line.a.dx * widthUnitInPixels, -line.a.dy * heightUnitInPixels);
     final Offset bPos =
-    Offset(line.b.dx * originUnitInPixels, -line.b.dy * originUnitInPixels);
+    Offset(line.b.dx * widthUnitInPixels, -line.b.dy * heightUnitInPixels);
 
     canvas.drawLine(aPos, bPos, paint);
 
@@ -98,6 +98,9 @@ class LinePainter extends FigurePainter {
   bool shouldRepaint(covariant LinePainter oldDelegate) {
     return oldDelegate.canvasTransform != canvasTransform ||
         oldDelegate.shape != shape ||
-        oldDelegate.originUnitInPixels != originUnitInPixels;
+        oldDelegate.widthUnitInPixels != widthUnitInPixels ||
+        oldDelegate.heightUnitInPixels != heightUnitInPixels ||
+        oldDelegate.minHeighthUnitInPixels != minHeighthUnitInPixels ||
+        oldDelegate.minWidthUnitInPixels != minWidthUnitInPixels;
   }
 }

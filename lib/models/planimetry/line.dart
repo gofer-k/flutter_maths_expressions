@@ -12,6 +12,49 @@ class Line extends BaseShape {
     assert(a != b);
   }
 
+  @override
+  Offset? snapToPoint(Offset localPoint, double tolerance) {
+    if (BaseShape.snapPoint(a, localPoint, tolerance) != null) {
+      return a;
+    }
+    if (BaseShape.snapPoint(b, localPoint, tolerance) != null) {
+      return b;
+    }
+    return null;
+  }
+
+  @override
+  bool contains(Offset localPoint, double tolerance) {
+    if (snapToPoint(localPoint, tolerance) != null) {
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  void moveBy(Offset delta) {
+    a += delta;
+    b += delta;
+  }
+
+  @override
+  void moveLineBy(Offset delta) {
+    moveBy(delta);
+  }
+
+  @override
+  bool movePointBy(Offset localPoint, Offset delta, double tolerance) {
+    if (BaseShape.snapPoint(a, localPoint, tolerance) != null) {
+      a += delta;
+      return true;
+    }
+    if (BaseShape.snapPoint(b, localPoint, tolerance) != null) {
+      b += delta;
+      return true;
+    }
+    return false;
+  }
+
   update(Offset a, Offset b) {
     this.a = a;
     this.b = b;

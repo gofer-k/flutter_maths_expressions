@@ -117,11 +117,13 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
           (
           Matrix4 canvasTransform,
           Size viewportSize,
-          double unitInPixels,
+          double widthUnitInPixels,
+          double heightUnitInPixels,
           triangle1,
           ) {
         return TrianglePainter(
-          unitInPixels,
+          widthUnitInPixels,
+          heightUnitInPixels,
           triangle1,
           [
             ShowTriangleProperty.angleA,
@@ -130,7 +132,6 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
           ],
           canvasTransform: canvasTransform,
           viewportSize: viewportSize,
-          originUnitInPixels: unitInPixels,
         );
       },
     );
@@ -154,11 +155,13 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
           (
           Matrix4 canvasTransform,
           Size viewportSize,
-          double unitInPixels,
+          double widthUnitInPixels,
+          double heightUnitInPixels,
           triangle1,
           ) {
         return TrianglePainter(
-          unitInPixels,
+          widthUnitInPixels,
+          heightUnitInPixels,
           triangle1,
           [
             ShowTriangleProperty.angleA,
@@ -167,7 +170,6 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
           ],
           canvasTransform: canvasTransform,
           viewportSize: viewportSize,
-          originUnitInPixels: unitInPixels,
         );
       },
     );

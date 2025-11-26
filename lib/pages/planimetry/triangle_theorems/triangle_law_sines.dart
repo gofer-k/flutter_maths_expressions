@@ -106,11 +106,13 @@ class _TriangleLawSinesState extends State<TriangleLawSines> {
               (
               Matrix4 canvasTransform,
               Size viewportSize,
-              double unitInPixels,
+              double widthUnitInPixels,
+              double heightUnitInPixels,
               BaseShape triangle,
               ) {
             return TrianglePainter(
-              unitInPixels,
+              widthUnitInPixels,
+              heightUnitInPixels,
               triangle,
               [
                 ShowTriangleProperty.angleA,
@@ -119,7 +121,6 @@ class _TriangleLawSinesState extends State<TriangleLawSines> {
               ],
               canvasTransform: canvasTransform,
               viewportSize: viewportSize,
-              originUnitInPixels: unitInPixels,
             );
           },
         ),

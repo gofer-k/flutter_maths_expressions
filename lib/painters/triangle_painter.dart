@@ -20,16 +20,15 @@ enum ShowTriangleProperty {
 }
 
 class TrianglePainter extends FigurePainter {
-  // final Triangle triangle;
-  final double originUnitInPixels;
-  late final double minUnitInPixels;
+  late final double minWidthUnitInPixels;
+  late final double minHeightUnitInPixels;
   final List<ShowTriangleProperty> showProperties;
   
-  TrianglePainter(super.unitInPixels, super.shape, this.showProperties,
+  TrianglePainter(super.widthUnitInPixels, super.heightUnitInPixels, super.shape, this.showProperties,
     {required super.canvasTransform,
-    required super.viewportSize,
-    required this.originUnitInPixels}) {
-    minUnitInPixels = 0.25 * originUnitInPixels;
+    required super.viewportSize}) {
+    minWidthUnitInPixels = 0.25 * widthUnitInPixels;
+    minHeightUnitInPixels = 0.25 * heightUnitInPixels;
   }
 
   // void _paintAngleText(Canvas canvas, String text, Offset vertex, double startAngle, double sweepAngle, Color colorText) {
@@ -100,7 +99,7 @@ class TrianglePainter extends FigurePainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (minUnitInPixels <= 0) return;
+    if (minWidthUnitInPixels <= 0 || minHeightUnitInPixels <= 0) return;
 
     final Paint paint = Paint()
       ..color = Colors.black
@@ -119,12 +118,9 @@ class TrianglePainter extends FigurePainter {
 
     // Convert local triangle coordinates to pixel coordinates
     final triangle = shape as Triangle;
-    final Offset aPos =
-    Offset(triangle.a.dx * originUnitInPixels, -triangle.a.dy * originUnitInPixels);
-    final Offset bPos =
-    Offset(triangle.b.dx * originUnitInPixels, -triangle.b.dy * originUnitInPixels);
-    final Offset cPos =
-    Offset(triangle.c.dx * originUnitInPixels, -triangle.c.dy * originUnitInPixels);
+    final Offset aPos = convertLocalToGlobal(triangle.a);
+    final Offset bPos = convertLocalToGlobal(triangle.b);
+    final Offset cPos = convertLocalToGlobal(triangle.c);
 
     // 4. Convert local triangle coordinates to "scaled local" coordinates.
     // These are the coordinates in pixels as if the zoom level was 1.0,
@@ -175,8 +171,7 @@ class TrianglePainter extends FigurePainter {
         ..style = PaintingStyle.stroke;
       try {
         final medianPoint = triangle.getMedianPoint(triangle.a, triangle.c);
-        final Offset mPos =
-        Offset(medianPoint.dx * originUnitInPixels, -medianPoint.dy * originUnitInPixels);
+        final Offset mPos = convertLocalToGlobal(medianPoint);
 
         canvas.drawLine(bPos, mPos, paintMedianLine);
         paintText(canvas, "M", mPos, xOffset: -4.0, yOffset: -2.0);
@@ -188,35 +183,27 @@ class TrianglePainter extends FigurePainter {
       {
         final Offset medianPoint = triangle.getMedianPoint(
             triangle.b, triangle.c);
-        final Offset medianPos =
-        Offset(medianPoint.dx * originUnitInPixels,
-            -medianPoint.dy * originUnitInPixels);
+        final Offset medianPos = convertLocalToGlobal(medianPoint);
         _displayDashedLine(canvas: canvas, begin: aPos, end: medianPos);
         paintText(canvas, r"M_a", medianPos, xOffset: 4.0, yOffset: -20.0);
       }
       {
         final Offset medianPoint = triangle.getMedianPoint(
             triangle.a, triangle.c);
-        final Offset medianPos =
-        Offset(medianPoint.dx * originUnitInPixels,
-            -medianPoint.dy * originUnitInPixels);
+        final Offset medianPos = convertLocalToGlobal(medianPoint);
         _displayDashedLine(canvas: canvas, begin: bPos, end: medianPos);
         paintText(canvas, r"M_b", medianPos, xOffset: -8.0, yOffset: 2.0);
       }
       {
         final Offset medianPoint = triangle.getMedianPoint(
             triangle.a, triangle.b);
-        final Offset medianPos =
-        Offset(medianPoint.dx * originUnitInPixels,
-            -medianPoint.dy * originUnitInPixels);
+        final Offset medianPos = convertLocalToGlobal(medianPoint);
         _displayDashedLine(canvas: canvas, begin: cPos, end: medianPos);
         paintText(canvas, r"M_c", medianPos, xOffset: -36.0, yOffset: -20.0);
       }
       {
         final Offset centroidPoint = triangle.getCentroidPoint();
-        final Offset centroidPos =
-        Offset(centroidPoint.dx * originUnitInPixels, -centroidPoint.dy * originUnitInPixels);
-
+        final Offset centroidPos = convertLocalToGlobal(centroidPoint);
         final Paint paintCentroidPoint = Paint()
           ..color = Colors.red
           ..strokeWidth = 2.0
@@ -228,8 +215,7 @@ class TrianglePainter extends FigurePainter {
     if (showProperties.contains(ShowTriangleProperty.bisector)) {
       try {
         final Offset bisectorPoint = triangle.getBisectorPoint(triangle.b, triangle.a, triangle.c);
-        final Offset bisectorPos =
-        Offset(bisectorPoint.dx * originUnitInPixels, -bisectorPoint.dy * originUnitInPixels);
+        final Offset bisectorPos = convertLocalToGlobal(bisectorPoint);
 
         _displayDashedLine(canvas: canvas, begin: bPos, end: bisectorPos);
         paintText(canvas, "P", bisectorPos, xOffset: -4.0, yOffset: -2.0);
@@ -249,12 +235,8 @@ class TrianglePainter extends FigurePainter {
           ..style = PaintingStyle.fill;
 
         final midSegment = triangle.getMidsegment(triangle.b, triangle.a, triangle.c);
-        final Offset dPos =
-        Offset(midSegment.first.dx * originUnitInPixels,
-            -midSegment.first.dy * originUnitInPixels);
-        final Offset ePos =
-        Offset(midSegment.last.dx * originUnitInPixels,
-            -midSegment.last.dy * originUnitInPixels);
+        final Offset dPos = convertLocalToGlobal(midSegment.first);
+        final Offset ePos =convertLocalToGlobal(midSegment.last);
         _displayDashedLine(canvas: canvas, begin: dPos, end: ePos);
         canvas.drawCircle(dPos, 5.0, paintPoint);
         canvas.drawCircle(ePos, 5.0, paintPoint);
@@ -272,24 +254,20 @@ class TrianglePainter extends FigurePainter {
           ..style = PaintingStyle.fill;
 
         final circumcenter = triangle.getCircumcenter();
-        final Offset oPos =
-        Offset(circumcenter.dx * originUnitInPixels, -circumcenter.dy * originUnitInPixels);
+        final Offset oPos = convertLocalToGlobal(circumcenter);
         {
           final medPoint = triangle.getMedianPoint(triangle.a, triangle.b);
-          final Offset mPos =
-          Offset(medPoint.dx * originUnitInPixels, -medPoint.dy * originUnitInPixels);
+          final Offset mPos = convertLocalToGlobal(medPoint);
           _displayDashedLine(canvas: canvas, begin: oPos, end: mPos);
         }
         {
           final medPoint = triangle.getMedianPoint(triangle.a, triangle.c);
-          final Offset mPos =
-          Offset(medPoint.dx * originUnitInPixels, -medPoint.dy * originUnitInPixels);
+          final Offset mPos = convertLocalToGlobal(medPoint);
           _displayDashedLine(canvas: canvas, begin: oPos, end: mPos);
         }
         {
           final medPoint = triangle.getMedianPoint(triangle.b, triangle.c);
-          final Offset mPos =
-          Offset(medPoint.dx * originUnitInPixels, -medPoint.dy * originUnitInPixels);
+          final Offset mPos = convertLocalToGlobal(medPoint);
           _displayDashedLine(canvas: canvas, begin: oPos, end: mPos);
         }
         canvas.drawCircle(oPos, 5.0, paintPoint);
@@ -312,24 +290,20 @@ class TrianglePainter extends FigurePainter {
           ..style = PaintingStyle.fill;
 
         final incenter = triangle.getIncenter();
-        final Offset oPos =
-        Offset(incenter.dx * originUnitInPixels, -incenter.dy * originUnitInPixels);
+        final Offset oPos = convertLocalToGlobal(incenter);
         final bisectorAPoint = triangle.getBisectorPoint(triangle.a, triangle.b, triangle.c);
-        final Offset bisectorAPos =
-        Offset(bisectorAPoint.dx * originUnitInPixels, -bisectorAPoint.dy * originUnitInPixels);
+        final Offset bisectorAPos = convertLocalToGlobal(bisectorAPoint);
         {
           _displayDashedLine(canvas: canvas, begin: oPos, end: bisectorAPos);
         }
         {
           final bisectorPoint = triangle.getBisectorPoint(triangle.b, triangle.c, triangle.a);
-          final Offset bisectorPos =
-          Offset(bisectorPoint.dx * originUnitInPixels, -bisectorPoint.dy * originUnitInPixels);
+          final Offset bisectorPos = convertLocalToGlobal(bisectorPoint);
           _displayDashedLine(canvas: canvas, begin: oPos, end: bisectorPos);
         }
         {
           final bisectorPoint = triangle.getBisectorPoint(triangle.c, triangle.a, triangle.b);
-          final Offset bisectorPos =
-          Offset(bisectorPoint.dx * originUnitInPixels, -bisectorPoint.dy * originUnitInPixels);
+          final Offset bisectorPos =  convertLocalToGlobal(bisectorPoint);
           _displayDashedLine(canvas: canvas, begin: oPos, end: bisectorPos);
         }
         canvas.drawCircle(oPos, 5.0, paintPoint);
@@ -351,7 +325,10 @@ class TrianglePainter extends FigurePainter {
   @override
   bool shouldRepaint(covariant TrianglePainter oldDelegate) {
     return oldDelegate.canvasTransform != canvasTransform ||
-        oldDelegate.shape != shape ||
-        oldDelegate.originUnitInPixels != originUnitInPixels;
+      oldDelegate.shape != shape ||
+      oldDelegate.minWidthUnitInPixels != minWidthUnitInPixels ||
+      oldDelegate.minHeightUnitInPixels != heightUnitInPixels ||
+      oldDelegate.heightUnitInPixels != heightUnitInPixels ||
+      oldDelegate.widthUnitInPixels != widthUnitInPixels;
   }
 }
