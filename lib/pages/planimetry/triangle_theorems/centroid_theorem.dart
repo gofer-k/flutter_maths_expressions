@@ -33,9 +33,9 @@ class _CentroidTheoremState extends State<CentroidTheorem> {
     final relCa = (triangle.a - centroidPoint).distance / (medianA - centroidPoint).distance;
     final relCb = (triangle.b - centroidPoint).distance / (medianB - centroidPoint).distance;
     final l10n = AppLocalizations.of(context)!;
-    String centroid = r"C_p = \frac{A + B + C}{3} = (" +
-        centroidPoint.dx.toStringAsFixed(2) + ", " +
-        centroidPoint.dy.toStringAsFixed(2) + ")";
+    String centroid = r"C_p = \frac{A + B + C}{3} = "
+        "(${centroidPoint.dx.toStringAsFixed(2)}, "
+        "${centroidPoint.dy.toStringAsFixed(2)})";
     String sRelCa = r"\frac{|A C_p|}{|C_p M_A|} = " + relCa.toStringAsFixed(2);
     String sRelCb = r"\frac{|B C_p|}{|C_p M_B|} = " + relCb.toStringAsFixed(2);
     String sRelCc = r"\frac{|C C_p|}{|C_p M_B|} = " + relCb.toStringAsFixed(2);

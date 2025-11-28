@@ -1,19 +1,27 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_maths_expressions/models/planimetry/angle.dart';
 import 'base_shape.dart';
 
+@immutable
 class Line extends BaseShape {
-  Offset a;
-  Offset b;
+  final Offset a;
+  final Offset b;
 
-  Line({required this.a, required this.b}) {
-    assert(a != b);
+  const Line({required this.a, required this.b}) : assert(a != b);
+
+  @override
+  List<Object?> get props => [a, b];
+
+  @override
+  BaseShape copyWith() {
+    return Line(a: a, b: b,);
   }
 
   @override
-  Offset? snapToPoint(Offset localPoint, double tolerance) {
+  Offset? matchPoint(Offset localPoint, double tolerance) {
     if (BaseShape.snapPoint(a, localPoint, tolerance) != null) {
       return a;
     }
@@ -25,39 +33,30 @@ class Line extends BaseShape {
 
   @override
   bool contains(Offset localPoint, double tolerance) {
-    if (snapToPoint(localPoint, tolerance) != null) {
+    if (matchPoint(localPoint, tolerance) != null) {
       return true;
     }
+    // TODO: check match to the line
     return false;
   }
 
   @override
-  void moveBy(Offset delta) {
-    a += delta;
-    b += delta;
+  BaseShape moveBy(Offset delta) {
+    return Line(a: a + delta, b: b + delta);
   }
 
   @override
-  void moveLineBy(Offset delta) {
-    moveBy(delta);
+  BaseShape moveLineBy(Offset delta) {
+    return moveBy(delta);
   }
 
   @override
-  bool movePointBy(Offset localPoint, Offset delta, double tolerance) {
-    if (BaseShape.snapPoint(a, localPoint, tolerance) != null) {
-      a += delta;
-      return true;
-    }
-    if (BaseShape.snapPoint(b, localPoint, tolerance) != null) {
-      b += delta;
-      return true;
-    }
-    return false;
-  }
-
-  update(Offset a, Offset b) {
-    this.a = a;
-    this.b = b;
+  BaseShape movePointBy(Offset localPoint, Offset delta, double tolerance) {
+    final newA = BaseShape.snapPoint(a, localPoint, tolerance);
+    final newB = BaseShape.snapPoint(b, localPoint, tolerance);
+    return Line(
+      a: newA != null ? newA + delta : a,
+      b: newB != null ? newB + delta : b);
   }
 
   // An line's angle positive toward x-line (clock wise direction)

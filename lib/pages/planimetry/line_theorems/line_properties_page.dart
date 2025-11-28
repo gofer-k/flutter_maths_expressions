@@ -94,6 +94,7 @@ class _LinePropertiesPageState extends State<LinePropertiesPage> {
               [
                 // TODO: fill in properties to display
               ],
+
               canvasTransform: canvasTransform,
               viewportSize: viewportSize,
             );

@@ -1,6 +1,14 @@
 import 'dart:ui';
 
-abstract class BaseShape {
+import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+
+abstract class BaseShape extends Equatable {
+  const BaseShape();
+  BaseShape copyWith() {
+    return this;
+  }
+
   double getArea();
   double getPerimeter();
   Offset getCenter();
@@ -9,22 +17,26 @@ abstract class BaseShape {
     return false;
   }
 
-  Offset? snapToPoint(Offset localPoint, double tolerance) {
+  Offset? matchPoint(Offset localPoint, double tolerance) {
     return null;
   }
 
   // Moves the shape by a delta in local coordinates.
-  void moveBy(Offset delta) {}
-
-  bool movePointBy(Offset localPoint, Offset delta, double tolerance) {
-    return false;
+  BaseShape moveBy(Offset delta) {
+    return this;
   }
 
-  void moveLineBy(Offset delta) {}
+  BaseShape movePointBy(Offset localPoint, Offset delta, double tolerance) {
+    return this;
+  }
+
+  BaseShape moveLineBy(Offset delta) {
+    return moveBy(delta);
+  }
 
   static Offset? snapPoint(Offset originPoint, Offset localPoint, double tolerance) {
     if ((originPoint - localPoint).distance < tolerance) {
-      return originPoint;
+      return localPoint;
     }
     return null;
   }

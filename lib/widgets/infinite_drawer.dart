@@ -1,12 +1,17 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/models/planimetry/line.dart';
+import 'package:flutter_maths_expressions/painters/figure_painter.dart';
 import 'package:flutter_maths_expressions/widgets/hierarchical_fab_menu.dart';
 import 'package:infinite_canvas/infinite_canvas.dart';
 
 import '../models/dock_side.dart';
 import '../painters/cross_axes_painter.dart';
+import '../painters/dragging_shape_painter.dart';
 import '../painters/drawable_shape.dart';
 import '../painters/legend_painter.dart';
+
+typedef ShapeChangedCallback = void Function(List<DrawableShape?> oldShapes, Offset originPoint, Offset targetPoint);
 
 class InfiniteDrawer extends StatefulWidget {
   final bool enableRotation;
@@ -15,13 +20,16 @@ class InfiniteDrawer extends StatefulWidget {
   final bool enableCrossAxes;
   final DockSide actionsDockSide;
   final List<DrawableShape> drawableShapes;
+  final ShapeChangedCallback? onShapeChanged;
 
   const InfiniteDrawer({super.key,
     this.enableRotation = true,
     this.enablePanning = true,
     this.enableScaling = true,
     this.enableCrossAxes = true,
-    this.actionsDockSide = DockSide.rightBottom, required this.drawableShapes,
+    this.actionsDockSide = DockSide.rightBottom,
+    this.onShapeChanged,
+    required this.drawableShapes,
   });
 
   @override
@@ -31,13 +39,16 @@ class InfiniteDrawer extends StatefulWidget {
 class _InfiniteDrawerState extends State<InfiniteDrawer> {
   late InfiniteCanvasController _controller;
   late Size gridSize;
-  late double unitInPixels;
+  late double widthUnitInPixels;
+  late double heightUnitInPixels;
   late HierarchicalFABMenu _fabMenu;
 
   // State to track the shape being dragged
-  DrawableShape? _draggingShape;
+  final List<DrawableShape?> _draggingShapes = List.empty(growable: true);
+
 // State to track the dragging point for visual feedback
-  Offset? _draggingPoint;
+  Offset _draggingStartPoint = Offset.infinite;
+  Offset _draggingTargetPoint = Offset.infinite;
 
   @override
   void initState() {
@@ -45,7 +56,8 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
     _controller = InfiniteCanvasController();
     _controller.transform.addListener(_onCanvasTransformChanged);
     gridSize = Size.square(20);
-    unitInPixels = 2 * gridSize.width;
+    widthUnitInPixels = 2 * gridSize.width;
+    heightUnitInPixels = 2 * gridSize.height;
 
     _fabMenu = HierarchicalFABMenu(actionsDockSide: widget.actionsDockSide, insetsFab: 4.0,
         mainMenu: [
@@ -88,10 +100,6 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    const gridSize = Size.square(20);
-    final widthUnitInPixels = 2 * gridSize.width;
-    final heightUnitInPixels = 2 * gridSize.height;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
       child: LayoutBuilder(
@@ -99,39 +107,44 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
           final viewportSize = Size(constraints.maxWidth, constraints.maxHeight);
           return GestureDetector(
             onPanStart: (details) {
-              // _controller.mouseDown = true;
-              // _controller.mouseDragStart = details.localPosition;
               // Convert tap location to canvas coordinates
-              final localPoint = _controller.toLocal(details.localPosition);
-
-              // Find which shape is being tapped
-              for (final shape in widget.drawableShapes.reversed) {
-                // NOTE: You need to implement `contains` in your DrawableShape class
-                if (shape.contains(localPoint, 4.0)) {
-                  setState(() {
-                    _draggingShape = shape;
-                    _draggingPoint = details.localPosition;
-                  });
-                  break;
+              final localPoint = _toLocal(_controller.toLocal(details.localPosition));
+              setState(() {
+                for (final shape in widget.drawableShapes.reversed) {
+                  final snapPoint = shape.matchPoint(localPoint, 0.25);
+                  if (snapPoint != null) {
+                    _draggingShapes.add(shape);
+                    _draggingStartPoint = snapPoint;
+                    _draggingTargetPoint = snapPoint;
+                  }
                 }
-              }
+              });
             },
             onPanUpdate: (details) {
-              if (_draggingShape != null) {
+              if (_draggingStartPoint.isFinite) {
                 // Update the position of the shape based on the drag delta
+                final localPoint = _toLocal(_controller.toLocal(details.localPosition));
                 setState(() {
-                  final localDelta = details.delta / _controller.scale;
-                  _draggingShape!.moveBy(localDelta);
-                  _draggingPoint = details.localPosition;
+                  // Consider snap the point to the grid
+                  _draggingTargetPoint = localPoint;
                 });
               } else {
                 // If no shape is being dragged it's NOP
               }
             },
             onPanEnd: (details) {
+              if (widget.onShapeChanged != null && _draggingShapes.isNotEmpty) {
+                // Update the position of the shape based on the drag delta
+                _draggingTargetPoint = _toLocal(_controller.toLocal(details.localPosition));
+                // TODO:: snapping
+                // final targetPoint = snapPointToGrid(_draggingTargetPoint, gridSize, 0.25);
+                widget.onShapeChanged!(_draggingShapes, _draggingStartPoint, _draggingTargetPoint);
+              }
               // Stop dragging
               setState(() {
-                _draggingShape = null;
+                _draggingShapes.clear();
+                _draggingTargetPoint = Offset.infinite;
+                _draggingStartPoint = Offset.infinite;
               });
             },
             child: Stack(
@@ -153,29 +166,32 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
                   ),
                 for (final shape in widget.drawableShapes) ...[
                   ClipRect(
-                      child: CustomPaint(size: viewportSize,
-                          painter: shape.paint(_controller.transform.value,
-                              viewportSize,
-                              widthUnitInPixels,
-                              heightUnitInPixels))),
+                    child: CustomPaint(size: viewportSize,
+                      painter: shape.paint(_controller.transform.value,
+                        viewportSize,
+                        widthUnitInPixels,
+                        heightUnitInPixels))),
                   CustomPaint(size: viewportSize, painter:
-                  LegendPainter(
+                    LegendPainter(
                       canvasTransform: _controller.transform.value,
                       viewportSize: viewportSize,
                       labelsSpans: shape.labelsSpans,
                       startPosition: Offset(viewportSize.width - 100, 0.95)
-                  )
+                    )
                   ),
                 ],
-                if (_draggingPoint != null)
-                  Positioned(
-                    left: _draggingPoint!.dx - 8,
-                    top: _draggingPoint!.dy - 8,
-                    child: const Icon(
-                      Icons.touch_app,
-                      color: Colors.redAccent,
-                      size: 16,
-                    ),
+                if (_draggingShapes.isNotEmpty  && _draggingStartPoint !=_draggingTargetPoint)
+                  ClipRect(
+                    child: CustomPaint(size: viewportSize,
+                     painter: DraggingShapePainter(
+                       widthUnitInPixels,
+                       heightUnitInPixels,
+                       Line(a: _draggingStartPoint, b: _draggingTargetPoint),
+                       ShowDrapProperty.line,
+                       canvasTransform: _controller.transform.value,
+                       viewportSize: viewportSize,
+                       color: Colors.deepPurple,
+                     )),
                   ),
                 if (widget.enableRotation || widget.enablePanning || widget.enableScaling)
                 // FAB menu instance should created while initState() when the widget's state be persist.
@@ -197,5 +213,35 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
         // In this case, it ensures CustomPaint gets the new _controller.transform.value.
       });
     }
+  }
+
+  Offset _toLocal(Offset globalPosition) {
+    final canvasPoint = _controller.toLocal(globalPosition);
+    final viewportSize = Size(context.size!.width, context.size!.height);
+    return FigurePainter.convertGlobalToLocal(
+      globalPoint: canvasPoint,
+      originCoordinate: Offset(viewportSize.width / 2, viewportSize.height / 2),
+      widthUnitInPixels: widthUnitInPixels,
+      heightUnitInPixels: heightUnitInPixels,
+    );
+  }
+
+  Offset snapPointToGrid(Offset point, Size gridSize, double threshold) {
+    if (gridSize.width <= 0 || gridSize.height <= 0) {
+      return point; // Avoid division by zero
+    }
+
+    // Calculate the nearest grid point by dividing, rounding, and then multiplying back.
+    final dx = point.dx.round().toDouble();
+    final dy = point.dy.round().toDouble();
+    final snappedPoint = Offset(dx, dy);
+    // Calculate the distance between the original point and the snapped point.
+    final distance = (snappedPoint - point).distance;
+    // If the point is within the snapping threshold, return the snapped point.
+    // Otherwise, return the original point.
+    if (distance < threshold) {
+      return snappedPoint;
+    }
+    return point;
   }
 }

@@ -12,6 +12,15 @@ abstract class FigurePainter<T> extends CustomPainter {
 
   FigurePainter(this.widthUnitInPixels, this.heightUnitInPixels, this.shape, {required this.canvasTransform, required this.viewportSize});
 
+  static  Offset convertGlobalToLocal(
+    { required Offset globalPoint,
+      required Offset originCoordinate,
+      required double widthUnitInPixels,
+      required double heightUnitInPixels}) {
+    final localPoint = globalPoint - originCoordinate;
+    return Offset(localPoint.dx / widthUnitInPixels, -localPoint.dy / heightUnitInPixels);
+  }
+  
   Offset convertLocalToGlobal(Offset local) {
     return Offset(local.dx * widthUnitInPixels, -local.dy * heightUnitInPixels);
   }

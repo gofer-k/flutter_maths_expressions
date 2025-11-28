@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_maths_expressions/models/planimetry/line.dart';
 
 import 'base_shape.dart';
@@ -10,11 +11,19 @@ enum AngleType {
   degrees,
 }
 
+@immutable
 class Angle extends BaseShape {
   final Line leadingLine;
   final Line followingLine;
 
-  Angle({required this.leadingLine, required this.followingLine});
+  const Angle({required this.leadingLine, required this.followingLine});
+
+  /// Creates a new immutable Angle object with the given values updated.
+
+  @override
+  BaseShape copyWith() {
+    return Angle(leadingLine: leadingLine, followingLine: followingLine);
+  }
 
   @override
   bool contains(Offset localPoint, double tolerance) {
@@ -29,26 +38,28 @@ class Angle extends BaseShape {
   }
 
   @override
-  bool movePointBy(Offset localPoint, Offset delta, double tolerance) {
-    if (leadingLine.movePointBy(leadingLine.a, delta, tolerance)) {
-      return true;
+  Offset? matchPoint(Offset localPoint, double tolerance) {
+    if (leadingLine.contains(localPoint, tolerance)) {
+      return leadingLine.matchPoint(localPoint, tolerance);
     }
-    if (leadingLine.movePointBy(leadingLine.b, delta, tolerance)) {
-      return true;
+    if (followingLine.contains(localPoint, tolerance)) {
+      return followingLine.matchPoint(localPoint, tolerance);
     }
-    if (followingLine.movePointBy(followingLine.a, delta, tolerance)) {
-      return true;
-    }
-    if (followingLine.movePointBy(followingLine.b, delta, tolerance)) {
-      return true;
-    }
-    return false;
+    return null;
   }
 
   @override
-  void moveLineBy(Offset delta) {
-    leadingLine.moveBy(delta);
-    followingLine.moveBy(delta);
+  BaseShape movePointBy(Offset localPoint, Offset delta, double tolerance) {
+    return Angle(
+      leadingLine: leadingLine.movePointBy(localPoint, delta, tolerance) as Line,
+      followingLine: followingLine.movePointBy(localPoint, delta, tolerance) as Line);
+  }
+
+  @override
+  BaseShape moveLineBy(Offset delta) {
+    return Angle(
+        leadingLine: leadingLine.moveBy(delta) as Line,
+        followingLine: followingLine.moveBy(delta) as Line);
   }
 
   Offset getOriginPoint() {
@@ -105,4 +116,7 @@ class Angle extends BaseShape {
   double getPerimeter() {
     throw UnimplementedError();
   }
+
+  @override
+  List<Object?> get props => [leadingLine, followingLine];
 }

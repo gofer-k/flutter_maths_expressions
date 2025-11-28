@@ -23,12 +23,23 @@ class DrawableShape<T extends FigurePainter> {
     return shape.contains(localPoint, tolerance);
   }
 
-  void moveBy(Offset delta) {
-    shape.moveBy(delta);
+  DrawableShape<T> moveBy(Offset delta) {
+    return DrawableShape<T>(shape: shape.moveBy(delta),
+      labelsSpans: this.labelsSpans,
+      createPainter: this.createPainter);
   }
-  
-  void moveByPoint(Offset delta, Offset point, double tolerance) {
-    shape.movePointBy(delta, point, tolerance);
+
+  DrawableShape<T> moveByPoint({required Offset point, required Offset delta, required double tolerance}) {
+    final newShape = shape.movePointBy(point, delta, tolerance);
+    return DrawableShape<T>(
+      shape: newShape,
+      labelsSpans: this.labelsSpans,
+      createPainter: this.createPainter
+    );
+  }
+
+  Offset? matchPoint(Offset localPoint, double d) {
+    return shape.matchPoint(localPoint, d);
   }
 }
 

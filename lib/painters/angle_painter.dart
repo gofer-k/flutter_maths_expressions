@@ -53,18 +53,13 @@ class AnglePainter extends FigurePainter {
     final leadingLine = angle.leadingLine;
     final followingLine = angle.followingLine;
 
-    final Offset aPos =
-    Offset(leadingLine.a.dx * minWidthUnitInPixels, -leadingLine.a.dy * minHeightUnitInPixels);
-    final Offset bPos =
-    Offset(leadingLine.b.dx * minWidthUnitInPixels, -leadingLine.b.dy * minHeightUnitInPixels);
-    final Offset cPos =
-    Offset(followingLine.a.dx * minWidthUnitInPixels, -followingLine.a.dy * minHeightUnitInPixels);
-    final Offset dPos =
-    Offset(followingLine.b.dx * minWidthUnitInPixels, -followingLine.b.dy * minHeightUnitInPixels);
+    final Offset aPos = convertLocalToGlobal(leadingLine.a);
+    final Offset bPos = convertLocalToGlobal(leadingLine.b);
+    final Offset cPos = convertLocalToGlobal(followingLine.a);
+    final Offset dPos = convertLocalToGlobal(followingLine.b);
 
     final Offset intersectinPoint = leadingLine.getIntersection(followingLine);
-    final Offset intersectinPos =
-    Offset(intersectinPoint.dx * minWidthUnitInPixels, -intersectinPoint.dx * minHeightUnitInPixels);
+    final Offset intersectinPos = convertLocalToGlobal(intersectinPoint);
 
     canvas.drawLine(aPos, bPos, paintLine);
     canvas.drawCircle(aPos, 5.0, paintPoint);
@@ -73,12 +68,14 @@ class AnglePainter extends FigurePainter {
     canvas.drawLine(cPos, dPos, paintLine);
     canvas.drawCircle(cPos, 5.0, paintPoint);
     canvas.drawCircle(dPos, 5.0, paintPoint);
-    canvas.drawCircle(intersectinPos, 5.0, paintPoint);
-    final angleVal = angle.getAngle();
-    drawAngleArc(canvas, intersectinPos,
-        bPos,
-        dPos,
-        angleColor, arcRadius: 65.0, clockWise: angleVal >= pi ? true : false);
+    if(intersectinPos.isFinite) {
+      canvas.drawCircle(intersectinPos, 5.0, paintPoint);
+      final angleVal = angle.getAngle();
+      drawAngleArc(canvas, intersectinPos,
+          bPos,
+          dPos,
+          angleColor, arcRadius: 65.0, clockWise: angleVal >= pi ? true : false);
+    }
   }
 
   @override

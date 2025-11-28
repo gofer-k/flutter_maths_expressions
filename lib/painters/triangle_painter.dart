@@ -3,6 +3,7 @@ import 'dart:math' as logger;
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/models/planimetry/triangle.dart';
 import 'package:flutter_maths_expressions/painters/figure_painter.dart';
+import 'package:flutter_maths_expressions/painters/line_painter.dart';
 
 enum ShowTriangleProperty {
   center,
@@ -63,39 +64,6 @@ class TrianglePainter extends FigurePainter {
   //
   //   textPainter.paint(canvas, centeredOffset);
   // }
-
-  void _displayDashedLine({required Canvas canvas, required Offset begin, required Offset end, double dashWidth = 5.0, double dashSpace = 3.0}) {
-    final Paint paintDashedLine = Paint()
-      ..color = Colors.green
-      ..strokeWidth = 2.0;
-    // Calculate the vector from start to end
-    final Offset delta = end - begin;
-    final double distance = delta.distance;
-
-    // Create a direction vector (normalized)
-    final Offset direction = delta / distance;
-    double drawnLength = 0.0;
-    // Move to the starting point
-    Offset currentPoint = begin;
-
-    while (drawnLength < distance) {
-      // Calculate the end of the current dash
-      final double dashEnd = drawnLength + dashWidth;
-      final double remaining = distance - drawnLength;
-      final double currentDashLength = dashEnd > distance
-          ? remaining
-          : dashWidth;
-
-      final Offset nextPoint = currentPoint + direction * currentDashLength;
-
-      // Draw the dash
-      canvas.drawLine(currentPoint, nextPoint, paintDashedLine);
-
-      // Move the current point for the next dash (past the dash and the space)
-      currentPoint += direction * (dashWidth + dashSpace);
-      drawnLength += dashWidth + dashSpace;
-    }
-  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -184,21 +152,21 @@ class TrianglePainter extends FigurePainter {
         final Offset medianPoint = triangle.getMedianPoint(
             triangle.b, triangle.c);
         final Offset medianPos = convertLocalToGlobal(medianPoint);
-        _displayDashedLine(canvas: canvas, begin: aPos, end: medianPos);
+        LinePainter.displayDashedLine(canvas: canvas, begin: aPos, end: medianPos);
         paintText(canvas, r"M_a", medianPos, xOffset: 4.0, yOffset: -20.0);
       }
       {
         final Offset medianPoint = triangle.getMedianPoint(
             triangle.a, triangle.c);
         final Offset medianPos = convertLocalToGlobal(medianPoint);
-        _displayDashedLine(canvas: canvas, begin: bPos, end: medianPos);
+        LinePainter.displayDashedLine(canvas: canvas, begin: bPos, end: medianPos);
         paintText(canvas, r"M_b", medianPos, xOffset: -8.0, yOffset: 2.0);
       }
       {
         final Offset medianPoint = triangle.getMedianPoint(
             triangle.a, triangle.b);
         final Offset medianPos = convertLocalToGlobal(medianPoint);
-        _displayDashedLine(canvas: canvas, begin: cPos, end: medianPos);
+        LinePainter.displayDashedLine(canvas: canvas, begin: cPos, end: medianPos);
         paintText(canvas, r"M_c", medianPos, xOffset: -36.0, yOffset: -20.0);
       }
       {
@@ -217,7 +185,7 @@ class TrianglePainter extends FigurePainter {
         final Offset bisectorPoint = triangle.getBisectorPoint(triangle.b, triangle.a, triangle.c);
         final Offset bisectorPos = convertLocalToGlobal(bisectorPoint);
 
-        _displayDashedLine(canvas: canvas, begin: bPos, end: bisectorPos);
+        LinePainter.displayDashedLine(canvas: canvas, begin: bPos, end: bisectorPos);
         paintText(canvas, "P", bisectorPos, xOffset: -4.0, yOffset: -2.0);
         drawAngleArc(canvas, bPos, bisectorPos, aPos, Colors.red);
         drawAngleArc(canvas, bPos, bisectorPos, aPos, Colors.red, arcRadius: 30);
@@ -237,7 +205,7 @@ class TrianglePainter extends FigurePainter {
         final midSegment = triangle.getMidsegment(triangle.b, triangle.a, triangle.c);
         final Offset dPos = convertLocalToGlobal(midSegment.first);
         final Offset ePos =convertLocalToGlobal(midSegment.last);
-        _displayDashedLine(canvas: canvas, begin: dPos, end: ePos);
+        LinePainter.displayDashedLine(canvas: canvas, begin: dPos, end: ePos);
         canvas.drawCircle(dPos, 5.0, paintPoint);
         canvas.drawCircle(ePos, 5.0, paintPoint);
         paintText(canvas, "D", midSegment.first, xOffset: -4.0, yOffset: -2.0);
@@ -258,17 +226,17 @@ class TrianglePainter extends FigurePainter {
         {
           final medPoint = triangle.getMedianPoint(triangle.a, triangle.b);
           final Offset mPos = convertLocalToGlobal(medPoint);
-          _displayDashedLine(canvas: canvas, begin: oPos, end: mPos);
+          LinePainter.displayDashedLine(canvas: canvas, begin: oPos, end: mPos);
         }
         {
           final medPoint = triangle.getMedianPoint(triangle.a, triangle.c);
           final Offset mPos = convertLocalToGlobal(medPoint);
-          _displayDashedLine(canvas: canvas, begin: oPos, end: mPos);
+          LinePainter.displayDashedLine(canvas: canvas, begin: oPos, end: mPos);
         }
         {
           final medPoint = triangle.getMedianPoint(triangle.b, triangle.c);
           final Offset mPos = convertLocalToGlobal(medPoint);
-          _displayDashedLine(canvas: canvas, begin: oPos, end: mPos);
+          LinePainter.displayDashedLine(canvas: canvas, begin: oPos, end: mPos);
         }
         canvas.drawCircle(oPos, 5.0, paintPoint);
         paintText(canvas, "O", oPos, xOffset: -4.0, yOffset: -2.0);
@@ -294,17 +262,17 @@ class TrianglePainter extends FigurePainter {
         final bisectorAPoint = triangle.getBisectorPoint(triangle.a, triangle.b, triangle.c);
         final Offset bisectorAPos = convertLocalToGlobal(bisectorAPoint);
         {
-          _displayDashedLine(canvas: canvas, begin: oPos, end: bisectorAPos);
+          LinePainter.displayDashedLine(canvas: canvas, begin: oPos, end: bisectorAPos);
         }
         {
           final bisectorPoint = triangle.getBisectorPoint(triangle.b, triangle.c, triangle.a);
           final Offset bisectorPos = convertLocalToGlobal(bisectorPoint);
-          _displayDashedLine(canvas: canvas, begin: oPos, end: bisectorPos);
+          LinePainter.displayDashedLine(canvas: canvas, begin: oPos, end: bisectorPos);
         }
         {
           final bisectorPoint = triangle.getBisectorPoint(triangle.c, triangle.a, triangle.b);
           final Offset bisectorPos =  convertLocalToGlobal(bisectorPoint);
-          _displayDashedLine(canvas: canvas, begin: oPos, end: bisectorPos);
+          LinePainter.displayDashedLine(canvas: canvas, begin: oPos, end: bisectorPos);
         }
         canvas.drawCircle(oPos, 5.0, paintPoint);
         paintText(canvas, "O", oPos, xOffset: -4.0, yOffset: -2.0);

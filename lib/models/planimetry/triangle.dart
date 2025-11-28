@@ -13,6 +13,14 @@ class Triangle extends BaseShape {
     validate(a, b, c);
   }
 
+  @override
+  List<Object?> get props => [a, b, c];
+
+  @override
+  Triangle copyWith() {
+    return Triangle(a: a, b: b, c: c);
+  }
+
   void update(Offset a, Offset b, Offset c) {
     validate(a, b, c);
     this.a = a;

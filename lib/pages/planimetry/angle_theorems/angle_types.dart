@@ -29,9 +29,21 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
   // late Angle angle = originAngle;
   late Angle leadingAngle = originAngle;
   late Angle followingAngle;
-  late Line cuttingAngleLine;
-
   late ShowAngleType type = ShowAngleType.angle;
+
+  final List<DrawableShape<AnglePainter>> _drawablesShapes = List.empty(growable: true);
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    changeAngleProperties(type);
+    changeDrawableShapes();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +121,7 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
                             if (newType != null && newType != type) {
                               type = newType;
                               changeAngleProperties(type);
+                              changeDrawableShapes();
                             }
                           });
                         });
@@ -123,22 +136,30 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
   }
 
   Widget drawableView(DockSide dock) {
-    List<DrawableShape<AnglePainter>> drawableAngles= List.empty(growable: true);
-    switch(type) {
-      case ShowAngleType.complementary:
-      case ShowAngleType.supplementary:
-        drawableAngles.add(generateDrawableAngle(leadingAngle, Colors.green));
-        drawableAngles.add(generateDrawableAngle(followingAngle, Colors.red));
-        break;
-      case ShowAngleType.angle:
-        drawableAngles.add(generateDrawableAngle(leadingAngle, Colors.green));
-        break;
-    }
-
     return InfiniteDrawer(
       actionsDockSide: dock,
       enableCrossAxes: true,
-      drawableShapes: drawableAngles,
+      drawableShapes: _drawablesShapes,
+      onShapeChanged: (oldShapes, originPoint, targetPoint) {
+        setState(() {
+          for (final oldShape in oldShapes) {
+            final index = _drawablesShapes.indexOf(
+                oldShape as DrawableShape<AnglePainter>);
+            if (index != -1) {
+              final newShape = oldShape.moveByPoint(
+                  point: originPoint, delta: targetPoint - originPoint,
+                  tolerance: 0.25);
+              _drawablesShapes[index] = newShape;
+              if (leadingAngle == oldShape as Angle) {
+                leadingAngle = newShape.shape as Angle;
+              }
+              if (followingAngle == oldShape as Angle) {
+                followingAngle = newShape.shape as Angle;
+              }
+            }
+          }
+        });
+      }
     );
   }
 
@@ -165,7 +186,8 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
           ) {
         return AnglePainter(
             widthUnitInPixels,
-            heightUnitInPixels, angle,
+            heightUnitInPixels,
+            angle,
             canvasTransform: canvasTransform,
             viewportSize: viewportSize,
             angleColor: color);
@@ -173,37 +195,51 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
     );
   }
 
+  void changeDrawableShapes() {
+    _drawablesShapes.clear();
+    switch(type) {
+      case ShowAngleType.complementary:
+      case ShowAngleType.supplementary:
+        _drawablesShapes.add(generateDrawableAngle(leadingAngle, Colors.green));
+        _drawablesShapes.add(generateDrawableAngle(followingAngle, Colors.red));
+        break;
+      case ShowAngleType.angle:
+        _drawablesShapes.add(generateDrawableAngle(leadingAngle, Colors.green));
+        break;
+    }
+  }
+
   void changeAngleProperties(ShowAngleType type) {
+    final sourceLeading = originAngle.leadingLine;
+    final sourceFollowing = originAngle.followingLine;
+
     switch(type) {
       case ShowAngleType.complementary:
         final line = Line(
-          a: originAngle.leadingLine.a,
+          a: sourceLeading.a,
           b: Offset(  // Angle pi/4
-              originAngle.leadingLine.b.dx + originAngle.followingLine.b.dx,
-              originAngle.leadingLine.b.dy + originAngle.followingLine.b.dy)
+            sourceLeading.b.dx + sourceFollowing.b.dx,
+            sourceLeading.b.dy + sourceFollowing.b.dy)
         );
-        leadingAngle = Angle(
-          leadingLine: originAngle.leadingLine,
-          followingLine: line);
-        followingAngle = Angle(
-          leadingLine: line,
-          followingLine: originAngle.followingLine);
+        leadingAngle = Angle(leadingLine: sourceLeading, followingLine: line);
+        followingAngle = Angle(leadingLine: line, followingLine: sourceFollowing);
       break;
       case ShowAngleType.supplementary:
         final line = Line(
-            a: originAngle.leadingLine.a,
+            // a: originAngle.leadingLine.a,
+            a: sourceLeading.a,
             b: Offset(  // Angle pi/4
-                originAngle.leadingLine.b.dx + originAngle.followingLine.b.dx,
-                originAngle.leadingLine.b.dy + originAngle.followingLine.b.dy)
+                sourceLeading.b.dx + sourceFollowing.b.dx,
+                sourceLeading.b.dy + sourceFollowing.b.dy)
         );
-        leadingAngle = Angle(
-          leadingLine: originAngle.leadingLine,
-          followingLine: line);
+        leadingAngle = Angle(leadingLine: sourceLeading, followingLine: line);
         followingAngle = Angle(
           leadingLine: line,
           followingLine: Line(a: Offset(0.0, 0.0), b: Offset(-4.0, 0.0)));
       break;
       case ShowAngleType.angle:
+        leadingAngle = originAngle.copyWith() as Angle;
+        followingAngle = originAngle.copyWith() as Angle;
         break;
     }
   }
