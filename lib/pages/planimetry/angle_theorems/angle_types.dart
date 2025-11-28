@@ -150,10 +150,10 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
                   point: originPoint, delta: targetPoint - originPoint,
                   tolerance: 0.25);
               _drawablesShapes[index] = newShape;
-              if (leadingAngle == oldShape as Angle) {
+              if (leadingAngle == oldShape.shape as Angle) {
                 leadingAngle = newShape.shape as Angle;
               }
-              if (followingAngle == oldShape as Angle) {
+              if (followingAngle == oldShape.shape as Angle) {
                 followingAngle = newShape.shape as Angle;
               }
             }
