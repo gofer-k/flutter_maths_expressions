@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/models/planimetry/drag_point.dart';
 import 'package:flutter_maths_expressions/models/planimetry/line.dart';
 import 'package:flutter_maths_expressions/painters/figure_painter.dart';
 import 'package:flutter_maths_expressions/widgets/hierarchical_fab_menu.dart';
@@ -11,7 +12,7 @@ import '../painters/dragging_shape_painter.dart';
 import '../painters/drawable_shape.dart';
 import '../painters/legend_painter.dart';
 
-typedef ShapeChangedCallback = void Function(List<DrawableShape?> oldShapes, Offset originPoint, Offset targetPoint);
+typedef ShapeChangedCallback = void Function(List<DrawableShape?> oldShapes, DragPoint originPoint, DragPoint targetPoint);
 
 class InfiniteDrawer extends StatefulWidget {
   final bool enableRotation;
@@ -47,8 +48,8 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
   final List<DrawableShape?> _draggingShapes = List.empty(growable: true);
 
 // State to track the dragging point for visual feedback
-  Offset _draggingStartPoint = Offset.infinite;
-  Offset _draggingTargetPoint = Offset.infinite;
+  DragPoint _draggingStartPoint = DragPoint(point: Offset.infinite, enableDragging: true);
+  DragPoint _draggingTargetPoint = DragPoint(point: Offset.infinite, enableDragging: true);
 
   @override
   void initState() {
@@ -108,7 +109,7 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
           return GestureDetector(
             onPanStart: (details) {
               // Convert tap location to canvas coordinates
-              final localPoint = _toLocal(_controller.toLocal(details.localPosition));
+              final localPoint = DragPoint(point: _toLocal(_controller.toLocal(details.localPosition)), enableDragging: true);
               setState(() {
                 for (final shape in widget.drawableShapes.reversed) {
                   final snapPoint = shape.matchPoint(localPoint, 0.25);
@@ -126,7 +127,7 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
                 final localPoint = _toLocal(_controller.toLocal(details.localPosition));
                 setState(() {
                   // Consider snap the point to the grid
-                  _draggingTargetPoint = localPoint;
+                  _draggingTargetPoint = DragPoint(point: localPoint, enableDragging: true);
                 });
               } else {
                 // If no shape is being dragged it's NOP
@@ -135,7 +136,9 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
             onPanEnd: (details) {
               if (widget.onShapeChanged != null && _draggingShapes.isNotEmpty) {
                 // Update the position of the shape based on the drag delta
-                _draggingTargetPoint = _toLocal(_controller.toLocal(details.localPosition));
+                _draggingTargetPoint = DragPoint(
+                    point: _toLocal(_controller.toLocal(details.localPosition)),
+                    enableDragging: true);
                 // TODO:: snapping
                 // final targetPoint = snapPointToGrid(_draggingTargetPoint, gridSize, 0.25);
                 widget.onShapeChanged!(_draggingShapes, _draggingStartPoint, _draggingTargetPoint);
@@ -143,8 +146,8 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
               // Stop dragging
               setState(() {
                 _draggingShapes.clear();
-                _draggingTargetPoint = Offset.infinite;
-                _draggingStartPoint = Offset.infinite;
+                _draggingTargetPoint = DragPoint.infinite(drag: true);
+                _draggingStartPoint = DragPoint.infinite(drag: true);
               });
             },
             child: Stack(
@@ -190,7 +193,7 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
                        ShowDrapProperty.line,
                        canvasTransform: _controller.transform.value,
                        viewportSize: viewportSize,
-                       color: Colors.deepPurple,
+                       color: Colors.blue,
                      )),
                   ),
                 if (widget.enableRotation || widget.enablePanning || widget.enableScaling)

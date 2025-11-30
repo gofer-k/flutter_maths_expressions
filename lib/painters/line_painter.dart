@@ -81,8 +81,8 @@ class LinePainter extends FigurePainter {
     // Convert local triangle coordinates to pixel coordinates
     final line = shape as Line;
 
-    final Offset aPos = convertLocalToGlobal(line.a);
-    final Offset bPos = convertLocalToGlobal(line.b);
+    final Offset aPos = convertLocalToGlobal(line.a.point);
+    final Offset bPos = convertLocalToGlobal(line.b.point);
     if (aPos == bPos)  return;
 
     if (showProperties.contains(ShowLineProperty.solid)) {

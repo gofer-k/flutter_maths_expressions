@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_maths_expressions/models/planimetry/drag_point.dart';
 import 'package:flutter_maths_expressions/models/planimetry/line.dart';
 
 import '../../../l10n/app_localizations.dart';
@@ -22,7 +23,9 @@ class LinePropertiesPage extends StatefulWidget {
 }
 
 class _LinePropertiesPageState extends State<LinePropertiesPage> {
-  Line line = Line(a: Offset(-2, -3), b: Offset(1, 3));
+  Line line = Line(
+      a: DragPoint(point: Offset(-2, -3)),
+      b: DragPoint(point: Offset(1, 3)));
 
   @override
   Widget build(BuildContext context) {

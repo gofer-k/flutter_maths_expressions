@@ -1,24 +1,26 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_maths_expressions/models/planimetry/line.dart';
 
 import 'base_shape.dart';
+import 'drag_point.dart';
 
 enum AngleType {
   radian,
   degrees,
 }
 
-@immutable
 class Angle extends BaseShape {
   final Line leadingLine;
   final Line followingLine;
 
-  const Angle({required this.leadingLine, required this.followingLine});
+  const Angle({super.enableDragging, required this.leadingLine, required this.followingLine});
 
-  /// Creates a new immutable Angle object with the given values updated.
+  @override
+  bool isDraggable() {
+    return enableDragging || leadingLine.isDraggable() || followingLine.isDraggable();
+  }
 
   @override
   BaseShape copyWith() {
@@ -26,7 +28,7 @@ class Angle extends BaseShape {
   }
 
   @override
-  bool contains(Offset localPoint, double tolerance) {
+  bool contains(DragPoint localPoint, double tolerance) {
     // Check match local point to the sha[e control points
     if (leadingLine.contains(localPoint, tolerance)) {
       return true;
@@ -38,7 +40,7 @@ class Angle extends BaseShape {
   }
 
   @override
-  Offset? matchPoint(Offset localPoint, double tolerance) {
+  DragPoint? matchPoint(DragPoint localPoint, double tolerance) {
     if (leadingLine.contains(localPoint, tolerance)) {
       return leadingLine.matchPoint(localPoint, tolerance);
     }
@@ -49,17 +51,25 @@ class Angle extends BaseShape {
   }
 
   @override
-  BaseShape movePointBy(Offset localPoint, Offset delta, double tolerance) {
-    return Angle(
-      leadingLine: leadingLine.movePointBy(localPoint, delta, tolerance) as Line,
-      followingLine: followingLine.movePointBy(localPoint, delta, tolerance) as Line);
+  BaseShape movePointBy(DragPoint localPoint, DragPoint delta, double tolerance) {
+    if (isDraggable()) {
+      return Angle(
+          leadingLine: leadingLine.movePointBy(
+              localPoint, delta, tolerance) as Line,
+          followingLine: followingLine.movePointBy(
+              localPoint, delta, tolerance) as Line);
+    }
+    return this;
   }
 
   @override
-  BaseShape moveLineBy(Offset delta) {
-    return Angle(
-        leadingLine: leadingLine.moveBy(delta) as Line,
-        followingLine: followingLine.moveBy(delta) as Line);
+  BaseShape moveBy(DragPoint delta) {
+    if (isDraggable()) {
+      return Angle(
+          leadingLine: leadingLine.moveBy(delta) as Line,
+          followingLine: followingLine.moveBy(delta) as Line);
+    }
+    return this;
   }
 
   Offset getOriginPoint() {
@@ -71,8 +81,8 @@ class Angle extends BaseShape {
     final origin = getOriginPoint();
 
     // Create vectors from the origin point to another point on each line
-    final vec1 = leadingLine.b - origin;
-    final vec2 = followingLine.b - origin;
+    final vec1 = leadingLine.b.point - origin;
+    final vec2 = followingLine.b.point - origin;
 
     // Calculate the angle of each vector relative to the positive x-axis
     // atan2(y, x) returns the angle in radians from -π to +π.
@@ -100,21 +110,6 @@ class Angle extends BaseShape {
     double angle = getAngle(angleType: angleType);
     return List.unmodifiable(
         [angle, angleType == AngleType.radian ? pi - angle : 180 - angle]);
-  }
-
-  @override
-  double getArea() {
-    throw UnimplementedError();
-  }
-
-  @override
-  Offset getCenter() {
-    throw UnimplementedError();
-  }
-
-  @override
-  double getPerimeter() {
-    throw UnimplementedError();
   }
 
   @override

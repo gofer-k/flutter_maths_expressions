@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_maths_expressions/models/planimetry/base_shape.dart';
 import 'package:flutter_maths_expressions/painters/figure_painter.dart';
 
+import '../models/planimetry/drag_point.dart';
+
 class DrawableShape<T extends FigurePainter> {
   final BaseShape shape;
   final List<TextSpan> labelsSpans;
@@ -19,17 +21,17 @@ class DrawableShape<T extends FigurePainter> {
     return painter;
   }
 
-  bool contains(Offset localPoint, double tolerance) {
+  bool contains(DragPoint localPoint, double tolerance) {
     return shape.contains(localPoint, tolerance);
   }
 
-  DrawableShape<T> moveBy(Offset delta) {
+  DrawableShape<T> moveBy(DragPoint delta) {
     return DrawableShape<T>(shape: shape.moveBy(delta),
       labelsSpans: this.labelsSpans,
       createPainter: this.createPainter);
   }
 
-  DrawableShape<T> moveByPoint({required Offset point, required Offset delta, required double tolerance}) {
+  DrawableShape<T> moveByPoint({required DragPoint point, required DragPoint delta, required double tolerance}) {
     final newShape = shape.movePointBy(point, delta, tolerance);
     return DrawableShape<T>(
       shape: newShape,
@@ -38,7 +40,7 @@ class DrawableShape<T extends FigurePainter> {
     );
   }
 
-  Offset? matchPoint(Offset localPoint, double d) {
+  DragPoint? matchPoint(DragPoint localPoint, double d) {
     return shape.matchPoint(localPoint, d);
   }
 }

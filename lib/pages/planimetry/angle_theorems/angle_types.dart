@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/models/planimetry/angle.dart';
+import 'package:flutter_maths_expressions/models/planimetry/drag_point.dart';
 import 'package:flutter_maths_expressions/models/planimetry/line.dart';
 
 import '../../../Themes/math_theme.dart';
@@ -23,8 +24,12 @@ class AngleTypesPage extends StatefulWidget {
 class _AngleTypesPageState extends State<AngleTypesPage> {
   DockSide dock = DockSide.leftTop;
   final originAngle = Angle(
-      leadingLine: Line(a: Offset(0.0, 0.0), b: Offset(4.0, 0.0)),
-      followingLine: Line(a: Offset(0.0, 0.0), b: Offset(0.0, 4.0)));
+      leadingLine: Line(  // not draggable line
+          a: DragPoint(point: Offset(0.0, 0.0)),
+          b: DragPoint(point: Offset(4.0, 0.0))),
+      followingLine: Line(  // not draggable line
+          a: DragPoint(point: Offset(0.0, 0.0)),
+          b: DragPoint(point: Offset(0.0, 4.0))));
 
   // late Angle angle = originAngle;
   late Angle leadingAngle = originAngle;
@@ -217,25 +222,28 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
       case ShowAngleType.complementary:
         final line = Line(
           a: sourceLeading.a,
-          b: Offset(  // Angle pi/4
+          b: DragPoint(point: Offset(  // draggable point
             sourceLeading.b.dx + sourceFollowing.b.dx,
-            sourceLeading.b.dy + sourceFollowing.b.dy)
+            sourceLeading.b.dy + sourceFollowing.b.dy),
+            enableDragging: true)
         );
         leadingAngle = Angle(leadingLine: sourceLeading, followingLine: line);
         followingAngle = Angle(leadingLine: line, followingLine: sourceFollowing);
       break;
       case ShowAngleType.supplementary:
         final line = Line(
-            // a: originAngle.leadingLine.a,
             a: sourceLeading.a,
-            b: Offset(  // Angle pi/4
-                sourceLeading.b.dx + sourceFollowing.b.dx,
-                sourceLeading.b.dy + sourceFollowing.b.dy)
+            b: DragPoint(point: Offset(  // draggable point
+              sourceLeading.b.dx + sourceFollowing.b.dx,
+              sourceLeading.b.dy + sourceFollowing.b.dy),
+              enableDragging: true)
         );
         leadingAngle = Angle(leadingLine: sourceLeading, followingLine: line);
         followingAngle = Angle(
           leadingLine: line,
-          followingLine: Line(a: Offset(0.0, 0.0), b: Offset(-4.0, 0.0)));
+          followingLine: Line( // not draggable Line
+              a: DragPoint(point: Offset(0.0, 0.0)),
+              b: DragPoint(point: Offset(-4.0, 0.0))));
       break;
       case ShowAngleType.angle:
         leadingAngle = originAngle.copyWith() as Angle;

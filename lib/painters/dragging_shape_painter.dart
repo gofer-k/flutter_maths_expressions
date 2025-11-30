@@ -41,8 +41,8 @@ class DraggingShapePainter extends FigurePainter {
       // Convert local triangle coordinates to pixel coordinates
       final line = shape as Line;
 
-      final Offset aPos = convertLocalToGlobal(line.a);
-      final Offset bPos = convertLocalToGlobal(line.b);
+      final Offset aPos = convertLocalToGlobal(line.a.point);
+      final Offset bPos = convertLocalToGlobal(line.b.point);
       if (aPos == bPos)  return;
 
       LinePainter.displayDashedLine(canvas: canvas, begin: aPos, end: bPos, color: color, width: 2.0);

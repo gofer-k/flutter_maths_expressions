@@ -1,19 +1,24 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_maths_expressions/models/planimetry/angle.dart';
+import 'package:flutter_maths_expressions/models/planimetry/drag_point.dart';
 import 'base_shape.dart';
 
-@immutable
 class Line extends BaseShape {
-  final Offset a;
-  final Offset b;
+  final DragPoint a;
+  final DragPoint b;
 
-  const Line({required this.a, required this.b}) : assert(a != b);
+  const Line({super.enableDragging, required this.a, required this.b})
+      : assert(a != b);
 
   @override
   List<Object?> get props => [a, b];
+
+  @override
+  bool isDraggable() {
+    return enableDragging || a.isDraggable() || b.isDraggable();
+  }
 
   @override
   BaseShape copyWith() {
@@ -21,18 +26,18 @@ class Line extends BaseShape {
   }
 
   @override
-  Offset? matchPoint(Offset localPoint, double tolerance) {
-    if (BaseShape.snapPoint(a, localPoint, tolerance) != null) {
+  DragPoint? matchPoint(DragPoint localPoint, double tolerance) {
+    if (a.matchPoint(localPoint, tolerance) != null) {
       return a;
     }
-    if (BaseShape.snapPoint(b, localPoint, tolerance) != null) {
+    if (b.matchPoint(localPoint, tolerance) != null) {
       return b;
     }
     return null;
   }
 
   @override
-  bool contains(Offset localPoint, double tolerance) {
+  bool contains(DragPoint localPoint, double tolerance) {
     if (matchPoint(localPoint, tolerance) != null) {
       return true;
     }
@@ -41,22 +46,25 @@ class Line extends BaseShape {
   }
 
   @override
-  BaseShape moveBy(Offset delta) {
-    return Line(a: a + delta, b: b + delta);
+  BaseShape moveBy(DragPoint delta) {
+    if (enableDragging || a.enableDragging || b.enableDragging) {
+      return Line(a: a.enableDragging ? a + delta : a,
+          b: b.enableDragging ? b + delta : b);
+    }
+    return this;
   }
 
   @override
-  BaseShape moveLineBy(Offset delta) {
-    return moveBy(delta);
-  }
-
-  @override
-  BaseShape movePointBy(Offset localPoint, Offset delta, double tolerance) {
-    final newA = BaseShape.snapPoint(a, localPoint, tolerance);
-    final newB = BaseShape.snapPoint(b, localPoint, tolerance);
-    return Line(
-      a: newA != null ? newA + delta : a,
-      b: newB != null ? newB + delta : b);
+  BaseShape movePointBy(DragPoint localPoint, DragPoint delta,
+      double tolerance) {
+    if (enableDragging || a.enableDragging || b.enableDragging) {
+      final newA = a.matchPoint(localPoint, tolerance);
+      final newB = b.matchPoint(localPoint, tolerance);
+      return Line(
+          a: newA != null ? newA + delta : a,
+          b: newB != null ? newB + delta : b);
+    }
+    return this;
   }
 
   // An line's angle positive toward x-line (clock wise direction)
@@ -94,7 +102,7 @@ class Line extends BaseShape {
   }
 
   Offset getMidpoint() {
-    return (a + b) / 2.0;
+    return ((a + b) / 2.0).point;
   }
 
   List<double> getDirectionalFactors() {
@@ -142,20 +150,5 @@ class Line extends BaseShape {
     final double x = (B * otherC - C * otherB) / denominator;
     final double y = (C * otherA - A * otherC) / denominator;
     return Offset(x, y);
-  }
-
-  @override
-  double getArea() {
-    throw UnimplementedError();
-  }
-
-  @override
-  double getPerimeter() {
-    throw UnimplementedError();
-  }
-
-  @override
-  Offset getCenter() {
-    throw UnimplementedError();
   }
 }

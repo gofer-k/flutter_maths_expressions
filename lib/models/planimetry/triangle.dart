@@ -9,7 +9,7 @@ class Triangle extends BaseShape {
   Offset b;
   Offset c;
 
-  Triangle({required this.a, required this.b, required this.c}) {
+  Triangle({super.enableDragging, required this.a, required this.b, required this.c}) {
     validate(a, b, c);
   }
 
@@ -39,14 +39,12 @@ class Triangle extends BaseShape {
     assert(ab + ac > bc);
   }
 
-  @override
   double getArea() {
     final ab = b - a;
     final ac = c - a;
     return (ab.dx * ac.dy - ab.dy * ac.dx).abs() / 2.0;
   }
 
-  @override
   double getPerimeter() {
     final ab = b - a;
     final bc = c - b;
@@ -54,7 +52,6 @@ class Triangle extends BaseShape {
     return ab.distance + bc.distance + ca.distance;
   }
 
-  @override
   Offset getCenter() {
     return (a + b + c) / 3.0;
   }

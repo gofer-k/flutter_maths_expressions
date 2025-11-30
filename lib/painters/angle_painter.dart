@@ -44,32 +44,37 @@ class AnglePainter extends FigurePainter {
         ..strokeWidth = 2.0
         ..style = PaintingStyle.stroke;
     
-    final Paint paintPoint = Paint()
+    final Paint fixedPaintPoint = Paint()
       ..color = Colors.black87
       ..strokeWidth = 2.0
+      ..style = PaintingStyle.fill;
+
+    final Paint draggablePaintPoint = Paint()
+      ..color = Colors.green
+      ..strokeWidth = 3.0
       ..style = PaintingStyle.fill;
 
     final angle = shape as Angle;
     final leadingLine = angle.leadingLine;
     final followingLine = angle.followingLine;
 
-    final Offset aPos = convertLocalToGlobal(leadingLine.a);
-    final Offset bPos = convertLocalToGlobal(leadingLine.b);
-    final Offset cPos = convertLocalToGlobal(followingLine.a);
-    final Offset dPos = convertLocalToGlobal(followingLine.b);
+    final Offset aPos = convertLocalToGlobal(leadingLine.a.point);
+    final Offset bPos = convertLocalToGlobal(leadingLine.b.point);
+    final Offset cPos = convertLocalToGlobal(followingLine.a.point);
+    final Offset dPos = convertLocalToGlobal(followingLine.b.point);
 
     final Offset intersectinPoint = leadingLine.getIntersection(followingLine);
     final Offset intersectinPos = convertLocalToGlobal(intersectinPoint);
 
     canvas.drawLine(aPos, bPos, paintLine);
-    canvas.drawCircle(aPos, 5.0, paintPoint);
-    canvas.drawCircle(bPos, 5.0, paintPoint);
+    canvas.drawCircle(aPos, 5.0,  leadingLine.a.enableDragging ? draggablePaintPoint : fixedPaintPoint);
+    canvas.drawCircle(bPos, 5.0, leadingLine.b.enableDragging ? draggablePaintPoint : fixedPaintPoint);
 
     canvas.drawLine(cPos, dPos, paintLine);
-    canvas.drawCircle(cPos, 5.0, paintPoint);
-    canvas.drawCircle(dPos, 5.0, paintPoint);
+    canvas.drawCircle(cPos, 5.0, followingLine.a.enableDragging ? draggablePaintPoint : fixedPaintPoint);
+    canvas.drawCircle(dPos, 5.0, followingLine.b.enableDragging ? draggablePaintPoint : fixedPaintPoint);
     if(intersectinPos.isFinite) {
-      canvas.drawCircle(intersectinPos, 5.0, paintPoint);
+      canvas.drawCircle(intersectinPos, 5.0, fixedPaintPoint);
       final angleVal = angle.getAngle();
       drawAngleArc(canvas, intersectinPos,
           bPos,
