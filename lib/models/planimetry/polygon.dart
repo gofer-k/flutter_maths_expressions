@@ -88,4 +88,26 @@ class Polygon extends BaseShape {
     final angle = angleType == AngleType.radian ? pi : 180;
     return (numLines - 2.0) * angle;
   }
+
+  List<String> getVertexLabels() {
+    final int charA = 'A'.codeUnitAt(0);
+    return List.generate(lines.length, (idx) {
+      return String.fromCharCode(charA + idx);
+    });
+  }
+
+  double getInternalAngle(
+      {required int vertexIdx, AngleType angleType = AngleType.radian}) {
+    for (int idx = 0; idx < lines.length; idx++) {
+      // final leadingLine = lines[idx].reserved();
+      // final followingLine = lines[(idx - 1) % lines.length];
+      final leadingLine = lines[idx];
+      final followingLine = lines[(idx - 1) % lines.length].reserved();
+      if (leadingLine.a.point == followingLine.a.point) {
+        final angle = Angle(leadingLine: leadingLine, followingLine: followingLine);
+        return angle.getAngle(angleType: angleType);
+      }
+    }
+    return double.infinity;
+  }
 }

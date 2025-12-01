@@ -50,10 +50,7 @@ class PolygonPainter extends FigurePainter {
       return;
     }
 
-    final int charA = 'A'.codeUnitAt(0);
-    final pointLabels = List.generate(polygon.lines.length, (idx) {
-      return String.fromCharCode(charA + idx);
-    });
+    final pointLabels = polygon.getVertexLabels();
 
     Path path = Path();
     Offset currentPos = convertLocalToGlobal(polygon.lines.first.a.point);

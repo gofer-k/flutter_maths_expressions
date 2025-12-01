@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../Themes/math_theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../models/dock_side.dart';
 import '../../../models/planimetry/angle.dart';
 import '../../../models/planimetry/drag_point.dart';
@@ -10,6 +11,7 @@ import '../../../painters/polygon_painter.dart';
 import '../../../widgets/background_container.dart';
 import '../../../widgets/display_expression.dart';
 import '../../../widgets/infinite_drawer.dart';
+import '../../../widgets/shrinkable_list_Item.dart';
 
 class PolygonAnglesPage extends StatefulWidget {
   final String title;
@@ -40,6 +42,8 @@ class _PolygonAnglesPageState extends State<PolygonAnglesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
       endColor: Colors.grey.shade500,
@@ -59,27 +63,24 @@ class _PolygonAnglesPageState extends State<PolygonAnglesPage> {
             children: [
               Expanded(flex: 2, child: drawableView(dock)),
               const SizedBox(height: 4),
-              LayoutBuilder(builder: (context, constraints){
-                // if (type == ShowAngleType.complementary) {
-                //   final complementaryAngles = leadingAngle.getComplementaryAngles(angleType: AngleType.degrees);
-                //   return DisplayExpression(
-                //       context: context,
-                //       expression: r"\alpha = " + complementaryAngles.first.toStringAsFixed(1) +
-                //           r"^\circ, \beta = " + complementaryAngles.last.toStringAsFixed(1) + r"^\circ",
-                //       scale: 1.5);
-                // }
-                // else if (type == ShowAngleType.supplementary) {
-                //   final supplementaryAngles = leadingAngle.getSupplementaryAngle(angleType: AngleType.degrees);
-                //   return DisplayExpression(
-                //       context: context,
-                //       expression: r"\alpha = " + supplementaryAngles.first.toStringAsFixed(1) +
-                //           r"^\circ, \beta = " + supplementaryAngles.last.toStringAsFixed(1) + r"^\circ",
-                //       scale: 1.5);
-                // }
-                return DisplayExpression(
-                  context: context,
-                  expression: r"\alpha = " + polygon.getSumAngles(selectPolygonLines, AngleType.degrees).toStringAsFixed(1) + r"^\circ",
-                  scale: 1.5,
+              DisplayExpression(context: context,
+                expression: r"\text{Sum polygon angles: } "
+                    "${polygon.getSumAngles(polygon.lines.length, AngleType.degrees).toStringAsFixed(0)}",
+                scale: 1.5,
+              ),
+              Builder(builder: (context) {
+                final labels = polygon.getVertexLabels();
+                return ShrinkableListItem(title: l10n.parameters,
+                  details: [
+                    for (int idx = 0; idx < polygon.lines.length; ++idx) ...[
+                      DisplayExpression(context: context,
+                        expression: r"\sphericalangle """
+                        "${labels[idx]} = "
+                        "${polygon.getInternalAngle(vertexIdx: idx, angleType: AngleType.degrees).toStringAsFixed(1)}",
+                        scale: 1.5,
+                      ),
+                    ],
+                  ],
                 );
               }),
               const SizedBox(height: 4),
