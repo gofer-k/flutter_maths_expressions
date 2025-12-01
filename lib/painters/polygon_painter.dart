@@ -50,23 +50,63 @@ class PolygonPainter extends FigurePainter {
       return;
     }
 
-    Path path = Path();
+    final int charA = 'A'.codeUnitAt(0);
+    final pointLabels = List.generate(polygon.lines.length, (idx) {
+      return String.fromCharCode(charA + idx);
+    });
 
+    Path path = Path();
     Offset currentPos = convertLocalToGlobal(polygon.lines.first.a.point);
     path.moveTo(currentPos.dx, currentPos.dy);
 
-    for (final line in polygon.lines) {
-      final Offset nextPos = convertLocalToGlobal(line.b.point);
-      path.lineTo(nextPos.dx, nextPos.dy);
-      canvas.drawCircle(currentPos, 5.0, polygon.lines.first.isDraggable() ? draggablePaintPoint : fixedPaintPoint);
-      currentPos = nextPos;
+    for (int i = 0; i < polygon.lines.length; i++) {
+      // Identify the lines that form the current vertex
+      final currentLine = polygon.lines[i];
+      // The previous line is the last one in the list if we are at the first vertex
+      final previousLine = polygon.lines[(i - 1 + polygon.lines.length) % polygon.lines.length];
+
+      // Get the global coordinates of the three points defining the vertex
+      final currentVertexPoint = convertLocalToGlobal(currentLine.a.point);
+      final nextVertexPoint = convertLocalToGlobal(currentLine.b.point);
+      final previousVertexPoint = convertLocalToGlobal(previousLine.a.point);
+
+      // Draw the path segment
+      path.lineTo(nextVertexPoint.dx, nextVertexPoint.dy);
+
+      // --- Calculate Label Offset ---
+      // Get vectors pointing away from the current vertex
+      final vec1 = (previousVertexPoint - currentVertexPoint);
+      final vec2 = (nextVertexPoint - currentVertexPoint);
+
+      // The exterior angle bisector is the sum of the normalized vectors
+      final bisector = (vec1 / vec1.distance) + (vec2 / vec2.distance);
+
+      // Normalize the bisector and scale it to define the offset distance
+      // This positions the label outside the polygon.
+      // The `12.0` is a configurable distance for the label from its point.
+      // final labelOffset = bisector.distance > 1e-6
+      //     ? (bisector / bisector.distance) * 15.0
+      //     : Offset(0, 15); // Fallback for straight lines (180-degree angle)
+      final labelOffset = bisector.distance > 1e-6
+          ? -(bisector / bisector.distance) * 10.0
+          : Offset(0, 10); // Fallback for straight lines (180-degree angle)
+
+      // Draw the vertex point
+      final paintPoint = currentLine.isDraggable() ? draggablePaintPoint : fixedPaintPoint;
+      canvas.drawCircle(currentVertexPoint, 5.0, paintPoint);
+
+      // --- Paint the text with the dynamically calculated offset ---
+      final label = pointLabels[i];
+      paintText(canvas, label, currentVertexPoint, xOffset: labelOffset.dx, yOffset: labelOffset.dy,
+      );
     }
     path.close();
     canvas.drawPath(path, paintLine);
 
-    for (int currIndex = 0; currIndex < polygon.lines.length; ++currIndex) {
-      int nextIndex = (currIndex + 1) % polygon.lines.length;
-      final leadingLine = polygon.lines[currIndex].reserved();
+    for (int idx = 0; idx < polygon.lines.length; ++idx) {
+      int nextIndex = (idx + 1) % polygon.lines.length;
+      final line = polygon.lines[idx];
+      final leadingLine = line.reserved();
       final followingLine = polygon.lines[nextIndex];
 
       if (leadingLine.a.point == followingLine.a.point) {

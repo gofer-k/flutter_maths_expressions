@@ -35,7 +35,7 @@ class _PolygonAnglesPageState extends State<PolygonAnglesPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     selectPolygonLines = numPolygonLines.first;
-    changePolygonProperties(selectPolygonLines);
+    changePolygonProperties(selectPolygonLines, Colors.redAccent);
   }
 
   @override
@@ -107,8 +107,8 @@ class _PolygonAnglesPageState extends State<PolygonAnglesPage> {
                       setState(() {
                         if (newNumLines != null && newNumLines != selectPolygonLines) {
                           selectPolygonLines = newNumLines;
-                          changePolygonProperties(selectPolygonLines);
-                          changeDrawableShape(Colors.green);
+                          changePolygonProperties(selectPolygonLines, Colors.redAccent);
+                          changeDrawableShape(Colors.redAccent);
                         }
                       });
                     });
@@ -128,17 +128,16 @@ class _PolygonAnglesPageState extends State<PolygonAnglesPage> {
         enableCrossAxes: true,
         drawableShapes: _drawablesShapes,
         onShapeChanged: (oldShapes, originPoint, targetPoint) {
+          if (oldShapes.isEmpty && _drawablesShapes.isEmpty) return;
           setState(() {
             for (final oldShape in oldShapes) {
-              final index = _drawablesShapes.indexOf(
-                  oldShapes as DrawableShape<PolygonPainter>);
-              if (index != -1) {
-                final newShape = (oldShape as DrawableShape<PolygonPainter>).moveByPoint(point: originPoint, delta: targetPoint - originPoint,
-                    tolerance: 0.25);
-                _drawablesShapes[index] = newShape;
-                if (polygon == oldShape.shape as Polygon) {
-                  polygon = newShape.shape as Polygon;
-                }
+              final newShape = (oldShape as DrawableShape<PolygonPainter>).moveByPoint(point: originPoint, delta: targetPoint - originPoint,
+                tolerance: 0.25);
+              if (polygon == oldShape.shape as Polygon) {
+                polygon = newShape.shape as Polygon;
+                _drawablesShapes.clear();
+                _drawablesShapes.add(newShape);
+                changeDrawableShape(Colors.redAccent);
               }
             }
           });
@@ -149,12 +148,7 @@ class _PolygonAnglesPageState extends State<PolygonAnglesPage> {
   DrawableShape<PolygonPainter> changeDrawableShape(Color color) {
     return DrawableShape<PolygonPainter>(
       shape: polygon,
-      labelsSpans: [
-        TextSpan(
-          text: "α, ",
-          style: TextStyle(color: Colors.green, fontSize: 28),
-        ),
-      ],
+      labelsSpans: [],
       createPainter:
           (
           Matrix4 canvasTransform,
@@ -174,11 +168,11 @@ class _PolygonAnglesPageState extends State<PolygonAnglesPage> {
     );
   }
 
-  void changePolygonProperties(int numPolygonLines) {
+  void changePolygonProperties(int numPolygonLines, Color angleColor) {
     if (!_isPolygonInitialized || polygon.lines.length != numPolygonLines) {
       polygon = Polygon.fromLines(selectPolygonLines, originLine);
       _drawablesShapes.clear();
-      _drawablesShapes.add(changeDrawableShape(Colors.green));
+      _drawablesShapes.add(changeDrawableShape(angleColor));
       _isPolygonInitialized = true;
     }
   }

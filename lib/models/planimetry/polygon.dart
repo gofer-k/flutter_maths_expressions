@@ -41,7 +41,7 @@ class Polygon extends BaseShape {
   @override
   bool isDraggable() {
     return enableDragging ||
-        lines.any((line) => line.isDraggable() == enableDragging);
+        lines.any((line) => line.isDraggable());
   }
 
   @override

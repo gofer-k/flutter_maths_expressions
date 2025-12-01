@@ -5,7 +5,7 @@ import 'package:flutter_maths_expressions/painters/figure_painter.dart';
 import '../models/planimetry/drag_point.dart';
 
 class DrawableShape<T extends FigurePainter> {
-  final BaseShape shape;
+  late final BaseShape shape;
   final List<TextSpan> labelsSpans;
   final T Function(Matrix4, Size, double, double, BaseShape) createPainter;
   late T painter;
