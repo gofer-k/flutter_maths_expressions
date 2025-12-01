@@ -64,8 +64,13 @@ class _PolygonAnglesPageState extends State<PolygonAnglesPage> {
               Expanded(flex: 2, child: drawableView(dock)),
               const SizedBox(height: 4),
               DisplayExpression(context: context,
-                expression: r"\text{Sum polygon angles: } "
-                    "${polygon.getSumAngles(polygon.lines.length, AngleType.degrees).toStringAsFixed(0)}",
+                expression: r"\text{Sum polygon angles: } S_a = (n - 2) \cdot 180^\circ",
+                scale: 1.5,
+              ),
+              DisplayExpression(context: context,
+                expression: r"S_a = ("
+                  "${polygon.lines.length}"r" - 2) \cdot 180^\circ = "
+                    "${polygon.getSumAngles(polygon.lines.length, AngleType.degrees).toStringAsFixed(0)}"r"^\circ",
                 scale: 1.5,
               ),
               Builder(builder: (context) {
