@@ -55,7 +55,7 @@ class Line extends BaseShape {
   }
 
   @override
-  BaseShape movePointBy(DragPoint localPoint, DragPoint delta,
+  BaseShape moveByPoint(DragPoint localPoint, DragPoint delta,
       double tolerance) {
     if (enableDragging || a.enableDragging || b.enableDragging) {
       final newA = a.matchPoint(localPoint, tolerance);
@@ -65,6 +65,10 @@ class Line extends BaseShape {
           b: newB != null ? newB + delta : b);
     }
     return this;
+  }
+
+  Line reserved() {
+    return Line(a: b, b: a);
   }
 
   // An line's angle positive toward x-line (clock wise direction)

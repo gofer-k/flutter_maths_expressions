@@ -117,6 +117,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get angleSupplementary => 'Supplementary angles';
 
   @override
+  String get anglesPolygon => 'Sum polygon\'s angles';
+
+  @override
   String get angle => 'Angle';
 
   @override

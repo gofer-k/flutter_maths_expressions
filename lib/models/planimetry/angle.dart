@@ -51,12 +51,12 @@ class Angle extends BaseShape {
   }
 
   @override
-  BaseShape movePointBy(DragPoint localPoint, DragPoint delta, double tolerance) {
+  BaseShape moveByPoint(DragPoint localPoint, DragPoint delta, double tolerance) {
     if (isDraggable()) {
       return Angle(
-          leadingLine: leadingLine.movePointBy(
+          leadingLine: leadingLine.moveByPoint(
               localPoint, delta, tolerance) as Line,
-          followingLine: followingLine.movePointBy(
+          followingLine: followingLine.moveByPoint(
               localPoint, delta, tolerance) as Line);
     }
     return this;

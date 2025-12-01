@@ -8,6 +8,7 @@ abstract class BaseShape extends Equatable {
   List<Object?> get props => [enableDragging];
 
   const BaseShape({this.enableDragging = false});
+
   BaseShape copyWith() {
     return this;
   }
@@ -29,7 +30,7 @@ abstract class BaseShape extends Equatable {
     return this;
   }
 
-  BaseShape movePointBy(DragPoint localPoint, DragPoint delta, double tolerance) {
+  BaseShape moveByPoint(DragPoint localPoint, DragPoint delta, double tolerance) {
     return this;
   }
 

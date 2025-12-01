@@ -314,6 +314,12 @@ abstract class AppLocalizations {
   /// **'Supplementary angles'**
   String get angleSupplementary;
 
+  /// No description provided for @anglesPolygon.
+  ///
+  /// In en, this message translates to:
+  /// **'Sum polygon\'s angles'**
+  String get anglesPolygon;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:

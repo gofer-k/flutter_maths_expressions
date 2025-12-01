@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_maths_expressions/pages/planimetry/angle_theorems/angle_types.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/triangle_theorems.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../widgets/background_container.dart';
+import 'angle_theorems/angles_theorems.dart';
 
 class PlanimetryPage extends StatefulWidget {
   final String title;
@@ -48,7 +48,7 @@ class _PlanimetryPageState extends State<PlanimetryPage> {
             navigatingCard(
               context, null, l10n.triangleTheorems, TriangleTheoremsPage(title: l10n.triangleTheorems)),
             navigatingCard(
-                context, null, l10n.anglesTheorems, AngleTypesPage(title: l10n.anglesTheorems)),
+                context, null, l10n.anglesTheorems, AnglesTheoremsPage(title: l10n.anglesTheorems)),
           ],
         ),
       ),

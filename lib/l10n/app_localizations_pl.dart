@@ -117,6 +117,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get angleSupplementary => 'Kąty przyległe';
 
   @override
+  String get anglesPolygon => 'Suma kątóœ polygona';
+
+  @override
   String get angle => 'Kąt';
 
   @override

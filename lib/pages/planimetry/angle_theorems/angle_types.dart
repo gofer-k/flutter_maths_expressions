@@ -31,17 +31,11 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
           a: DragPoint(point: Offset(0.0, 0.0)),
           b: DragPoint(point: Offset(0.0, 4.0))));
 
-  // late Angle angle = originAngle;
   late Angle leadingAngle = originAngle;
   late Angle followingAngle;
   late ShowAngleType type = ShowAngleType.angle;
 
   final List<DrawableShape<AnglePainter>> _drawablesShapes = List.empty(growable: true);
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void didChangeDependencies() {

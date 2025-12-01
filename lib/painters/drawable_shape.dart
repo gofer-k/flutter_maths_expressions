@@ -32,7 +32,7 @@ class DrawableShape<T extends FigurePainter> {
   }
 
   DrawableShape<T> moveByPoint({required DragPoint point, required DragPoint delta, required double tolerance}) {
-    final newShape = shape.movePointBy(point, delta, tolerance);
+    final newShape = shape.moveByPoint(point, delta, tolerance);
     return DrawableShape<T>(
       shape: newShape,
       labelsSpans: this.labelsSpans,
