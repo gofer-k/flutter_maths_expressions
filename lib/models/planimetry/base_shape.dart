@@ -1,13 +1,17 @@
+import 'dart:ui';
+
 import 'package:equatable/equatable.dart';
+import 'package:flutter_maths_expressions/models/planimetry/angle.dart';
 import 'package:flutter_maths_expressions/models/planimetry/drag_point.dart';
 
 abstract class BaseShape extends Equatable {
   final bool enableDragging;
+  final bool enableRotate;
 
   @override
   List<Object?> get props => [enableDragging];
 
-  const BaseShape({this.enableDragging = false});
+  const BaseShape({this.enableDragging = false, this.enableRotate = false});
 
   BaseShape copyWith() {
     return this;
@@ -21,6 +25,10 @@ abstract class BaseShape extends Equatable {
     return enableDragging;
   }
 
+  bool isRotate() {
+    return enableRotate;
+  }
+
   DragPoint? matchPoint(DragPoint localPoint, double tolerance) {
     return null;
   }
@@ -31,6 +39,10 @@ abstract class BaseShape extends Equatable {
   }
 
   BaseShape moveByPoint(DragPoint localPoint, DragPoint delta, double tolerance) {
+    return this;
+  }
+
+  BaseShape rotate({double angle = 0.0, Offset? origin, AngleType angleType = AngleType.radian}) {
     return this;
   }
 

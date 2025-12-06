@@ -87,7 +87,7 @@ class LinePainter extends FigurePainter {
 
     if (showProperties.contains(ShowLineProperty.solid)) {
       final Paint paint = Paint()
-        ..color = Colors.orange
+        ..color = color
         ..strokeWidth = widhtLine
         ..style = PaintingStyle.stroke;
       canvas.drawLine(aPos, bPos, paint);

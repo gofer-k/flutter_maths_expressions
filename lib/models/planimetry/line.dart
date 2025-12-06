@@ -9,7 +9,7 @@ class Line extends BaseShape {
   final DragPoint a;
   final DragPoint b;
 
-  const Line({super.enableDragging, required this.a, required this.b})
+  const Line({super.enableDragging, super.enableRotate, required this.a, required this.b})
       : assert(a != b);
 
   @override
@@ -18,6 +18,11 @@ class Line extends BaseShape {
   @override
   bool isDraggable() {
     return enableDragging || a.isDraggable() || b.isDraggable();
+  }
+
+  @override
+  bool isRotate() {
+    return enableRotate;
   }
 
   @override
@@ -33,7 +38,16 @@ class Line extends BaseShape {
     if (b.matchPoint(localPoint, tolerance) != null) {
       return b;
     }
+
     return null;
+  }
+
+  bool matchOnLine(DragPoint localPoint, double tolerance) {
+    final distance = getDistanceSquareFromPoint(localPoint.point);
+    if (distance <= tolerance * tolerance) {
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -41,7 +55,9 @@ class Line extends BaseShape {
     if (matchPoint(localPoint, tolerance) != null) {
       return true;
     }
-    // TODO: check match to the line
+    if (matchOnLine(localPoint, tolerance)) {
+      return true;
+    }
     return false;
   }
 
@@ -65,6 +81,21 @@ class Line extends BaseShape {
           b: newB != null ? newB + delta : b);
     }
     return this;
+  }
+
+  @override
+  BaseShape rotate({double angle = 0.0, Offset? origin, AngleType angleType = AngleType.radian}) {
+    if (angle != 0.0) {
+      final center = origin ?? getMidpoint();
+      final newA = _rotatePoint(a.point, center, angle, angleType: angleType);
+      final newB = _rotatePoint(b.point, center, angle, angleType: angleType);
+      return Line(
+        a: DragPoint(point: newA, enableDragging: a.enableDragging),
+        b: DragPoint(point: newB, enableDragging: b.enableDragging),
+        enableRotate: enableRotate,
+        enableDragging: enableDragging);
+    }
+    return  this;
   }
 
   Line reserved() {
@@ -154,5 +185,35 @@ class Line extends BaseShape {
     final double x = (B * otherC - C * otherB) / denominator;
     final double y = (C * otherA - A * otherC) / denominator;
     return Offset(x, y);
+  }
+
+  double getDistanceFromPoint(Offset point) {
+    final factors = getGeneralFactors();
+    final double A = factors[0];
+    final double B = factors[1];
+    final double C = factors[2];
+    if (A == 0.0 && B == 0.0) {
+      return double.nan;
+    }
+    return (A * point.dx + B * point.dy + C).abs() / sqrt(A * A + B * B);
+  }
+
+  double getDistanceSquareFromPoint(Offset point) {
+    final factors = getGeneralFactors();
+    final double A = factors[0];
+    final double B = factors[1];
+    final double C = factors[2];
+    if (A == 0.0 && B == 0.0) {
+      return double.nan;
+    }
+    return (A * point.dx + B * point.dy + C).abs() / (A * A + B * B);
+  }
+
+  Offset _rotatePoint(Offset point, Offset center, double angle, {required AngleType angleType}) {
+    final targetAngle = angleType == AngleType.radian ? angle : angle * 180 / pi;
+    final origToCenter = point - center;
+    return Offset(
+      origToCenter.dx * cos(targetAngle) - origToCenter.dy * sin(targetAngle),
+      origToCenter.dx * sin(targetAngle) + origToCenter.dy * cos(targetAngle));
   }
 }

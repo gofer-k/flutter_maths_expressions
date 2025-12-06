@@ -120,6 +120,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get anglesPolygon => 'Sum polygon\'s angles';
 
   @override
+  String get angleVerticalOpposite => 'Vertical opposite angle theorem';
+
+  @override
   String get angle => 'Angle';
 
   @override

@@ -190,11 +190,13 @@ class Triangle extends BaseShape {
     c = c.translate(dx, dy);
   }
 
-  void rotate(double angle, {AngleType angleType = AngleType.radian}) {
+  @override
+  BaseShape rotate({double angle = 0.0, Offset? origin, AngleType angleType = AngleType.radian}) {
     final center = getCenter();
     a = _rotatePoint(a, center, angle, angleType: angleType);
     b = _rotatePoint(b, center, angle, angleType: angleType);
     c = _rotatePoint(c, center, angle, angleType: angleType);
+    return this;
   }
 
   Offset _rotatePoint(Offset origin, Offset center, double angle, {AngleType angleType = AngleType.radian}) {

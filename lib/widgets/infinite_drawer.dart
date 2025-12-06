@@ -7,29 +7,47 @@ import 'package:flutter_maths_expressions/widgets/hierarchical_fab_menu.dart';
 import 'package:infinite_canvas/infinite_canvas.dart';
 
 import '../models/dock_side.dart';
+import '../models/planimetry/angle.dart';
 import '../painters/cross_axes_painter.dart';
 import '../painters/dragging_shape_painter.dart';
 import '../painters/drawable_shape.dart';
 import '../painters/legend_painter.dart';
 
-typedef ShapeChangedCallback = void Function(List<DrawableShape?> oldShapes, DragPoint originPoint, DragPoint targetPoint);
+typedef DragShapeCallback = void Function(
+    List<DrawableShape?> oldShapes,
+    DragPoint originPoint,
+    DragPoint targetPoint);
+typedef RotatingShapeCallback = void Function(
+    List<DrawableShape?> oldShapes,
+    Offset originPoint,
+    double rotationAngle,
+    AngleType angleType);
+typedef RotateEndShapeCallback = void Function(
+    List<DrawableShape?> oldShapes,
+    Offset originPoint,
+    double rotationAngle,
+    AngleType angleType);
 
 class InfiniteDrawer extends StatefulWidget {
-  final bool enableRotation;
+  final bool enableRotate;
   final bool enablePanning;
   final bool enableScaling;
   final bool enableCrossAxes;
   final DockSide actionsDockSide;
   final List<DrawableShape> drawableShapes;
-  final ShapeChangedCallback? onShapeChanged;
+  final DragShapeCallback? onDragShape;
+  final RotatingShapeCallback? onRotateShape;
+  final RotateEndShapeCallback? onRotateEndShape;
 
   const InfiniteDrawer({super.key,
-    this.enableRotation = true,
+    this.enableRotate = false,
     this.enablePanning = true,
     this.enableScaling = true,
     this.enableCrossAxes = true,
     this.actionsDockSide = DockSide.rightBottom,
-    this.onShapeChanged,
+    this.onDragShape,
+    this.onRotateShape,
+    this.onRotateEndShape,
     required this.drawableShapes,
   });
 
@@ -47,10 +65,13 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
   // State to track the shape being dragged
   final List<DrawableShape?> _draggingShapes = List.empty(growable: true);
 
-// State to track the dragging point for visual feedback
+  // State to track the dragging point for visual feedback
   DragPoint _draggingStartPoint = DragPoint(point: Offset.infinite, enableDragging: true);
   DragPoint _draggingTargetPoint = DragPoint(point: Offset.infinite, enableDragging: true);
-
+  final List<DrawableShape> _rotatingShapes = [];
+  double _rotationAngle = 0.0;
+  Offset _rotationOriginPoint = Offset.infinite;
+  
   @override
   void initState() {
     super.initState();
@@ -107,47 +128,26 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
         builder: (context, constraints) {
           final viewportSize = Size(constraints.maxWidth, constraints.maxHeight);
           return GestureDetector(
-            onPanStart: (details) {
-              // Convert tap location to canvas coordinates
-              final localPoint = DragPoint(point: _toLocal(_controller.toLocal(details.localPosition)), enableDragging: true);
-              setState(() {
-                for (final shape in widget.drawableShapes.reversed) {
-                  final snapPoint = shape.matchPoint(localPoint, 0.25);
-                  if (snapPoint != null) {
-                    _draggingShapes.add(shape);
-                    _draggingStartPoint = snapPoint;
-                    _draggingTargetPoint = snapPoint;
-                  }
-                }
-              });
+            onScaleStart: (details){
+              _startRotateShape(details);
+              // If no rotation was started, check for a drag
+              _startDraggingShapes(details);
             },
-            onPanUpdate: (details) {
-              if (_draggingStartPoint.isFinite) {
-                // Update the position of the shape based on the drag delta
-                final localPoint = _toLocal(_controller.toLocal(details.localPosition));
-                setState(() {
-                  // Consider snap the point to the grid
-                  _draggingTargetPoint = DragPoint(point: localPoint, enableDragging: true);
-                });
-              } else {
-                // If no shape is being dragged it's NOP
-              }
+            onScaleUpdate: (details) {
+              _updateRotateShape(details);
+              _updateDraggingShapes(details);
             },
-            onPanEnd: (details) {
-              if (widget.onShapeChanged != null && _draggingShapes.isNotEmpty) {
-                // Update the position of the shape based on the drag delta
-                _draggingTargetPoint = DragPoint(
-                    point: _toLocal(_controller.toLocal(details.localPosition)),
-                    enableDragging: true);
-                // TODO:: snapping
-                // final targetPoint = snapPointToGrid(_draggingTargetPoint, gridSize, 0.25);
-                widget.onShapeChanged!(_draggingShapes, _draggingStartPoint, _draggingTargetPoint);
-              }
-              // Stop dragging
+            onScaleEnd: (details) {
+              _finishDraggingShapes(details);
+              _finishRotateShapes(details);
+              // Reset all states
               setState(() {
                 _draggingShapes.clear();
                 _draggingTargetPoint = DragPoint.infinite(drag: true);
                 _draggingStartPoint = DragPoint.infinite(drag: true);
+                _rotatingShapes.clear();
+                _rotationAngle = 0.0;
+                _rotationOriginPoint = Offset.infinite;
               });
             },
             child: Stack(
@@ -184,19 +184,10 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
                   ),
                 ],
                 if (_draggingShapes.isNotEmpty  && _draggingStartPoint !=_draggingTargetPoint)
-                  ClipRect(
-                    child: CustomPaint(size: viewportSize,
-                     painter: DraggingShapePainter(
-                       widthUnitInPixels,
-                       heightUnitInPixels,
-                       Line(a: _draggingStartPoint, b: _draggingTargetPoint),
-                       ShowDrapProperty.line,
-                       canvasTransform: _controller.transform.value,
-                       viewportSize: viewportSize,
-                       color: Colors.blue,
-                     )),
-                  ),
-                if (widget.enableRotation || widget.enablePanning || widget.enableScaling)
+                  _drawDraggingShapes(viewportSize),
+                if (_rotatingShapes.isNotEmpty && _rotationAngle != 0.0)
+                  _drawRotatingShapes(viewportSize),
+                if (widget.enablePanning || widget.enableScaling)
                 // FAB menu instance should created while initState() when the widget's state be persist.
                 // Or FAB menu hasn't to persist its state that may be created here.
                   _fabMenu
@@ -206,6 +197,147 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
         }
       )
     );
+  }
+
+  Widget _drawDraggingShapes(Size viewportSize) {
+    return ClipRect(
+      child: CustomPaint(size: viewportSize,
+          painter: DraggingShapePainter(
+            widthUnitInPixels,
+            heightUnitInPixels,
+            Line(a: _draggingStartPoint, b: _draggingTargetPoint),
+            ShowDrapProperty.line,
+            canvasTransform: _controller.transform.value,
+            viewportSize: viewportSize,
+            color: Colors.blue,
+          )),
+    );
+  }
+
+  Widget _drawRotatingShapes(Size viewportSize) {
+    return ClipRect(
+      child: Builder(builder: (context) {
+        final rotationPainters = _rotatingShapes.map((shape) {
+          // You can create a specific painter for rotation feedback,
+          // or reuse an existing one like DraggingShapePainter.
+          // Here, we'll create an Arc painter to show the rotation angle.
+          if (shape.shape is Line) {
+            final line = shape.shape as Line;
+            final rotatedLine = line.rotate(angle: _rotationAngle, origin: _rotationOriginPoint);
+            return CustomPaint(
+              size: viewportSize,
+              painter: DraggingShapePainter(
+                widthUnitInPixels,
+                heightUnitInPixels,
+                rotatedLine,
+                ShowDrapProperty.line,
+                canvasTransform: _controller.transform.value,
+                viewportSize: viewportSize,
+                color: Colors.greenAccent,
+              ),
+            );
+          }
+          return SizedBox.shrink();
+        }).toList();
+        return Stack(children: rotationPainters);
+      }),
+    );
+  }
+
+  void _startRotateShape(ScaleStartDetails details) {
+    if (!widget.enableRotate) return;
+    
+    final localPoint = DragPoint(
+        point: _toLocal(_controller.toLocal(details.localFocalPoint)),
+        enableDragging: true);
+
+    final focalPoint = DragPoint(
+        point: _toLocal(_controller.toLocal(details.focalPoint)),
+        enableDragging: true);
+
+    if (widget.onRotateShape != null && widget.enableRotate) {
+      for (final shape in widget.drawableShapes.reversed) {
+        if (shape.shape is Line) {
+          final line = shape.shape as Line;
+          if (line.matchOnLine(localPoint, 0.25)) {
+            setState(() {
+              _rotatingShapes.add(shape);
+              _rotationOriginPoint = line.getMidpoint();
+              _rotationAngle = 0.0;
+            });
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  void _updateRotateShape(ScaleUpdateDetails details) {
+    if (/*_rotatingShapes.isNotEmpty || */details.rotation != _rotationAngle) {
+      final rotationDelta = details.rotation - _rotationAngle;
+      if (widget.onRotateShape != null) {
+        // widget.onRotateShape!(
+        //   _rotatingShapes,
+        //   _rotationOriginPoint,
+        //   rotationDelta,
+        //   AngleType.radian,
+        // );
+      }
+      setState(() {
+        _rotationAngle = details.rotation;
+      });
+    }
+  }
+
+  void _finishRotateShapes(ScaleEndDetails details) {
+    // if(_rotatingShapes.isNotEmpty && widget.onRotateEndShape != null) {
+    if (_rotatingShapes.isNotEmpty && widget.onRotateShape != null) {
+      widget.onRotateShape!(
+        _rotatingShapes,
+        _rotationOriginPoint,
+        _rotationAngle,
+        AngleType.radian,
+      );
+        // widget.onRotateEndShape!(_rotatingShapes, _rotationOriginPoint,
+        //     _rotationAngle, AngleType.degrees);
+    }
+  }
+
+  void _startDraggingShapes(ScaleStartDetails details) {
+    if (!widget.enablePanning) return;
+    
+    final localPoint = DragPoint(
+        point: _toLocal(_controller.toLocal(details.localFocalPoint)),
+        enableDragging: true);
+    for (final shape in widget.drawableShapes.reversed) {
+      final snapPoint = shape.matchPoint(localPoint, 0.25);
+      if (snapPoint != null) {
+        setState(() {
+          _draggingShapes.add(shape);
+          _draggingStartPoint = snapPoint;
+          _draggingTargetPoint = snapPoint;
+        });
+      }
+    }
+  }
+  
+  void _updateDraggingShapes(ScaleUpdateDetails details) {
+    if (_draggingStartPoint.isFinite) {
+      final localPoint = DragPoint(
+          point: _toLocal(_controller.toLocal(details.localFocalPoint)),
+          enableDragging: true);
+
+      setState(() {
+        // Consider snap the point to the grid
+        _draggingTargetPoint = localPoint;
+      });
+    }
+  }
+
+  void _finishDraggingShapes(ScaleEndDetails details) {
+    if (widget.onDragShape != null && _draggingShapes.isNotEmpty) {
+      widget.onDragShape!(_draggingShapes, _draggingStartPoint, _draggingTargetPoint);
+    }
   }
 
   void _onCanvasTransformChanged() {

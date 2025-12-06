@@ -320,6 +320,12 @@ abstract class AppLocalizations {
   /// **'Sum polygon\'s angles'**
   String get anglesPolygon;
 
+  /// No description provided for @angleVerticalOpposite.
+  ///
+  /// In en, this message translates to:
+  /// **'Vertical opposite angle theorem'**
+  String get angleVerticalOpposite;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:

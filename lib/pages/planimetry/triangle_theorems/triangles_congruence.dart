@@ -211,7 +211,7 @@ class _TrianglesCongruenceState extends State<TrianglesCongruence> {
       case CongruenceType.angleSideAngle: {
         triangle1 = Triangle(a: Offset(-4, 1), b: Offset(-3, 3), c: Offset(1, 1));
         triangle2 = Triangle(a: triangle1.a, b: triangle1.b, c: triangle1.c);
-        triangle2.rotate(pi);
+        triangle2.rotate(angle: pi);
         triangle2.translate(1, -2);
         break;
       }

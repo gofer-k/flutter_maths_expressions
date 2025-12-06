@@ -61,10 +61,11 @@ abstract class FigurePainter<T> extends CustomPainter {
     canvas.drawArc(rect, beginLeg, endAngle, false, arcPaint);
   }
 
-  void drawAngleArc(Canvas canvas, Offset center, Offset leg1, Offset leg2, Color colorStroke, {double arcRadius = 25.0, bool clockWise = true}) {
+  void drawAngleArc(Canvas canvas, Offset center, Offset leg1, Offset leg2, Color colorStroke,
+      {double widthLine = 2.0, double arcRadius = 25.0, bool clockWise = true}) {
     final Paint arcPaint = Paint()
       ..color = colorStroke
-      ..strokeWidth = 1.5
+      ..strokeWidth = widthLine
       ..style = PaintingStyle.stroke;
 
     final rect = Rect.fromCircle(center: center, radius: arcRadius);

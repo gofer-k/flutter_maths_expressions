@@ -138,8 +138,10 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
     return InfiniteDrawer(
       actionsDockSide: dock,
       enableCrossAxes: true,
+      enableRotate: false,
+      enablePanning: true,
       drawableShapes: _drawablesShapes,
-      onShapeChanged: (oldShapes, originPoint, targetPoint) {
+      onDragShape: (oldShapes, originPoint, targetPoint) {
         setState(() {
           for (final oldShape in oldShapes) {
             final index = _drawablesShapes.indexOf(
@@ -187,6 +189,7 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
             widthUnitInPixels,
             heightUnitInPixels,
             angle,
+            [ShowProperty.interception, ShowProperty.line, ShowProperty.points],
             canvasTransform: canvasTransform,
             viewportSize: viewportSize,
             angleColor: color);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/angle_theorems/angle_types.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/angle_theorems/polygon_angles_page.dart';
+import 'package:flutter_maths_expressions/pages/planimetry/angle_theorems/vertical_opposite_angle_theorem.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../widgets/background_container.dart';
 
@@ -36,6 +37,7 @@ class _AnglesTheoremsPageState extends State<AnglesTheoremsPage> {
           children: [
             navigatingTheoremPage(context, l10n.anglesTheorems, AngleTypesPage(title: l10n.anglesTheorems)),
             navigatingTheoremPage(context, l10n.anglesPolygon, PolygonAnglesPage(title: l10n.anglesPolygon)),
+            navigatingTheoremPage(context, l10n.angleVerticalOpposite, VerticalOppositeAngle(title: l10n.angleVerticalOpposite)),
           ],
         )
       ),

@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ef9ec9d5-4238-48d0-8ec4-4a3d06cf6aab" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/vertical_opposite_angle_theorem.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/l10n/app_en.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_en.arb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_localizations.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations_en.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_localizations_en.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations_pl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_localizations_pl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/l10n/app_pl.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_pl.arb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/planimetry/base_shape.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/planimetry/base_shape.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/planimetry/line.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/planimetry/line.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/planimetry/triangle.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/planimetry/triangle.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/angle_types.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/angle_types.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/angles_theorems.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/angles_theorems.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/polygon_angles_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/polygon_angles_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/triangle_theorems/triangles_congruence.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/triangle_theorems/triangles_congruence.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/painters/angle_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painters/angle_painter.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/painters/drawable_shape.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painters/drawable_shape.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/painters/figure_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painters/figure_painter.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/painters/line_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painters/line_painter.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/infinite_drawer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/infinite_drawer.dart" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
   <component name="FileEditorManager">
     <leaf>
       <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
@@ -13,24 +46,78 @@
       </file>
     </leaf>
   </component>
-  <component name="ToolWindowManager">
-    <editor active="true" />
-    <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-    </layout>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;gofer-k&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/gofer-k/flutter_maths_expressions.git&quot;,
+    &quot;accountId&quot;: &quot;5ad5ce0b-cc58-4bc1-a0d5-913073cd8664&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="36QtbjaWEcVBNFZ9t25ZQHZxOnf" />
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-    </navigator>
+    <navigator currentView="ProjectPane" proportions="" version="1" />
     <panes>
       <pane id="ProjectPane">
         <option name="show-excluded-files" value="false" />
       </pane>
     </panes>
   </component>
-  <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="dart.analysis.tool.window.force.activate" value="true" />
-    <property name="show.migrate.to.gradle.popup" value="false" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Flutter.main.dart.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Notification.DisplayName-DoNotAsk-Flutter Messages": "Flutter Messages",
+    "Notification.DoNotAsk-Flutter Messages": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "io.flutter.reload.alreadyRun": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/useme/develoment/dev/Flutter/flutter_maths_expressions",
+    "show.migrate.to.gradle.popup": "false"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ef9ec9d5-4238-48d0-8ec4-4a3d06cf6aab" name="Changes" comment="" />
+      <created>1764950696393</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1764950696393</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+    </layout>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint type="dart-exception" />
+      </default-breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

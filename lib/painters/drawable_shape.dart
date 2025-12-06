@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_maths_expressions/models/planimetry/base_shape.dart';
 import 'package:flutter_maths_expressions/painters/figure_painter.dart';
 
+import '../models/planimetry/angle.dart';
 import '../models/planimetry/drag_point.dart';
 
 class DrawableShape<T extends FigurePainter> {
@@ -42,6 +43,13 @@ class DrawableShape<T extends FigurePainter> {
 
   DragPoint? matchPoint(DragPoint localPoint, double d) {
     return shape.matchPoint(localPoint, d);
+  }
+
+  DrawableShape<T> rotate({required double rotationAngle, Offset? originPoint, required AngleType angleType}) {
+    final newShape = shape.rotate(angle: rotationAngle, origin: originPoint, angleType: angleType);
+    return DrawableShape<T>(shape: newShape,
+      labelsSpans: this.labelsSpans,
+      createPainter: this.createPainter);
   }
 }
 

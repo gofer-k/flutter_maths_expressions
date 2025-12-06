@@ -27,7 +27,7 @@ class _PolygonAnglesPageState extends State<PolygonAnglesPage> {
   final List<DrawableShape<PolygonPainter>> _drawablesShapes = List.empty(growable: true);
   final originLine = Line(
       a: DragPoint(point: Offset(0.0, 0.0), enableDragging: true),
-      b: DragPoint(point: Offset(4.0, 0.0), enableDragging: true));
+      b: DragPoint(point: Offset(3.0, 0.0), enableDragging: true));
   late int selectPolygonLines;
   bool _isPolygonInitialized = false;
   late Polygon polygon;
@@ -133,7 +133,7 @@ class _PolygonAnglesPageState extends State<PolygonAnglesPage> {
         actionsDockSide: dock,
         enableCrossAxes: true,
         drawableShapes: _drawablesShapes,
-        onShapeChanged: (oldShapes, originPoint, targetPoint) {
+        onDragShape: (oldShapes, originPoint, targetPoint) {
           if (oldShapes.isEmpty && _drawablesShapes.isEmpty) return;
           setState(() {
             for (final oldShape in oldShapes) {
