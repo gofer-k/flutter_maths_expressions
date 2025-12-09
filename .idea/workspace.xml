@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef9ec9d5-4238-48d0-8ec4-4a3d06cf6aab" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/vertical_opposite_angle_theorem.dart" afterDir="false" />
+    <list default="true" id="ef9ec9d5-4238-48d0-8ec4-4a3d06cf6aab" name="Changes" comment="fix: correct use Angle in the painter">
+      <change afterPath="$PROJECT_DIR$/test/models/planimetry/line_test.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/l10n/app_en.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_en.arb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_localizations.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations_en.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_localizations_en.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations_pl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_localizations_pl.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/l10n/app_pl.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_pl.arb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/planimetry/base_shape.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/planimetry/base_shape.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/planimetry/angle.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/planimetry/angle.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/models/planimetry/line.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/planimetry/line.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/planimetry/triangle.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/planimetry/triangle.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/angle_types.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/angle_types.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/angles_theorems.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/angles_theorems.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/polygon_angles_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/polygon_angles_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/triangle_theorems/triangles_congruence.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/triangle_theorems/triangles_congruence.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/painters/angle_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painters/angle_painter.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/painters/drawable_shape.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painters/drawable_shape.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/painters/figure_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painters/figure_painter.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/painters/line_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painters/line_painter.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/vertical_opposite_angle_theorem.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/vertical_opposite_angle_theorem.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/line_theorems/line_properties_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/line_theorems/line_properties_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/widgets/infinite_drawer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/infinite_drawer.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,6 +39,13 @@
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -79,6 +80,19 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Flutter Test.contains returns true for points on vertices or on the line.executor": "Run",
+    "Flutter Test.getAngleBetweenLines calculates angle correctly.executor": "Run",
+    "Flutter Test.getDistance returns the correct length.executor": "Run",
+    "Flutter Test.getDistanceFromPoint calculates distance correctly.executor": "Debug",
+    "Flutter Test.getGeneralFactors returns [A, B, C].executor": "Run",
+    "Flutter Test.getSlope calculates slope.executor": "Run",
+    "Flutter Test.matchPoint finds a matching vertex.executor": "Run",
+    "Flutter Test.moveBy moves the entire line if enabled.executor": "Run",
+    "Flutter Test.moveByPoint moves only the matching point.executor": "Run",
+    "Flutter Test.rotate 2 lines around origin point correctly.executor": "Run",
+    "Flutter Test.rotate around midpoint if origin is null.executor": "Run",
+    "Flutter Test.rotate around origin rotates points correctly.executor": "Run",
+    "Flutter Test.tests in line_test.dart.executor": "Run",
     "Flutter.main.dart.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Notification.DisplayName-DoNotAsk-Flutter Messages": "Flutter Messages",
@@ -89,7 +103,6 @@
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "main",
     "io.flutter.reload.alreadyRun": "true",
     "kotlin-language-version-configured": "true",
@@ -97,6 +110,46 @@
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
+  <component name="RunManager" selected="Flutter.main.dart">
+    <configuration name="getDistanceFromPoint calculates distance correctly" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
+      <option name="testName" value="getDistanceFromPoint calculates distance correctly" />
+      <option name="testFile" value="$PROJECT_DIR$/test/models/planimetry/line_test.dart" />
+      <option name="useRegexp" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="getGeneralFactors returns [A, B, C]" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
+      <option name="testName" value="getGeneralFactors returns [A, B, C]" />
+      <option name="testFile" value="$PROJECT_DIR$/test/models/planimetry/line_test.dart" />
+      <option name="useRegexp" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="getSlope calculates slope" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
+      <option name="testName" value="getSlope calculates slope" />
+      <option name="testFile" value="$PROJECT_DIR$/test/models/planimetry/line_test.dart" />
+      <option name="useRegexp" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="rotate 2 lines around origin point correctly" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
+      <option name="testName" value="rotate 2 lines around origin point correctly" />
+      <option name="testFile" value="$PROJECT_DIR$/test/models/planimetry/line_test.dart" />
+      <option name="useRegexp" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="tests in line_test.dart" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
+      <option name="testFile" value="$PROJECT_DIR$/test/models/planimetry/line_test.dart" />
+      <option name="useRegexp" value="false" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Flutter Test.rotate 2 lines around origin point correctly" />
+        <item itemvalue="Flutter Test.tests in line_test.dart" />
+        <item itemvalue="Flutter Test.getDistanceFromPoint calculates distance correctly" />
+        <item itemvalue="Flutter Test.getGeneralFactors returns [A, B, C]" />
+        <item itemvalue="Flutter Test.getSlope calculates slope" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="ef9ec9d5-4238-48d0-8ec4-4a3d06cf6aab" name="Changes" comment="" />
@@ -105,6 +158,47 @@
       <option name="presentableId" value="Default" />
       <updated>1764950696393</updated>
     </task>
+    <task id="LOCAL-00001" summary="feat: add rotation gesture in InfiniteDrawer">
+      <option name="closed" value="true" />
+      <created>1765029596990</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1765029596990</updated>
+    </task>
+    <task id="LOCAL-00002" summary="fix: reformat painters' code">
+      <option name="closed" value="true" />
+      <created>1765276933466</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1765276933466</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fix: clean code">
+      <option name="closed" value="true" />
+      <created>1765278182196</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1765278182196</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fix: add Angle helpers">
+      <option name="closed" value="true" />
+      <created>1765279974486</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1765279974486</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix: correct use Angle in the painter">
+      <option name="closed" value="true" />
+      <created>1765280488774</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1765280488774</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -113,8 +207,33 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
     </layout>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: add rotation gesture in InfiniteDrawer" />
+    <MESSAGE value="fix: reformat painters' code" />
+    <MESSAGE value="fix: clean code" />
+    <MESSAGE value="fix: add Angle helpers" />
+    <MESSAGE value="fix: correct use Angle in the painter" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: correct use Angle in the painter" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/vertical_opposite_angle_theorem.dart</url>
+          <line>101</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/widgets/infinite_drawer.dart</url>
+          <line>278</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/widgets/infinite_drawer.dart</url>
+          <line>289</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="dart-exception" />
       </default-breakpoints>

@@ -138,7 +138,7 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
     return InfiniteDrawer(
       actionsDockSide: dock,
       enableCrossAxes: true,
-      enableRotate: false,
+      enablePinchAngle: false,
       enablePanning: true,
       drawableShapes: _drawablesShapes,
       onDragShape: (oldShapes, originPoint, targetPoint) {

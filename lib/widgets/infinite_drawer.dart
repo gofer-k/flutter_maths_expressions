@@ -19,8 +19,8 @@ typedef DragShapeCallback = void Function(
     DragPoint targetPoint);
 typedef RotatingShapeCallback = void Function(
     List<DrawableShape?> oldShapes,
-    Offset originPoint,
     double rotationAngle,
+    double rotationOffset,
     AngleType angleType);
 typedef RotateEndShapeCallback = void Function(
     List<DrawableShape?> oldShapes,
@@ -29,7 +29,7 @@ typedef RotateEndShapeCallback = void Function(
     AngleType angleType);
 
 class InfiniteDrawer extends StatefulWidget {
-  final bool enableRotate;
+  final bool enablePinchAngle;
   final bool enablePanning;
   final bool enableScaling;
   final bool enableCrossAxes;
@@ -40,7 +40,7 @@ class InfiniteDrawer extends StatefulWidget {
   final RotateEndShapeCallback? onRotateEndShape;
 
   const InfiniteDrawer({super.key,
-    this.enableRotate = false,
+    this.enablePinchAngle = false,
     this.enablePanning = true,
     this.enableScaling = true,
     this.enableCrossAxes = true,
@@ -68,10 +68,13 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
   // State to track the dragging point for visual feedback
   DragPoint _draggingStartPoint = DragPoint(point: Offset.infinite, enableDragging: true);
   DragPoint _draggingTargetPoint = DragPoint(point: Offset.infinite, enableDragging: true);
-  final List<DrawableShape> _rotatingShapes = [];
-  double _rotationAngle = 0.0;
-  Offset _rotationOriginPoint = Offset.infinite;
-  
+  final List<DrawableShape> _rotatingShapes = List.empty(growable: true);
+  final double _initialRotation = 0.0;
+  // Rotation offset controlled by gesture (in radians).
+  double _rotationOffset = 0.0;
+  /// Angle between the two lines (0..π).
+  late double _pinchAngle = 0.0;
+
   @override
   void initState() {
     super.initState();
@@ -128,28 +131,24 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
         builder: (context, constraints) {
           final viewportSize = Size(constraints.maxWidth, constraints.maxHeight);
           return GestureDetector(
-            onScaleStart: (details){
-              _startRotateShape(details);
-              // If no rotation was started, check for a drag
+            onPanStart: widget.enablePanning && !widget.enablePinchAngle ? (details) {
               _startDraggingShapes(details);
-            },
-            onScaleUpdate: (details) {
-              _updateRotateShape(details);
+            } : null,
+            onPanUpdate: widget.enablePanning && !widget.enablePinchAngle ? (details) {
               _updateDraggingShapes(details);
-            },
-            onScaleEnd: (details) {
+            } : null,
+            onPanEnd: widget.enablePanning && !widget.enablePinchAngle ? (details) {
               _finishDraggingShapes(details);
+            } : null,
+            onScaleStart: widget.enablePinchAngle ? (details) {
+              _startRotateShape(details);
+            } : null,
+            onScaleUpdate: widget.enablePinchAngle ? (details) {
+              _updateRotateShape(details);
+            } : null,
+            onScaleEnd: widget.enablePinchAngle ? (details) {
               _finishRotateShapes(details);
-              // Reset all states
-              setState(() {
-                _draggingShapes.clear();
-                _draggingTargetPoint = DragPoint.infinite(drag: true);
-                _draggingStartPoint = DragPoint.infinite(drag: true);
-                _rotatingShapes.clear();
-                _rotationAngle = 0.0;
-                _rotationOriginPoint = Offset.infinite;
-              });
-            },
+            } : null,
             child: Stack(
               children: [
                 InfiniteCanvas(
@@ -185,7 +184,7 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
                 ],
                 if (_draggingShapes.isNotEmpty  && _draggingStartPoint !=_draggingTargetPoint)
                   _drawDraggingShapes(viewportSize),
-                if (_rotatingShapes.isNotEmpty && _rotationAngle != 0.0)
+                if (_rotatingShapes.isNotEmpty && _pinchAngle != 0.0)
                   _drawRotatingShapes(viewportSize),
                 if (widget.enablePanning || widget.enableScaling)
                 // FAB menu instance should created while initState() when the widget's state be persist.
@@ -205,7 +204,7 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
           painter: DraggingShapePainter(
             widthUnitInPixels,
             heightUnitInPixels,
-            Line(a: _draggingStartPoint, b: _draggingTargetPoint),
+            [Line(a: _draggingStartPoint, b: _draggingTargetPoint)],
             ShowDrapProperty.line,
             canvasTransform: _controller.transform.value,
             viewportSize: viewportSize,
@@ -223,13 +222,13 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
           // Here, we'll create an Arc painter to show the rotation angle.
           if (shape.shape is Line) {
             final line = shape.shape as Line;
-            final rotatedLine = line.rotate(angle: _rotationAngle, origin: _rotationOriginPoint);
+            final rotatedLine = line.rotate(angle: _initialRotation + _rotationOffset);
             return CustomPaint(
               size: viewportSize,
               painter: DraggingShapePainter(
                 widthUnitInPixels,
                 heightUnitInPixels,
-                rotatedLine,
+                [rotatedLine],
                 ShowDrapProperty.line,
                 canvasTransform: _controller.transform.value,
                 viewportSize: viewportSize,
@@ -245,69 +244,67 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
   }
 
   void _startRotateShape(ScaleStartDetails details) {
-    if (!widget.enableRotate) return;
-    
+    if (!widget.enablePinchAngle) return;
+
     final localPoint = DragPoint(
         point: _toLocal(_controller.toLocal(details.localFocalPoint)),
         enableDragging: true);
 
-    final focalPoint = DragPoint(
-        point: _toLocal(_controller.toLocal(details.focalPoint)),
-        enableDragging: true);
-
-    if (widget.onRotateShape != null && widget.enableRotate) {
-      for (final shape in widget.drawableShapes.reversed) {
-        if (shape.shape is Line) {
-          final line = shape.shape as Line;
-          if (line.matchOnLine(localPoint, 0.25)) {
-            setState(() {
-              _rotatingShapes.add(shape);
-              _rotationOriginPoint = line.getMidpoint();
-              _rotationAngle = 0.0;
-            });
-            return;
-          }
+    for (final shape in widget.drawableShapes.reversed) {
+      if (shape.shape is Line) {
+        final line = shape.shape as Line;
+        if (line.matchOnLine(localPoint, 0.25)) {
+          setState(() {
+            _rotatingShapes.add(shape);
+            _rotationOffset = 0.0;
+            _pinchAngle = 0.0;
+          });
+          return;
         }
       }
     }
   }
 
   void _updateRotateShape(ScaleUpdateDetails details) {
-    if (/*_rotatingShapes.isNotEmpty || */details.rotation != _rotationAngle) {
-      final rotationDelta = details.rotation - _rotationAngle;
-      if (widget.onRotateShape != null) {
-        // widget.onRotateShape!(
-        //   _rotatingShapes,
-        //   _rotationOriginPoint,
-        //   rotationDelta,
-        //   AngleType.radian,
-        // );
-      }
+    final localPoint = DragPoint(
+        point: _toLocal(_controller.toLocal(details.localFocalPoint)),
+        enableDragging: true);
+
+    final prevAngle = Angle.angleVertex(vertex: _draggingTargetPoint.point);
+    final currAngle = Angle.angleVertex(vertex: localPoint.point);
+    final delta = currAngle - prevAngle;
+
+    setState(() {
+      // Optional: pinch changes the angle between shapes
+      final newAngle = _pinchAngle * details.scale;
+      _pinchAngle = Angle.clampAngle(a: newAngle);
+      _rotationOffset += delta;
+    });
+// setState(() {
+//   _rotationStartAngle = details.rotation;
+// });
+  }
+
+  void _finishRotateShapes(ScaleEndDetails details) {
+    if (_rotatingShapes.isNotEmpty && widget.onRotateShape != null) {
+      widget.onRotateShape!(
+        _rotatingShapes,
+        _pinchAngle,
+        _rotationOffset,
+        AngleType.radian,
+      );
       setState(() {
-        _rotationAngle = details.rotation;
+        _rotatingShapes.clear();
+        _rotationOffset = 0.0;
+        _pinchAngle = 0.0;
       });
     }
   }
 
-  void _finishRotateShapes(ScaleEndDetails details) {
-    // if(_rotatingShapes.isNotEmpty && widget.onRotateEndShape != null) {
-    if (_rotatingShapes.isNotEmpty && widget.onRotateShape != null) {
-      widget.onRotateShape!(
-        _rotatingShapes,
-        _rotationOriginPoint,
-        _rotationAngle,
-        AngleType.radian,
-      );
-        // widget.onRotateEndShape!(_rotatingShapes, _rotationOriginPoint,
-        //     _rotationAngle, AngleType.degrees);
-    }
-  }
-
-  void _startDraggingShapes(ScaleStartDetails details) {
+  void _startDraggingShapes(DragStartDetails details) {
     if (!widget.enablePanning) return;
-    
     final localPoint = DragPoint(
-        point: _toLocal(_controller.toLocal(details.localFocalPoint)),
+        point: _toLocal(_controller.toLocal(details.localPosition)),
         enableDragging: true);
     for (final shape in widget.drawableShapes.reversed) {
       final snapPoint = shape.matchPoint(localPoint, 0.25);
@@ -320,24 +317,30 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
       }
     }
   }
-  
-  void _updateDraggingShapes(ScaleUpdateDetails details) {
+
+  void _updateDraggingShapes(DragUpdateDetails details) {
     if (_draggingStartPoint.isFinite) {
       final localPoint = DragPoint(
-          point: _toLocal(_controller.toLocal(details.localFocalPoint)),
+          point: _toLocal(_controller.toLocal(details.localPosition)),
           enableDragging: true);
 
       setState(() {
         // Consider snap the point to the grid
         _draggingTargetPoint = localPoint;
       });
+      // _draggingTargetPoint = localPoint;
     }
   }
 
-  void _finishDraggingShapes(ScaleEndDetails details) {
+  void _finishDraggingShapes(DragEndDetails details) {
     if (widget.onDragShape != null && _draggingShapes.isNotEmpty) {
       widget.onDragShape!(_draggingShapes, _draggingStartPoint, _draggingTargetPoint);
     }
+    setState(() {
+      _draggingShapes.clear();
+      _draggingTargetPoint = DragPoint.infinite(drag: true);
+      _draggingStartPoint = DragPoint.infinite(drag: true);
+    });
   }
 
   void _onCanvasTransformChanged() {

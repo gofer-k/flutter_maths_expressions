@@ -28,8 +28,12 @@ class Angle extends BaseShape {
   static toRadians(double angle) {
   }
 
-  static double normalize(double angle, double sentinel, AngleType angleType) {
-    return angleType == AngleType.radian ? (angle - sentinel) % (2 * pi) : (angle - sentinel) % 180.0;
+  static double normalize({required double angle, double sentinel = 2 * pi}) {
+    return (angle - sentinel) % 180.0;
+  }
+
+  static double normalizeRad({required double angle, double sentinel = 360.0}) {
+    return (angle - sentinel) % (2 * pi);
   }
 
   static double clampAngle({required double a, AngleType angleType = AngleType.radian}) {
@@ -42,6 +46,12 @@ class Angle extends BaseShape {
     if (a < 0) return 0;
     if (a > 180) return 180;
     return a;
+  }
+
+  static angleVertex({required Offset vertex, Offset? originVertex, AngleType angleType = AngleType.radian}) {
+    final targetVertex = vertex - (originVertex ?? Offset.zero);
+    final angle = atan2(targetVertex.dy, targetVertex.dx);
+    return angleType == AngleType.radian ? angle : toDegrees(angle);
   }
 
   @override
@@ -107,14 +117,10 @@ class Angle extends BaseShape {
   double getAngle({AngleType angleType = AngleType.radian}) {
     final origin = getOriginPoint();
 
-    // Create vectors from the origin point to another point on each line
-    final vec1 = leadingLine.b.point - origin;
-    final vec2 = followingLine.b.point - origin;
-
     // Calculate the angle of each vector relative to the positive x-axis
     // atan2(y, x) returns the angle in radians from -π to +π.
-    final angle1 = atan2(vec1.dy, vec1.dx);
-    final angle2 = atan2(vec2.dy, vec2.dx);
+    final angle1 = Angle.angleVertex(vertex: leadingLine.b.point, originVertex: origin);
+    final angle2 = Angle.angleVertex(vertex: followingLine.b.point, originVertex: origin);
 
     // Calculate the counter-clockwise angle from vec1 to vec2
     double sweepAngle = angle2 - angle1;

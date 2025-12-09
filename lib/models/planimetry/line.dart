@@ -110,7 +110,7 @@ class Line extends BaseShape {
     final magnitudeAB = ab.distance;
     final cosTheta = (dotProduct / magnitudeAB).clamp(-1.0, 1.0);
     final result = acos(cosTheta);
-    return angleType == AngleType.radian ? result : result * 180 / pi;
+    return angleType == AngleType.radian ? result : Angle.toDegrees(result);
   }
 
   double getDistance() {
@@ -126,7 +126,7 @@ class Line extends BaseShape {
     final magnitudeOtherAb = otherAb.distance;
     final cosTheta = (dotProduct / (magnitudeAB * magnitudeOtherAb)).clamp(-1.0, 1.0);
     final result = acos(cosTheta);
-    return angleType == AngleType.radian ? result : result * 180 / pi;
+    return angleType == AngleType.radian ? result : Angle.toDegrees(result);
   }
 
   double getSlope() {
@@ -210,7 +210,7 @@ class Line extends BaseShape {
   }
 
   Offset _rotatePoint(Offset point, Offset center, double angle, {required AngleType angleType}) {
-    final targetAngle = angleType == AngleType.radian ? angle : angle * 180 / pi;
+    final targetAngle = angleType == AngleType.radian ? angle : Angle.toRadian(angle);
     final origToCenter = point - center;
     return Offset(
       origToCenter.dx * cos(targetAngle) - origToCenter.dy * sin(targetAngle),

@@ -93,7 +93,7 @@ class _LinePropertiesPageState extends State<LinePropertiesPage> {
             return LinePainter(
               widthUnitInPixels,
               heightUnitInPixels,
-              triangle,
+              [triangle],
               [
                 // TODO: fill in properties to display
               ],

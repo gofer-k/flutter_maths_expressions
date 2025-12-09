@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/models/planimetry/angle.dart';
 import 'package:flutter_maths_expressions/models/planimetry/line.dart';
@@ -35,15 +37,15 @@ class _VerticalOppositeAngleState extends State<VerticalOppositeAngle> {
       enableDragging: true)];
   final List<DrawableShape> _drawablesShapes = List.empty(growable: true);
   final List<Line> lines = List.empty(growable: true);
-  // late final double alphaAngle;
-  // late final double betaAngle;
+  late double alphaAngle = 90.0;
+  late double betaAngle = 90.0;
   final List<Angle> alphaAngles = List.empty(growable: true);
   final List<Angle> betaAngles = List.empty(growable: true);
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    changeProperties();
+    changeProperties(originLines);
     changeDrawableShapes();
   }
 
@@ -69,13 +71,14 @@ class _VerticalOppositeAngleState extends State<VerticalOppositeAngle> {
               Expanded(flex: 2, child: drawableView(dock)),
               const SizedBox(height: 4),
               Expanded(flex: 1, child: Column(children: [
+                // TODO: check alpha and beta values after rotation
                 DisplayExpression(context: context,
-                  // expression: r"\alpha = ""${alphaAngle.toStringAsFixed(1)}"r"^\circ",
-                  expression: r"\alpha = ""${alphaAngles.first.getAngle(angleType: AngleType.degrees).toStringAsFixed(1)}"r"^\circ",
+                  expression: r"\alpha = ""${alphaAngle.toStringAsFixed(1)}"r"^\circ",
+                  // expression: r"\alpha = ""${alphaAngles.first.getAngle(angleType: AngleType.degrees).toStringAsFixed(1)}"r"^\circ",
                   scale: 1.5),
-                // TODO: correct beta values after rotation
                 DisplayExpression(context: context,
-                  expression: r"\beta = ""${alphaAngles.first.getAngle(angleType: AngleType.degrees).toStringAsFixed(1)}"r"^\circ",
+                    expression: r"\alpha = ""${betaAngle.toStringAsFixed(1)}"r"^\circ",
+                  // expression: r"\beta = ""${alphaAngles.first.getAngle(angleType: AngleType.degrees).toStringAsFixed(1)}"r"^\circ",
                   scale: 1.5),
                 ]
               )),
@@ -90,10 +93,10 @@ class _VerticalOppositeAngleState extends State<VerticalOppositeAngle> {
     return InfiniteDrawer(
       actionsDockSide: dock,
       enableCrossAxes: true,
-      enableRotate: true,
+      enablePinchAngle: true,
       enablePanning: false,
       drawableShapes: _drawablesShapes,
-      onRotateShape: (oldShapes, originPoint, rotationAngle, angleType) {
+      onRotateShape: (oldShapes, rotationAngle, rotationOffset, angleType) {
         if (oldShapes.isEmpty && _drawablesShapes.isEmpty) return;
         setState(() {
           for (final oldShape in oldShapes) {
@@ -101,7 +104,6 @@ class _VerticalOppositeAngleState extends State<VerticalOppositeAngle> {
             if (index != -1) {
               final newShape = oldShape.rotate(
                   rotationAngle: rotationAngle,
-                  originPoint: originPoint,
                   angleType: angleType);
 
               _drawablesShapes[index] = newShape;
@@ -110,37 +112,29 @@ class _VerticalOppositeAngleState extends State<VerticalOppositeAngle> {
                   lines[index] = newShape.shape as Line;
                 }
               }
+              alphaAngle = Angle.normalizeRad(angle: rotationAngle + rotationOffset / 2.0);
+              betaAngle = Angle.normalizeRad(angle: rotationAngle - rotationOffset / 2.0);
+              // Smallest positive sweep from na2 to na1.
+              // Compute delta = (na1 - na2) mod 2π, choose the smaller arc (<= π).
+              const twoPi = 2 * pi;
+              double delta = alphaAngle - betaAngle;
+              delta = (delta + twoPi) % twoPi;
+              if (delta > pi) {
+                // Swap to ensure delta is the smaller angle.
+                delta = twoPi - delta;
+              }
+              alphaAngle = Angle.toDegrees(delta);
+              betaAngle = Angle.toDegrees(twoPi - delta);
               changeAngles();
               changeDrawableShapes();
             }
           }
         });
       }
-      // onRotateEndShape: (oldShapes, originPoint, rotationAngle, angleType) {
-      //   if (oldShapes.isEmpty && _drawablesShapes.isEmpty) return;
-      //   setState(() {
-      //     for (final oldShape in oldShapes) {
-      //       final index = _drawablesShapes.indexOf(oldShape as DrawableLine);
-      //       if (index != -1) {
-      //         final newShape = oldShape.rotate(
-      //             rotationAngle: rotationAngle,
-      //             originPoint: originPoint,
-      //             angleType: angleType);
-      //
-      //         _drawablesShapes[index] = newShape;
-      //         for (final line in lines) {
-      //           if (line == oldShape.shape as Line) {
-      //             lines[index] = newShape.shape as Line;
-      //             changeAngles();
-      //           }
-      //         }
-      //       }
-      //     }
-      //   });
     );
   }
 
-  DrawableLine changeDrawableLine(Line line, bool legend) {
+  DrawableLine changeDrawableLine(Line line, bool legend, Color lineColor) {
     return DrawableLine(
       shape: line,
       labelsSpans: [
@@ -166,11 +160,12 @@ class _VerticalOppositeAngleState extends State<VerticalOppositeAngle> {
         return LinePainter(
             widthUnitInPixels,
             heightUnitInPixels,
-            line,
+            [line],
             [ShowLineProperty.solid],
             canvasTransform: canvasTransform,
             viewportSize: viewportSize,
-            widhtLine: 3.0
+            widhtLine: 3.0,
+            color: lineColor,
         );
       },
     );
@@ -193,7 +188,7 @@ class _VerticalOppositeAngleState extends State<VerticalOppositeAngle> {
         return AnglePainter(
             widthUnitInPixels,
             heightUnitInPixels,
-            angle,
+            [angle],
             [ShowProperty.interception],
             canvasTransform: canvasTransform,
             viewportSize: viewportSize,
@@ -206,8 +201,8 @@ class _VerticalOppositeAngleState extends State<VerticalOppositeAngle> {
 
   void changeDrawableShapes() {
     _drawablesShapes.clear();
-    _drawablesShapes.add(changeDrawableLine(lines.first, true));
-    _drawablesShapes.add(changeDrawableLine(lines.last, false));
+    _drawablesShapes.add(changeDrawableLine(lines.first, true, Colors.greenAccent));
+    _drawablesShapes.add(changeDrawableLine(lines.last, false, Colors.redAccent));
     _drawablesShapes.add(changeDrawableAngle(angle: alphaAngles.first, color: Colors.green, widthLine: 3.0, arcRadius: 45.0));
     _drawablesShapes.add(changeDrawableAngle(angle: alphaAngles.last, color: Colors.green, widthLine: 3.0, arcRadius: 45.0));
     // TODO: correct draw beta angle after rotation
@@ -215,16 +210,14 @@ class _VerticalOppositeAngleState extends State<VerticalOppositeAngle> {
     _drawablesShapes.add(changeDrawableAngle(angle: betaAngles.last, color: Colors.red, widthLine: 4.0, arcRadius: 60.0));
   }
 
-  void changeProperties() {
-    for(final line in originLines) {
+  void changeProperties(List<Line> newLines) {
+    for(final line in newLines) {
       lines.add(line.copyWith() as Line);
     }
     changeAngles();
   }
 
   void changeAngles() {
-    // alphaAngle = lines.first.getAngleBetweenLines(otherLine: lines.last, angleType: AngleType.degrees);
-    // betaAngle = lines.last.getAngleBetweenLines(otherLine: lines.first, angleType: AngleType.degrees);
 
     final interception = lines.first.getIntersection(lines.last);
     alphaAngles.clear();
