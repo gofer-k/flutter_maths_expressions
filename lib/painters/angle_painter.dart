@@ -37,6 +37,8 @@ class AnglePainter extends FigurePainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (shapes == null && shapes!.isEmpty && shapes?.first is Angle) return;
+
     if (minWidthUnitInPixels <= 0 || minHeightUnitInPixels <= 0) return;
 
     // Apply the main canvas transformation (pan/zoom from gesture detector, etc.)
@@ -48,7 +50,7 @@ class AnglePainter extends FigurePainter {
     );
     canvas.translate(canvasOrigin.dx, canvasOrigin.dy);
 
-    final angle = shapes as Angle;
+    final angle = shapes?.first as Angle;
     final leadingLine = angle.leadingLine;
     final followingLine = angle.followingLine;
 
