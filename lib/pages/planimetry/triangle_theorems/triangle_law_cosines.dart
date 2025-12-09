@@ -135,7 +135,7 @@ class _TriangleLawCosinesState extends State<TriangleLawCosines> {
             return TrianglePainter(
               widthUnitInPixels,
               heightUnitInPixels,
-              triangle,
+              [triangle],
               [
                 ShowTriangleProperty.angleA,
                 ShowTriangleProperty.angleB,
@@ -237,14 +237,14 @@ class _TriangleLawCosinesState extends State<TriangleLawCosines> {
     );
 
     final a = Offset(
-        aPointData.firstWhere((coord) => coord.label == "x").cellValue!,
-        aPointData.firstWhere((coord) => coord.label == "y").cellValue!);
+        aPointData.firstWhere((point) => point.label == "x").cellValue!,
+        aPointData.firstWhere((point) => point.label == "y").cellValue!);
     final b = Offset(
-        bPointData.firstWhere((coord) => coord.label == "x").cellValue!,
-        bPointData.firstWhere((coord) => coord.label == "y").cellValue!);
+        bPointData.firstWhere((point) => point.label == "x").cellValue!,
+        bPointData.firstWhere((point) => point.label == "y").cellValue!);
     final c = Offset(
-        cPointData.firstWhere((coord) => coord.label == "x").cellValue!,
-        cPointData.firstWhere((coord) => coord.label == "y").cellValue!);
+        cPointData.firstWhere((point) => point.label == "x").cellValue!,
+        cPointData.firstWhere((point) => point.label == "y").cellValue!);
 
     setState(() {
       triangle.update(a, b, c);

@@ -23,8 +23,7 @@ class AnglePainter extends FigurePainter {
     super.heightUnitInPixels,
     super.shapes,
     this.showProperties,
-    this.minWidthUnitInPixels,
-    this.minHeightUnitInPixels, {
+   {
     required super.canvasTransform,
     required super.viewportSize,
     required this.angleColor,

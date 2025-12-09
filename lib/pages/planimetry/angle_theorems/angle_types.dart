@@ -188,8 +188,9 @@ class _AngleTypesPageState extends State<AngleTypesPage> {
         return AnglePainter(
             widthUnitInPixels,
             heightUnitInPixels,
-            angle,
+            [angle],
             [ShowProperty.interception, ShowProperty.line, ShowProperty.points],
+
             canvasTransform: canvasTransform,
             viewportSize: viewportSize,
             angleColor: color);

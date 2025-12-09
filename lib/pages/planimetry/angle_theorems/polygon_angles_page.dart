@@ -166,7 +166,7 @@ class _PolygonAnglesPageState extends State<PolygonAnglesPage> {
         return PolygonPainter(
             widthUnitInPixels,
             heightUnitInPixels,
-            polygon,
+            [polygon],
             canvasTransform: canvasTransform,
             viewportSize: viewportSize,
             angleColor: color);

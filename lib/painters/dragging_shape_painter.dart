@@ -27,6 +27,8 @@ class DraggingShapePainter extends FigurePainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (shapes == null && shapes!.isEmpty && shapes?.first is Line) return;
+
     canvas.save();
 
     // Apply the main canvas transformation (pan/zoom from gesture detector, etc.)
@@ -35,11 +37,9 @@ class DraggingShapePainter extends FigurePainter {
     final canvasOrigin = Offset(viewportSize.width / 2, viewportSize.height / 2);
     canvas.translate(canvasOrigin.dx, canvasOrigin.dy);
 
-    if (shape == null) return;
-
     if (showProperty == ShowDrapProperty.line) {
       // Convert local triangle coordinates to pixel coordinates
-      final line = shape as Line;
+      final line = shapes?.first as Line;
 
       final Offset aPos = convertLocalToGlobal(line.a.point);
       final Offset bPos = convertLocalToGlobal(line.b.point);
@@ -61,10 +61,7 @@ class DraggingShapePainter extends FigurePainter {
 
   @override
   bool shouldRepaint(covariant DraggingShapePainter oldDelegate) {
-    return oldDelegate.canvasTransform != canvasTransform ||
-        oldDelegate.shape != shape ||
-        oldDelegate.widthUnitInPixels != widthUnitInPixels ||
-        oldDelegate.heightUnitInPixels != heightUnitInPixels ||
+    return super.shouldRepaint(oldDelegate) ||
         oldDelegate.minHeightUnitInPixels != minHeightUnitInPixels ||
         oldDelegate.minWidthUnitInPixels != minWidthUnitInPixels;
   }

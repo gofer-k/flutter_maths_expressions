@@ -130,7 +130,7 @@ class _TrianglesCongruenceState extends State<TrianglesCongruence> {
         return TrianglePainter(
           widthUnitInPixels,
           heightUnitInPixels,
-          triangle1,
+          [triangle1],
           [
             ShowTriangleProperty.angleA,
             ShowTriangleProperty.angleB,
@@ -168,7 +168,7 @@ class _TrianglesCongruenceState extends State<TrianglesCongruence> {
         return TrianglePainter(
           widthUnitInPixels,
           heightUnitInPixels,
-          triangle1,
+          [triangle1],
           [
             ShowTriangleProperty.angleA,
             ShowTriangleProperty.angleB,

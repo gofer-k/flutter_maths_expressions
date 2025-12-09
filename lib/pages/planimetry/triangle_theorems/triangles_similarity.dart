@@ -124,7 +124,7 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
         return TrianglePainter(
           widthUnitInPixels,
           heightUnitInPixels,
-          triangle1,
+          [triangle1],
           [
             ShowTriangleProperty.angleA,
             ShowTriangleProperty.angleB,
@@ -162,7 +162,7 @@ class _TrianglesSimilarityState extends State<TrianglesSimilarity> {
         return TrianglePainter(
           widthUnitInPixels,
           heightUnitInPixels,
-          triangle1,
+          [triangle1],
           [
             ShowTriangleProperty.angleA,
             ShowTriangleProperty.angleB,

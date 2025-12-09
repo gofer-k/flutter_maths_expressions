@@ -35,8 +35,8 @@ class _PythagorasTheoremState extends State<PythagorasTheorem>{
     final ac2 = ac * ac;
     final ab2 = ab * ab;
 
-    String pithagorasTheorem = r"|BC|^2 = |AB|^2 + |AC|^2";
-    String pithagorasTheoremResult = "${bc2.toStringAsFixed(2)} = ${ab2.toStringAsFixed(2)} + ${ac2.toStringAsFixed(2)}";
+    String pythagorasTheorem = r"|BC|^2 = |AB|^2 + |AC|^2";
+    String pythagorasTheoremResult = "${bc2.toStringAsFixed(2)} = ${ab2.toStringAsFixed(2)} + ${ac2.toStringAsFixed(2)}";
 
     return BackgroundContainer(
       beginColor: Colors.grey.shade50,
@@ -59,12 +59,12 @@ class _PythagorasTheoremState extends State<PythagorasTheorem>{
               const SizedBox(height: 4),
               DisplayExpression(
                 context: context,
-                expression: pithagorasTheorem,
+                expression: pythagorasTheorem,
                 scale: 1.5,
               ),
               DisplayExpression(
                 context: context,
-                expression: pithagorasTheoremResult,
+                expression: pythagorasTheoremResult,
                 scale: 1.5,
               ),
               const SizedBox(height: 6),
@@ -104,7 +104,7 @@ class _PythagorasTheoremState extends State<PythagorasTheorem>{
         return TrianglePainter(
           widthUnitInPixels,
           heightUnitInPixels,
-          triangle1,
+          [triangle1],
           [
             ShowTriangleProperty.angleA,
             ShowTriangleProperty.angleB,
@@ -174,9 +174,9 @@ class _PythagorasTheoremState extends State<PythagorasTheorem>{
 
     final b = Offset(
       triangle.b.dx,
-      bPointData.firstWhere((coord) => coord.label == "y").cellValue!);
+      bPointData.firstWhere((point) => point.label == "y").cellValue!);
     final c = Offset(
-      cPointData.firstWhere((coord) => coord.label == "x").cellValue!,
+      cPointData.firstWhere((point) => point.label == "x").cellValue!,
       triangle.c.dy);
 
     setState(() {
