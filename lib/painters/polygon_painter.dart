@@ -12,29 +12,37 @@ class PolygonPainter extends FigurePainter {
   late final double minWidthUnitInPixels;
   late final double minHeightUnitInPixels;
 
-  PolygonPainter(super.widthUnitInPixels, super.heightUnitInPixels, super.shape,
-      { required super.canvasTransform,
-        required super.viewportSize,
-        required this.angleColor,
-        this.enableDrapDrop = false,
-      }) {
+  PolygonPainter(
+    super.widthUnitInPixels,
+    super.heightUnitInPixels,
+    super.shape, {
+    required super.canvasTransform,
+    required super.viewportSize,
+    required this.angleColor,
+    this.enableDrapDrop = false,
+  }) {
     minWidthUnitInPixels = 0.25 * widthUnitInPixels;
     minHeightUnitInPixels = 0.25 * heightUnitInPixels;
   }
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (shapes == null && shapes!.isEmpty && shapes?.first is Polygon) return;
+
     // Apply the main canvas transformation (pan/zoom from gesture detector, etc.)
     canvas.transform(canvasTransform.storage);
 
-    final canvasOrigin = Offset(viewportSize.width / 2, viewportSize.height / 2);
+    final canvasOrigin = Offset(
+      viewportSize.width / 2,
+      viewportSize.height / 2,
+    );
     canvas.translate(canvasOrigin.dx, canvasOrigin.dy);
 
     final Paint paintLine = Paint()
-        ..color = Colors.black
-        ..strokeWidth = 2.0
-        ..style = PaintingStyle.stroke;
-    
+      ..color = Colors.black
+      ..strokeWidth = 2.0
+      ..style = PaintingStyle.stroke;
+
     final Paint fixedPaintPoint = Paint()
       ..color = Colors.black87
       ..strokeWidth = 2.0
@@ -45,7 +53,7 @@ class PolygonPainter extends FigurePainter {
       ..strokeWidth = 3.0
       ..style = PaintingStyle.fill;
 
-    final polygon = shape as Polygon;
+    final polygon = shapes?.first as Polygon;
     if (polygon.lines.length < 3) {
       return;
     }
@@ -60,7 +68,8 @@ class PolygonPainter extends FigurePainter {
       // Identify the lines that form the current vertex
       final currentLine = polygon.lines[i];
       // The previous line is the last one in the list if we are at the first vertex
-      final previousLine = polygon.lines[(i - 1 + polygon.lines.length) % polygon.lines.length];
+      final previousLine =
+          polygon.lines[(i - 1 + polygon.lines.length) % polygon.lines.length];
 
       // Get the global coordinates of the three points defining the vertex
       final currentVertexPoint = convertLocalToGlobal(currentLine.a.point);
@@ -89,12 +98,19 @@ class PolygonPainter extends FigurePainter {
           : Offset(0, 10); // Fallback for straight lines (180-degree angle)
 
       // Draw the vertex point
-      final paintPoint = currentLine.isDraggable() ? draggablePaintPoint : fixedPaintPoint;
+      final paintPoint = currentLine.isDraggable()
+          ? draggablePaintPoint
+          : fixedPaintPoint;
       canvas.drawCircle(currentVertexPoint, 5.0, paintPoint);
 
       // --- Paint the text with the dynamically calculated offset ---
       final label = pointLabels[i];
-      paintText(canvas, label, currentVertexPoint, xOffset: labelOffset.dx, yOffset: labelOffset.dy,
+      paintText(
+        canvas,
+        label,
+        currentVertexPoint,
+        xOffset: labelOffset.dx,
+        yOffset: labelOffset.dy,
       );
     }
     path.close();
@@ -107,21 +123,27 @@ class PolygonPainter extends FigurePainter {
       final followingLine = polygon.lines[nextIndex];
 
       if (leadingLine.a.point == followingLine.a.point) {
-        final angle = Angle(leadingLine: leadingLine, followingLine: followingLine);
+        final angle = Angle(
+          leadingLine: leadingLine,
+          followingLine: followingLine,
+        );
         final angleVal = angle.getAngle();
-        drawAngleArc(canvas,
+        drawAngleArc(
+          canvas,
           convertLocalToGlobal(leadingLine.a.point),
           convertLocalToGlobal(leadingLine.b.point),
           convertLocalToGlobal(followingLine.b.point),
-          angleColor, arcRadius: 25.0, clockWise: angleVal >= pi ? true : false);
+          angleColor,
+          arcRadius: 25.0,
+          clockWise: angleVal >= pi ? true : false,
+        );
       }
     }
   }
 
   @override
   bool shouldRepaint(covariant PolygonPainter oldDelegate) {
-    return oldDelegate.canvasTransform != canvasTransform ||
-        oldDelegate.shape != shape ||
+    return super.shouldRepaint(oldDelegate) ||
         oldDelegate.minHeightUnitInPixels != minHeightUnitInPixels ||
         oldDelegate.minWidthUnitInPixels != minWidthUnitInPixels;
   }

@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/planimetry/line.dart';
 import 'figure_painter.dart';
 
-enum ShowLineProperty {
-  solid,
-  dashed,
-  dotted,
-}
+enum ShowLineProperty { solid, dashed, dotted }
 
 class LinePainter extends FigurePainter {
   late final double minWidthUnitInPixels;
@@ -16,26 +12,29 @@ class LinePainter extends FigurePainter {
   final double widhtLine;
   final List<ShowLineProperty> showProperties;
 
-  LinePainter(super.widthUnitInPixels, super.heightUnitInPixels, super.shape,
-      this.showProperties,
-      {required super.canvasTransform,
-        required super.viewportSize,
-        this.color = Colors.blueGrey,
-        this.widhtLine = 1.0}) {
+  LinePainter(
+    super.widthUnitInPixels,
+    super.heightUnitInPixels,
+    super.shapes,
+    this.showProperties, {
+    required super.canvasTransform,
+    required super.viewportSize,
+    this.color = Colors.blueGrey,
+    this.widhtLine = 1.0,
+  }) {
     minWidthUnitInPixels = 0.25 * widthUnitInPixels;
     minHeightUnitInPixels = 0.25 * heightUnitInPixels;
   }
 
-  static void displayDashedLine(
-      {required Canvas canvas,
-       required Offset begin,
-       required Offset end,
-       double dashWidth = 5.0,
-       double dashSpace = 3.0,
-       Color color = Colors.blueGrey,
-       double width = 1.0,
-      }) {
-
+  static void displayDashedLine({
+    required Canvas canvas,
+    required Offset begin,
+    required Offset end,
+    double dashWidth = 5.0,
+    double dashSpace = 3.0,
+    Color color = Colors.blueGrey,
+    double width = 1.0,
+  }) {
     final Paint paintDashedLine = Paint()
       ..color = color
       ..strokeWidth = width;
@@ -70,20 +69,25 @@ class LinePainter extends FigurePainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (shapes == null && shapes!.isEmpty && shapes?.first is Line) return;
+
     canvas.save(); // 1. Save the current canvas state
 
     // Apply the main canvas transformation (pan/zoom from gesture detector, etc.)
     canvas.transform(canvasTransform.storage);
 
-    final canvasOrigin = Offset(viewportSize.width / 2, viewportSize.height / 2);
+    final canvasOrigin = Offset(
+      viewportSize.width / 2,
+      viewportSize.height / 2,
+    );
     canvas.translate(canvasOrigin.dx, canvasOrigin.dy);
 
     // Convert local triangle coordinates to pixel coordinates
-    final line = shape as Line;
+    final line = shapes?.first as Line;
 
     final Offset aPos = convertLocalToGlobal(line.a.point);
     final Offset bPos = convertLocalToGlobal(line.b.point);
-    if (aPos == bPos)  return;
+    if (aPos == bPos) return;
 
     if (showProperties.contains(ShowLineProperty.solid)) {
       final Paint paint = Paint()
@@ -93,11 +97,24 @@ class LinePainter extends FigurePainter {
       canvas.drawLine(aPos, bPos, paint);
     }
     if (showProperties.contains(ShowLineProperty.dashed)) {
-      displayDashedLine(canvas: canvas, begin: aPos, end: bPos, color: color, width: widhtLine);
+      displayDashedLine(
+        canvas: canvas,
+        begin: aPos,
+        end: bPos,
+        color: color,
+        width: widhtLine,
+      );
     }
     if (showProperties.contains(ShowLineProperty.dotted)) {
-      displayDashedLine(canvas: canvas, begin: aPos, end: bPos, color: color,
-          dashWidth: 2.0, dashSpace: 2.0, width: widhtLine);
+      displayDashedLine(
+        canvas: canvas,
+        begin: aPos,
+        end: bPos,
+        color: color,
+        dashWidth: 2.0,
+        dashSpace: 2.0,
+        width: widhtLine,
+      );
     }
     // Restore the canvas to its state before canvas.save()
     canvas.restore();
@@ -105,10 +122,7 @@ class LinePainter extends FigurePainter {
 
   @override
   bool shouldRepaint(covariant LinePainter oldDelegate) {
-    return oldDelegate.canvasTransform != canvasTransform ||
-        oldDelegate.shape != shape ||
-        oldDelegate.widthUnitInPixels != widthUnitInPixels ||
-        oldDelegate.heightUnitInPixels != heightUnitInPixels ||
+    return super.shouldRepaint(oldDelegate) ||
         oldDelegate.minHeightUnitInPixels != minHeightUnitInPixels ||
         oldDelegate.minWidthUnitInPixels != minWidthUnitInPixels;
   }

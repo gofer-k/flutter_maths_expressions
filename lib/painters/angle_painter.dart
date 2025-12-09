@@ -5,35 +5,33 @@ import 'package:flutter/material.dart';
 import '../models/planimetry/angle.dart';
 import 'figure_painter.dart';
 
-enum ShowAngleType {
-  angle,
-  complementary,
-  supplementary,
-}
+enum ShowAngleType { angle, complementary, supplementary }
 
-enum ShowProperty {
-  line,
-  points,
-  interception,
-  enableDrapDrop
-}
+enum ShowProperty { line, points, interception, enableDrapDrop }
 
 class AnglePainter extends FigurePainter {
   final Color angleColor;
+  final Color lineColor;
   final double widthLine;
   final double arcRadius;
   final List<ShowProperty> showProperties;
   late final double minWidthUnitInPixels;
   late final double minHeightUnitInPixels;
 
-  AnglePainter(super.widthUnitInPixels, super.heightUnitInPixels, super.shape,
-      this.showProperties,
-      { required super.canvasTransform,
-        required super.viewportSize,
-        required this.angleColor,
-        this.widthLine = 2.0,
-        this.arcRadius = 25.0
-      }) {
+  AnglePainter(
+    super.widthUnitInPixels,
+    super.heightUnitInPixels,
+    super.shapes,
+    this.showProperties,
+    this.minWidthUnitInPixels,
+    this.minHeightUnitInPixels, {
+    required super.canvasTransform,
+    required super.viewportSize,
+    required this.angleColor,
+    this.lineColor = Colors.black,
+    this.widthLine = 2.0,
+    this.arcRadius = 25.0,
+  }) {
     minWidthUnitInPixels = 0.25 * widthUnitInPixels;
     minHeightUnitInPixels = 0.25 * heightUnitInPixels;
   }
@@ -45,10 +43,13 @@ class AnglePainter extends FigurePainter {
     // Apply the main canvas transformation (pan/zoom from gesture detector, etc.)
     canvas.transform(canvasTransform.storage);
 
-    final canvasOrigin = Offset(viewportSize.width / 2, viewportSize.height / 2);
+    final canvasOrigin = Offset(
+      viewportSize.width / 2,
+      viewportSize.height / 2,
+    );
     canvas.translate(canvasOrigin.dx, canvasOrigin.dy);
 
-    final angle = shape as Angle;
+    final angle = shapes as Angle;
     final leadingLine = angle.leadingLine;
     final followingLine = angle.followingLine;
 
@@ -62,7 +63,7 @@ class AnglePainter extends FigurePainter {
 
     if (showProperties.contains(ShowProperty.line)) {
       final Paint paintLine = Paint()
-        ..color = Colors.black
+        ..color = lineColor
         ..strokeWidth = widthLine
         ..style = PaintingStyle.stroke;
 
@@ -81,30 +82,48 @@ class AnglePainter extends FigurePainter {
         ..strokeWidth = 3.0
         ..style = PaintingStyle.fill;
 
-      canvas.drawCircle(aPos, 5.0, leadingLine.a.enableDragging ? draggablePaintPoint : fixedPaintPoint);
-      canvas.drawCircle(bPos, 5.0, leadingLine.b.enableDragging ? draggablePaintPoint : fixedPaintPoint);
-      canvas.drawCircle(cPos, 5.0, followingLine.a.enableDragging ? draggablePaintPoint : fixedPaintPoint);
-      canvas.drawCircle(dPos, 5.0, followingLine.b.enableDragging ? draggablePaintPoint : fixedPaintPoint);
+      canvas.drawCircle(
+        aPos,
+        5.0,
+        leadingLine.a.enableDragging ? draggablePaintPoint : fixedPaintPoint,
+      );
+      canvas.drawCircle(
+        bPos,
+        5.0,
+        leadingLine.b.enableDragging ? draggablePaintPoint : fixedPaintPoint,
+      );
+      canvas.drawCircle(
+        cPos,
+        5.0,
+        followingLine.a.enableDragging ? draggablePaintPoint : fixedPaintPoint,
+      );
+      canvas.drawCircle(
+        dPos,
+        5.0,
+        followingLine.b.enableDragging ? draggablePaintPoint : fixedPaintPoint,
+      );
     }
 
-    if(intersectinPos.isFinite && showProperties.contains(ShowProperty.interception)) {
+    if (intersectinPos.isFinite &&
+        showProperties.contains(ShowProperty.interception)) {
       canvas.drawCircle(intersectinPos, 5.0, fixedPaintPoint);
       final angleVal = angle.getAngle();
-      drawAngleArc(canvas, intersectinPos,
-          bPos,
-          dPos,
-          angleColor,
-          widthLine: widthLine,
-          arcRadius: arcRadius, clockWise: angleVal >= pi ? true : false);
+      drawAngleArc(
+        canvas,
+        intersectinPos,
+        bPos,
+        dPos,
+        angleColor,
+        widthLine: widthLine,
+        arcRadius: arcRadius,
+        clockWise: angleVal >= pi ? true : false,
+      );
     }
   }
 
   @override
   bool shouldRepaint(covariant AnglePainter oldDelegate) {
-    return oldDelegate.canvasTransform != canvasTransform ||
-        oldDelegate.shape != shape ||
-        oldDelegate.minHeightUnitInPixels != minHeightUnitInPixels ||
-        oldDelegate.minWidthUnitInPixels != minWidthUnitInPixels ||
+    return super.shouldRepaint(oldDelegate) ||
         oldDelegate.widthLine != widthLine ||
         oldDelegate.arcRadius != arcRadius ||
         oldDelegate.angleColor != angleColor;

@@ -17,17 +17,22 @@ enum ShowTriangleProperty {
   bisector,
   midsegment,
   circumcenter,
-  incenter
+  incenter,
 }
 
 class TrianglePainter extends FigurePainter {
   late final double minWidthUnitInPixels;
   late final double minHeightUnitInPixels;
   final List<ShowTriangleProperty> showProperties;
-  
-  TrianglePainter(super.widthUnitInPixels, super.heightUnitInPixels, super.shape, this.showProperties,
-    {required super.canvasTransform,
-    required super.viewportSize}) {
+
+  TrianglePainter(
+    super.widthUnitInPixels,
+    super.heightUnitInPixels,
+    super.shape,
+    this.showProperties, {
+    required super.canvasTransform,
+    required super.viewportSize,
+  }) {
     minWidthUnitInPixels = 0.25 * widthUnitInPixels;
     minHeightUnitInPixels = 0.25 * heightUnitInPixels;
   }
@@ -67,6 +72,7 @@ class TrianglePainter extends FigurePainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (shapes == null && shapes!.isEmpty && shapes?.first is Triangle) return;
     if (minWidthUnitInPixels <= 0 || minHeightUnitInPixels <= 0) return;
 
     final Paint paint = Paint()
@@ -79,13 +85,16 @@ class TrianglePainter extends FigurePainter {
     // 2. Apply the main canvas transformation (pan/zoom from gesture detector, etc.)
     canvas.transform(canvasTransform.storage);
 
-    final canvasOrigin = Offset(viewportSize.width / 2, viewportSize.height / 2);
+    final canvasOrigin = Offset(
+      viewportSize.width / 2,
+      viewportSize.height / 2,
+    );
     canvas.translate(canvasOrigin.dx, canvasOrigin.dy);
 
     Path path = Path();
 
     // Convert local triangle coordinates to pixel coordinates
-    final triangle = shape as Triangle;
+    final triangle = shapes?.first as Triangle;
     final Offset aPos = convertLocalToGlobal(triangle.a);
     final Offset bPos = convertLocalToGlobal(triangle.b);
     final Offset cPos = convertLocalToGlobal(triangle.c);
@@ -121,14 +130,16 @@ class TrianglePainter extends FigurePainter {
       try {
         final m = (cPos.dy - aPos.dy) / (cPos.dx - aPos.dx);
         final m2 = m * m;
-        final xD = (m2 * aPos.dx - m * (bPos.dy - aPos.dy) + bPos.dx) / (m2 + 1);
+        final xD =
+            (m2 * aPos.dx - m * (bPos.dy - aPos.dy) + bPos.dx) / (m2 + 1);
         final dPos = Offset(
-           (m2 * aPos.dx - m * (bPos.dy - aPos.dy) + bPos.dx) / (m2 + 1),
-           m * xD - m * aPos.dx + aPos.dy);
+          (m2 * aPos.dx - m * (bPos.dy - aPos.dy) + bPos.dx) / (m2 + 1),
+          m * xD - m * aPos.dx + aPos.dy,
+        );
 
         canvas.drawLine(bPos, dPos, paintHeight);
         paintText(canvas, "D", dPos, xOffset: -4.0, yOffset: -2.0);
-      } catch(e) {
+      } catch (e) {
         logger.e;
       }
     }
@@ -143,30 +154,48 @@ class TrianglePainter extends FigurePainter {
 
         canvas.drawLine(bPos, mPos, paintMedianLine);
         paintText(canvas, "M", mPos, xOffset: -4.0, yOffset: -2.0);
-      } catch(e) {
+      } catch (e) {
         logger.e;
       }
     }
     if (showProperties.contains(ShowTriangleProperty.centroidPoint)) {
       {
         final Offset medianPoint = triangle.getMedianPoint(
-            triangle.b, triangle.c);
+          triangle.b,
+          triangle.c,
+        );
         final Offset medianPos = convertLocalToGlobal(medianPoint);
-        LinePainter.displayDashedLine(canvas: canvas, begin: aPos, end: medianPos);
+        LinePainter.displayDashedLine(
+          canvas: canvas,
+          begin: aPos,
+          end: medianPos,
+        );
         paintText(canvas, r"M_a", medianPos, xOffset: 4.0, yOffset: -20.0);
       }
       {
         final Offset medianPoint = triangle.getMedianPoint(
-            triangle.a, triangle.c);
+          triangle.a,
+          triangle.c,
+        );
         final Offset medianPos = convertLocalToGlobal(medianPoint);
-        LinePainter.displayDashedLine(canvas: canvas, begin: bPos, end: medianPos);
+        LinePainter.displayDashedLine(
+          canvas: canvas,
+          begin: bPos,
+          end: medianPos,
+        );
         paintText(canvas, r"M_b", medianPos, xOffset: -8.0, yOffset: 2.0);
       }
       {
         final Offset medianPoint = triangle.getMedianPoint(
-            triangle.a, triangle.b);
+          triangle.a,
+          triangle.b,
+        );
         final Offset medianPos = convertLocalToGlobal(medianPoint);
-        LinePainter.displayDashedLine(canvas: canvas, begin: cPos, end: medianPos);
+        LinePainter.displayDashedLine(
+          canvas: canvas,
+          begin: cPos,
+          end: medianPos,
+        );
         paintText(canvas, r"M_c", medianPos, xOffset: -36.0, yOffset: -20.0);
       }
       {
@@ -182,16 +211,38 @@ class TrianglePainter extends FigurePainter {
     }
     if (showProperties.contains(ShowTriangleProperty.bisector)) {
       try {
-        final Offset bisectorPoint = triangle.getBisectorPoint(triangle.b, triangle.a, triangle.c);
+        final Offset bisectorPoint = triangle.getBisectorPoint(
+          triangle.b,
+          triangle.a,
+          triangle.c,
+        );
         final Offset bisectorPos = convertLocalToGlobal(bisectorPoint);
 
-        LinePainter.displayDashedLine(canvas: canvas, begin: bPos, end: bisectorPos);
+        LinePainter.displayDashedLine(
+          canvas: canvas,
+          begin: bPos,
+          end: bisectorPos,
+        );
         paintText(canvas, "P", bisectorPos, xOffset: -4.0, yOffset: -2.0);
         drawAngleArc(canvas, bPos, bisectorPos, aPos, Colors.red);
-        drawAngleArc(canvas, bPos, bisectorPos, aPos, Colors.red, arcRadius: 30);
+        drawAngleArc(
+          canvas,
+          bPos,
+          bisectorPos,
+          aPos,
+          Colors.red,
+          arcRadius: 30,
+        );
         drawAngleArc(canvas, bPos, cPos, bisectorPos, Colors.blue);
-        drawAngleArc(canvas, bPos, cPos, bisectorPos, Colors.blue, arcRadius: 30);
-      } catch(e) {
+        drawAngleArc(
+          canvas,
+          bPos,
+          cPos,
+          bisectorPos,
+          Colors.blue,
+          arcRadius: 30,
+        );
+      } catch (e) {
         logger.e;
       }
     }
@@ -202,15 +253,19 @@ class TrianglePainter extends FigurePainter {
           ..strokeWidth = 2.0
           ..style = PaintingStyle.fill;
 
-        final midSegment = triangle.getMidsegment(triangle.b, triangle.a, triangle.c);
+        final midSegment = triangle.getMidsegment(
+          triangle.b,
+          triangle.a,
+          triangle.c,
+        );
         final Offset dPos = convertLocalToGlobal(midSegment.first);
-        final Offset ePos =convertLocalToGlobal(midSegment.last);
+        final Offset ePos = convertLocalToGlobal(midSegment.last);
         LinePainter.displayDashedLine(canvas: canvas, begin: dPos, end: ePos);
         canvas.drawCircle(dPos, 5.0, paintPoint);
         canvas.drawCircle(ePos, 5.0, paintPoint);
         paintText(canvas, "D", midSegment.first, xOffset: -4.0, yOffset: -2.0);
         paintText(canvas, "E", midSegment.first, xOffset: -4.0, yOffset: -2.0);
-      } catch(e) {
+      } catch (e) {
         logger.e;
       }
     }
@@ -242,11 +297,15 @@ class TrianglePainter extends FigurePainter {
         paintText(canvas, "O", oPos, xOffset: -4.0, yOffset: -2.0);
 
         final rc = (oPos - aPos).distance;
-        canvas.drawCircle(oPos, rc, Paint()
-          ..color = Colors.grey.shade800
-          ..strokeWidth = 2.0
-          ..style = PaintingStyle.stroke);
-      } catch(e) {
+        canvas.drawCircle(
+          oPos,
+          rc,
+          Paint()
+            ..color = Colors.grey.shade800
+            ..strokeWidth = 2.0
+            ..style = PaintingStyle.stroke,
+        );
+      } catch (e) {
         logger.e;
       }
     }
@@ -259,30 +318,58 @@ class TrianglePainter extends FigurePainter {
 
         final incenter = triangle.getIncenter();
         final Offset oPos = convertLocalToGlobal(incenter);
-        final bisectorAPoint = triangle.getBisectorPoint(triangle.a, triangle.b, triangle.c);
+        final bisectorAPoint = triangle.getBisectorPoint(
+          triangle.a,
+          triangle.b,
+          triangle.c,
+        );
         final Offset bisectorAPos = convertLocalToGlobal(bisectorAPoint);
         {
-          LinePainter.displayDashedLine(canvas: canvas, begin: oPos, end: bisectorAPos);
+          LinePainter.displayDashedLine(
+            canvas: canvas,
+            begin: oPos,
+            end: bisectorAPos,
+          );
         }
         {
-          final bisectorPoint = triangle.getBisectorPoint(triangle.b, triangle.c, triangle.a);
+          final bisectorPoint = triangle.getBisectorPoint(
+            triangle.b,
+            triangle.c,
+            triangle.a,
+          );
           final Offset bisectorPos = convertLocalToGlobal(bisectorPoint);
-          LinePainter.displayDashedLine(canvas: canvas, begin: oPos, end: bisectorPos);
+          LinePainter.displayDashedLine(
+            canvas: canvas,
+            begin: oPos,
+            end: bisectorPos,
+          );
         }
         {
-          final bisectorPoint = triangle.getBisectorPoint(triangle.c, triangle.a, triangle.b);
-          final Offset bisectorPos =  convertLocalToGlobal(bisectorPoint);
-          LinePainter.displayDashedLine(canvas: canvas, begin: oPos, end: bisectorPos);
+          final bisectorPoint = triangle.getBisectorPoint(
+            triangle.c,
+            triangle.a,
+            triangle.b,
+          );
+          final Offset bisectorPos = convertLocalToGlobal(bisectorPoint);
+          LinePainter.displayDashedLine(
+            canvas: canvas,
+            begin: oPos,
+            end: bisectorPos,
+          );
         }
         canvas.drawCircle(oPos, 5.0, paintPoint);
         paintText(canvas, "O", oPos, xOffset: -4.0, yOffset: -2.0);
 
         final ri = (oPos - bisectorAPos).distance;
-        canvas.drawCircle(oPos, ri, Paint()
-          ..color = Colors.grey.shade800
-          ..strokeWidth = 2.0
-          ..style = PaintingStyle.stroke);
-      } catch(e) {
+        canvas.drawCircle(
+          oPos,
+          ri,
+          Paint()
+            ..color = Colors.grey.shade800
+            ..strokeWidth = 2.0
+            ..style = PaintingStyle.stroke,
+        );
+      } catch (e) {
         logger.e;
       }
     }
@@ -292,11 +379,8 @@ class TrianglePainter extends FigurePainter {
 
   @override
   bool shouldRepaint(covariant TrianglePainter oldDelegate) {
-    return oldDelegate.canvasTransform != canvasTransform ||
-      oldDelegate.shape != shape ||
-      oldDelegate.minWidthUnitInPixels != minWidthUnitInPixels ||
-      oldDelegate.minHeightUnitInPixels != heightUnitInPixels ||
-      oldDelegate.heightUnitInPixels != heightUnitInPixels ||
-      oldDelegate.widthUnitInPixels != widthUnitInPixels;
+    return super.shouldRepaint(oldDelegate) ||
+        oldDelegate.minWidthUnitInPixels != minWidthUnitInPixels ||
+        oldDelegate.minHeightUnitInPixels != heightUnitInPixels;
   }
 }
