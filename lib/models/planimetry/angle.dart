@@ -17,6 +17,33 @@ class Angle extends BaseShape {
 
   const Angle({super.enableDragging, required this.leadingLine, required this.followingLine});
 
+  static toDegrees(double angle) {
+    return angle * 180 / pi;
+  }
+
+  static toRadian(double angle) {
+    return angle * pi / 180;
+  }
+
+  static toRadians(double angle) {
+  }
+
+  static double normalize(double angle, double sentinel, AngleType angleType) {
+    return angleType == AngleType.radian ? (angle - sentinel) % (2 * pi) : (angle - sentinel) % 180.0;
+  }
+
+  static double clampAngle({required double a, AngleType angleType = AngleType.radian}) {
+    // Keep in [0, π] or [0, 180]
+    if (angleType == AngleType.radian) {
+      if (a < 0) return 0;
+      if (a > pi) return pi;
+      return a;
+    }
+    if (a < 0) return 0;
+    if (a > 180) return 180;
+    return a;
+  }
+
   @override
   bool isDraggable() {
     return enableDragging || leadingLine.isDraggable() || followingLine.isDraggable();
@@ -96,7 +123,7 @@ class Angle extends BaseShape {
     if (sweepAngle < 0) {
       sweepAngle += 2 * pi;
     }
-    return angleType == AngleType.radian ? sweepAngle : sweepAngle * 180 / pi;
+    return angleType == AngleType.radian ? sweepAngle : Angle.toDegrees(sweepAngle);
   }
 
   // An angle 2 lines on the same surface positive toward x-line (clock wise direction)
