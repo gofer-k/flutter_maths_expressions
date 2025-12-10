@@ -114,7 +114,7 @@ class Angle extends BaseShape {
   }
 
     // An angle 2 lines on the same surface from leadingLine toward line (counter-clockwise direction)
-  double getAngle({AngleType angleType = AngleType.radian}) {
+  double  getAngle({AngleType angleType = AngleType.radian}) {
     final origin = getOriginPoint();
 
     // Calculate the angle of each vector relative to the positive x-axis

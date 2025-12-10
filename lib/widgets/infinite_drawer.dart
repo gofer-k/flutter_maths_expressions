@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/models/planimetry/drag_point.dart';
 import 'package:flutter_maths_expressions/models/planimetry/line.dart';
@@ -73,7 +75,7 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
   // Rotation offset controlled by gesture (in radians).
   double _rotationOffset = 0.0;
   /// Angle between the two lines (0..π).
-  late double _pinchAngle = 0.0;
+  late double _pinchAngle = pi / 6.0;// arbitrarily set the initial angle
 
   @override
   void initState() {
@@ -83,7 +85,6 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
     gridSize = Size.square(20);
     widthUnitInPixels = 2 * gridSize.width;
     heightUnitInPixels = 2 * gridSize.height;
-
     _fabMenu = HierarchicalFABMenu(actionsDockSide: widget.actionsDockSide, insetsFab: 4.0,
         mainMenu: [
           if (widget.enableScaling)
@@ -256,8 +257,8 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
         if (line.matchOnLine(localPoint, 0.25)) {
           setState(() {
             _rotatingShapes.add(shape);
-            _rotationOffset = 0.0;
-            _pinchAngle = 0.0;
+            // _rotationOffset = 0.0;
+            // _pinchAngle = 0.0;
           });
           return;
         }
@@ -266,23 +267,12 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
   }
 
   void _updateRotateShape(ScaleUpdateDetails details) {
-    final localPoint = DragPoint(
-        point: _toLocal(_controller.toLocal(details.localFocalPoint)),
-        enableDragging: true);
-
-    final prevAngle = Angle.angleVertex(vertex: _draggingTargetPoint.point);
-    final currAngle = Angle.angleVertex(vertex: localPoint.point);
-    final delta = currAngle - prevAngle;
-
     setState(() {
+      _rotationOffset += details.rotation;
       // Optional: pinch changes the angle between shapes
       final newAngle = _pinchAngle * details.scale;
-      _pinchAngle = Angle.clampAngle(a: newAngle);
-      _rotationOffset += delta;
+      _pinchAngle = newAngle.clamp(0.0, pi);
     });
-// setState(() {
-//   _rotationStartAngle = details.rotation;
-// });
   }
 
   void _finishRotateShapes(ScaleEndDetails details) {
@@ -295,8 +285,8 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
       );
       setState(() {
         _rotatingShapes.clear();
-        _rotationOffset = 0.0;
-        _pinchAngle = 0.0;
+        // _rotationOffset = 0.0;
+        // _pinchAngle = _pinchAngle;
       });
     }
   }
@@ -326,6 +316,10 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
 
       setState(() {
         // Consider snap the point to the grid
+        final prevAngle = Angle.angleVertex(vertex: _draggingTargetPoint.point);
+        final currAngle = Angle.angleVertex(vertex: localPoint.point);
+        final delta = currAngle - prevAngle;
+        _rotationOffset += delta;
         _draggingTargetPoint = localPoint;
       });
       // _draggingTargetPoint = localPoint;

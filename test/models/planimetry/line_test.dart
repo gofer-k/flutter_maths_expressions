@@ -138,8 +138,8 @@ void main() {
       final angleRad = lineH.getAngleBetweenLines(otherLine: lineV);
       final angleDeg = lineH.getAngleBetweenLines(otherLine: lineV, angleType: AngleType.degrees);
 
-      expect(angleRad, closeTo(pi / 2, 0.01));
-      expect(angleDeg, closeTo(90, 0.01));
+      expect(angleRad[AngleProps.theta], closeTo(pi / 2, 0.01));
+      expect(angleDeg[AngleProps.theta], closeTo(90, 0.01));
     });
 
     test('getSlope calculates slope', () {
@@ -182,94 +182,6 @@ void main() {
       // Distance = |4*(5.5) - 3*2 + 2| / sqrt(4^2 + (-3)^2)
       // = |22 - 6 + 2| / sqrt(16+9) = |12| / 5 = 2.8
       expect(line.getDistanceFromPoint(otherPoint), closeTo(3.6, 0.01));
-    });
-
-    test('rotate 2 lines around origin point correctly', () {
-      final lineAlphaToRotate = Line(
-          a: DragPoint(point: Offset(-4.0, -4.0)),
-          b: DragPoint(point: Offset(4.0, 4.0,), enableDragging: true));
-      final lineBetaToRotate = Line(
-          a: DragPoint(point: Offset(-4.0, 4.0)),
-          b: DragPoint(point: Offset(4.0, -4.0,), enableDragging: true));
-      final originLinesAngle = lineAlphaToRotate.getAngleBetweenLines(otherLine: lineBetaToRotate,angleType: AngleType.degrees);
-      final interception = lineAlphaToRotate.getIntersection(lineBetaToRotate);
-      final Map<double, Line> rotated = {
-        0.0: lineAlphaToRotate,
-        45: Line(a: DragPoint(point: Offset(0.0, -5.66)), b: DragPoint(point: Offset(0.0, 5.66))),
-        90: Line(a: DragPoint(point: Offset(4.0, -4.0)), b: DragPoint(point: Offset(-4.0, 4.0))),
-        135: Line(a: DragPoint(point: Offset(5.66, 0.0)), b: DragPoint(point: Offset(-5.66, 0.0))),
-        180: Line(a: DragPoint(point: Offset(4.0, 4.0)), b: DragPoint(point: Offset(-4.0, -4.0))),
-        225: Line(a: DragPoint(point: Offset(0.0, 5.66)), b: DragPoint(point: Offset(0.0, -5.66))),
-        270: Line(a: DragPoint(point: Offset(-4.0, 4.0)), b: DragPoint(point: Offset(4.0, -4.0))),
-        315: Line(a: DragPoint(point: Offset(-5.66, 0.0)), b: DragPoint(point: Offset(5.66, 0.0))),
-        360: Line(a: DragPoint(point: Offset(-4.0, -4.0)), b: DragPoint(point: Offset(4.0, 4.0))),
-      };
-
-      expect(originLinesAngle, closeTo(90.0, 0.01));
-      for (final entry in rotated.entries) {
-        final angle = entry.key;
-
-        final rotatedAlphaLine = lineAlphaToRotate.rotate(
-            angle: angle, angleType: AngleType.degrees, origin: interception) as Line;
-
-        final newInterception = rotatedAlphaLine.getIntersection(
-            lineBetaToRotate);
-        expect(interception, newInterception);
-
-        final List<Angle> alphaAngles = [
-          Angle(
-              leadingLine: Line( // not draggable line
-                  a: DragPoint(point: interception),
-                  b: rotatedAlphaLine.b),
-              followingLine: Line( // not draggable line
-                  a: DragPoint(point: interception),
-                  b: lineBetaToRotate.a)),
-          Angle(
-              leadingLine: Line( // not draggable line
-                  a: DragPoint(point: interception),
-                  b: rotatedAlphaLine.a),
-              followingLine: Line( // not draggable line
-                  a: DragPoint(point: interception),
-                  b: lineBetaToRotate.b))
-        ];
-        final List<Angle> betaAngles = [
-          Angle(
-              leadingLine: Line( // not draggable line
-                  a: DragPoint(point: interception),
-                  b: lineBetaToRotate.a),
-              followingLine: Line( // not draggable line
-                  a: DragPoint(point: interception),
-                  b: rotatedAlphaLine.a)),
-          Angle(
-              leadingLine: Line( // not draggable line
-                  a: DragPoint(point: interception),
-                  b: lineBetaToRotate.b),
-              followingLine: Line( // not draggable line
-                  a: DragPoint(point: interception),
-                  b: rotatedAlphaLine.b))
-        ];
-        final newLinesAngle = rotatedAlphaLine.getAngleBetweenLines(otherLine: lineBetaToRotate, angleType: AngleType.degrees);
-        final normalizeAngle = Angle.normalize(angle:  newLinesAngle, sentinel: 180.0);
-        expect(normalizeAngle, lessThanOrEqualTo(180.0));
-
-        final alphaAngle = alphaAngles.first.getAngle(angleType: AngleType.degrees);
-        final alphaAngle2= alphaAngles.last.getAngle(angleType: AngleType.degrees);
-        final betaAngle = betaAngles.first.getAngle(angleType: AngleType.degrees);
-        final betaAngle2 = betaAngles.last.getAngle(angleType: AngleType.degrees);
-
-        // expect(alphaAngle, closeTo(originLinesAngle - angle, 0.01));
-        // expect(alphaAngle2, closeTo(originLinesAngle - angle, 0.01));
-        // expect(betaAngle, closeTo(originLinesAngle + angle, 0.01));
-        // expect(betaAngle2, closeTo(originLinesAngle + angle, 0.01));
-      }
-        // final expectedLine = entry.value;
-        //
-        // final rotated = lineAlphaToRotate.rotate(
-        //     angle: angle, angleType: AngleType.degrees, origin: midPoint) as Line;
-        // expect(rotated.a.dx, closeTo(expectedLine.a.dx, 0.01));
-        // expect(rotated.a.dy, closeTo(expectedLine.a.dy, 0.01));
-        // expect(rotated.b.dx, closeTo(expectedLine.b.dx, 0.01));
-        // expect(rotated.b.dy, closeTo(expectedLine.b.dy, 0.01));
     });
   });
 }

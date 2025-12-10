@@ -5,6 +5,13 @@ import 'package:flutter_maths_expressions/models/planimetry/angle.dart';
 import 'package:flutter_maths_expressions/models/planimetry/drag_point.dart';
 import 'base_shape.dart';
 
+enum AngleProps {
+  theta,
+  thetaSupp,
+  arcThetaSweep,
+  arcThetaSuppSweep
+}
+
 class Line extends BaseShape {
   final DragPoint a;
   final DragPoint b;
@@ -118,15 +125,21 @@ class Line extends BaseShape {
   }
 
   // An angle 2 lines on the same surface positive toward x-line (clock wise direction)
-  double getAngleBetweenLines({required Line otherLine, AngleType angleType = AngleType.radian}) {
+  Map<AngleProps, double> getAngleBetweenLines({required Line otherLine, AngleType angleType = AngleType.radian}) {
     final ab = a - b;
     final otherAb = otherLine.a - otherLine.b;
     final dotProduct = ab.dx * otherAb.dx + ab.dy * otherAb.dy;
     final magnitudeAB = ab.distance;
     final magnitudeOtherAb = otherAb.distance;
     final cosTheta = (dotProduct / (magnitudeAB * magnitudeOtherAb)).clamp(-1.0, 1.0);
-    final result = acos(cosTheta);
-    return angleType == AngleType.radian ? result : Angle.toDegrees(result);
+    final theta = acos(cosTheta);
+    final thetaSupp = pi - theta;
+    return {
+      AngleProps.theta: angleType == AngleType.radian ? theta : Angle.toDegrees(theta),
+      AngleProps.thetaSupp: angleType == AngleType.radian ? thetaSupp : Angle.toDegrees(thetaSupp),
+      AngleProps.arcThetaSweep: angleType == AngleType.radian ? theta : Angle.toDegrees(theta),
+      AngleProps.arcThetaSuppSweep: angleType == AngleType.radian ? thetaSupp : Angle.toDegrees(2 * pi - theta),
+    };
   }
 
   double getSlope() {
