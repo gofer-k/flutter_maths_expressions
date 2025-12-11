@@ -40,6 +40,7 @@
   "anglesPolygon": "Sum polygon's angles",
   "angleVerticalOpposite": "Vertical opposite angle theorem",
   "angleAlternate": "Alternate angles theorem",
+  "angleCorresponding": "Corresponding angles theorem",
 
   "angle": "Angle",
   "triangle": "Triangle",

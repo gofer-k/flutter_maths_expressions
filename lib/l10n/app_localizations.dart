@@ -332,6 +332,12 @@ abstract class AppLocalizations {
   /// **'Alternate angles theorem'**
   String get angleAlternate;
 
+  /// No description provided for @angleCorresponding.
+  ///
+  /// In en, this message translates to:
+  /// **'Corresponding angles theorem'**
+  String get angleCorresponding;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:

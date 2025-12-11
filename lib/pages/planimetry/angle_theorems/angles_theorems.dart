@@ -5,6 +5,7 @@ import 'package:flutter_maths_expressions/pages/planimetry/angle_theorems/polygo
 import 'package:flutter_maths_expressions/pages/planimetry/angle_theorems/vertical_opposite_angle_theorem.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../widgets/background_container.dart';
+import 'corresponding_angles.dart';
 
 class AnglesTheoremsPage extends StatefulWidget {
   final String title;
@@ -40,6 +41,7 @@ class _AnglesTheoremsPageState extends State<AnglesTheoremsPage> {
             navigatingTheoremPage(context, l10n.anglesPolygon, PolygonAnglesPage(title: l10n.anglesPolygon)),
             navigatingTheoremPage(context, l10n.angleVerticalOpposite, VerticalOppositeAngle(title: l10n.angleVerticalOpposite)),
             navigatingTheoremPage(context, l10n.angleAlternate, AlternateAnglesTheorem(title: l10n.angleAlternate)),
+            navigatingTheoremPage(context, l10n.angleCorresponding, CorrespondingAngleTheorem(title: l10n.angleCorresponding))
           ],
         )
       ),
