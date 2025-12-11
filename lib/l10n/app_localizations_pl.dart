@@ -123,6 +123,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get angleVerticalOpposite => 'Pionowy przeciwległy kąt';
 
   @override
+  String get angleAlternate => 'Kąty naprzemiennych';
+
+  @override
   String get angle => 'Kąt';
 
   @override

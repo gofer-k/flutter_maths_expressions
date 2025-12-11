@@ -9,7 +9,7 @@ class LinePainter extends FigurePainter {
   late final double minWidthUnitInPixels;
   late final double minHeightUnitInPixels;
   final Color color;
-  final double widhtLine;
+  final double widthLine;
   final List<ShowLineProperty> showProperties;
 
   LinePainter(
@@ -20,7 +20,7 @@ class LinePainter extends FigurePainter {
     required super.canvasTransform,
     required super.viewportSize,
     this.color = Colors.blueGrey,
-    this.widhtLine = 1.0,
+    this.widthLine = 1.0,
   }) {
     minWidthUnitInPixels = 0.25 * widthUnitInPixels;
     minHeightUnitInPixels = 0.25 * heightUnitInPixels;
@@ -92,7 +92,7 @@ class LinePainter extends FigurePainter {
     if (showProperties.contains(ShowLineProperty.solid)) {
       final Paint paint = Paint()
         ..color = color
-        ..strokeWidth = widhtLine
+        ..strokeWidth = widthLine
         ..style = PaintingStyle.stroke;
       canvas.drawLine(aPos, bPos, paint);
     }
@@ -102,7 +102,7 @@ class LinePainter extends FigurePainter {
         begin: aPos,
         end: bPos,
         color: color,
-        width: widhtLine,
+        width: widthLine,
       );
     }
     if (showProperties.contains(ShowLineProperty.dotted)) {
@@ -113,7 +113,7 @@ class LinePainter extends FigurePainter {
         color: color,
         dashWidth: 2.0,
         dashSpace: 2.0,
-        width: widhtLine,
+        width: widthLine,
       );
     }
     // Restore the canvas to its state before canvas.save()

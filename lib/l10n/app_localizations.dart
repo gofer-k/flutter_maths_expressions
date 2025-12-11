@@ -326,6 +326,12 @@ abstract class AppLocalizations {
   /// **'Vertical opposite angle theorem'**
   String get angleVerticalOpposite;
 
+  /// No description provided for @angleAlternate.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternate angles theorem'**
+  String get angleAlternate;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:

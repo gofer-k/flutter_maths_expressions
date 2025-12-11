@@ -148,7 +148,7 @@ class _VerticalOppositeAngleState extends State<VerticalOppositeAngle> {
             [ShowLineProperty.solid],
             canvasTransform: canvasTransform,
             viewportSize: viewportSize,
-            widhtLine: 3.0,
+            widthLine: 3.0,
             color: lineColor,
         );
       },
