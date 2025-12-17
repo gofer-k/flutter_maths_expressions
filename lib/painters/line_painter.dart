@@ -30,8 +30,8 @@ class LinePainter extends FigurePainter {
     required Canvas canvas,
     required Offset begin,
     required Offset end,
-    double dashWidth = 5.0,
-    double dashSpace = 3.0,
+    double dashWidth = 12.0,
+    double dashSpace = 5.0,
     Color color = Colors.blueGrey,
     double width = 1.0,
   }) {

@@ -76,13 +76,12 @@ class AnglePainter extends FigurePainter {
       ..color = Colors.black87
       ..strokeWidth = 2.0
       ..style = PaintingStyle.fill;
+    final Paint draggablePaintPoint = Paint()
+      ..color = Colors.green
+      ..strokeWidth = 3.0
+      ..style = PaintingStyle.fill;
 
     if (showProperties.contains(ShowProperty.points)) {
-      final Paint draggablePaintPoint = Paint()
-        ..color = Colors.green
-        ..strokeWidth = 3.0
-        ..style = PaintingStyle.fill;
-
       canvas.drawCircle(
         aPos,
         5.0,
@@ -107,7 +106,8 @@ class AnglePainter extends FigurePainter {
 
     if (intersectinPos.isFinite &&
         showProperties.contains(ShowProperty.interception)) {
-      canvas.drawCircle(intersectinPos, 5.0, fixedPaintPoint);
+      canvas.drawCircle(
+          intersectinPos, 5.0, leadingLine.b.enableDragging ? draggablePaintPoint : fixedPaintPoint,);
       final angleVal = angle.getAngle();
       drawAngleArc(
         canvas,

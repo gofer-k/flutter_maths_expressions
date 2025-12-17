@@ -129,6 +129,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get angleCorresponding => 'Kąty odpowiadających';
 
   @override
+  String get angleDouble => 'Kąt podwójny';
+
+  @override
   String get angle => 'Kąt';
 
   @override

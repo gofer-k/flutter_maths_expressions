@@ -9,15 +9,20 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef9ec9d5-4238-48d0-8ec4-4a3d06cf6aab" name="Changes" comment="feat: add alternate angles theorem">
-      <change afterPath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/corresponding_angles.dart" afterDir="false" />
+    <list default="true" id="ef9ec9d5-4238-48d0-8ec4-4a3d06cf6aab" name="Changes" comment="feat: add corresponding angles theorem">
+      <change afterPath="$PROJECT_DIR$/lib/models/planimetry/circle.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/double_angle_at_circle.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/painters/circle_painter.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/l10n/app_en.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_en.arb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_localizations.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations_en.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_localizations_en.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations_pl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_localizations_pl.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/l10n/app_pl.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_pl.arb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/planimetry/line.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/planimetry/line.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/angles_theorems.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/angles_theorems.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/painters/angle_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painters/angle_painter.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/painters/line_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painters/line_painter.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +98,7 @@
     "Flutter Test.rotate around midpoint if origin is null.executor": "Run",
     "Flutter Test.rotate around origin rotates points correctly.executor": "Run",
     "Flutter Test.tests in line_test.dart.executor": "Run",
-    "Flutter.main.dart.executor": "Run",
+    "Flutter.main.dart.executor": "Debug",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Notification.DisplayName-DoNotAsk-Flutter Messages": "Flutter Messages",
     "Notification.DoNotAsk-Flutter Messages": "true",
@@ -107,6 +112,7 @@
     "io.flutter.reload.alreadyRun": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/home/useme/develoment/dev/Flutter/flutter_maths_expressions",
+    "settings.editor.selected.configurable": "configurable.group.tools",
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
@@ -222,7 +228,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765473635994</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="feat: add corresponding angles theorem">
+      <option name="closed" value="true" />
+      <created>1765474786078</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1765474786078</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -240,7 +254,8 @@
     <MESSAGE value="fix: rotate lines by user gestures" />
     <MESSAGE value="fix: correct to draw angles between lines by user gestures" />
     <MESSAGE value="feat: add alternate angles theorem" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add alternate angles theorem" />
+    <MESSAGE value="feat: add corresponding angles theorem" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add corresponding angles theorem" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -255,6 +270,26 @@
           <url>file://$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/alternate_angles.dart</url>
           <line>129</line>
           <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/painters/polygon_painter.dart</url>
+          <line>62</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/double_angle_at_circle.dart</url>
+          <line>288</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/double_angle_at_circle.dart</url>
+          <line>300</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/double_angle_at_circle.dart</url>
+          <line>269</line>
+          <option name="timeStamp" value="44" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

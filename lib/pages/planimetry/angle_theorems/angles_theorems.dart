@@ -6,6 +6,7 @@ import 'package:flutter_maths_expressions/pages/planimetry/angle_theorems/vertic
 import '../../../l10n/app_localizations.dart';
 import '../../../widgets/background_container.dart';
 import 'corresponding_angles.dart';
+import 'double_angle_at_circle.dart';
 
 class AnglesTheoremsPage extends StatefulWidget {
   final String title;
@@ -41,7 +42,8 @@ class _AnglesTheoremsPageState extends State<AnglesTheoremsPage> {
             navigatingTheoremPage(context, l10n.anglesPolygon, PolygonAnglesPage(title: l10n.anglesPolygon)),
             navigatingTheoremPage(context, l10n.angleVerticalOpposite, VerticalOppositeAngle(title: l10n.angleVerticalOpposite)),
             navigatingTheoremPage(context, l10n.angleAlternate, AlternateAnglesTheorem(title: l10n.angleAlternate)),
-            navigatingTheoremPage(context, l10n.angleCorresponding, CorrespondingAngleTheorem(title: l10n.angleCorresponding))
+            navigatingTheoremPage(context, l10n.angleCorresponding, CorrespondingAngleTheorem(title: l10n.angleCorresponding)),
+            navigatingTheoremPage(context, l10n.angleDouble, DoubleAngleAtCircleTheorem(title: l10n.angleDouble)),
           ],
         )
       ),

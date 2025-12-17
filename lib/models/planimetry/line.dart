@@ -45,6 +45,9 @@ class Line extends BaseShape {
     if (b.matchPoint(localPoint, tolerance) != null) {
       return b;
     }
+    if (matchOnLine(localPoint, tolerance)) {
+      return localPoint;
+    }
 
     return null;
   }
@@ -70,9 +73,13 @@ class Line extends BaseShape {
 
   @override
   BaseShape moveBy(DragPoint delta) {
-    if (enableDragging || a.enableDragging || b.enableDragging) {
+    if (enableDragging) {
+      return Line(a: a + delta, b: b + delta, enableDragging: enableDragging, enableRotate: enableRotate);
+    }
+    if (a.enableDragging || b.enableDragging) {
       return Line(a: a.enableDragging ? a + delta : a,
-          b: b.enableDragging ? b + delta : b);
+          b: b.enableDragging ? b + delta : b,
+          enableDragging: enableDragging, enableRotate: enableRotate);
     }
     return this;
   }
