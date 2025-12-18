@@ -101,8 +101,8 @@ class Line extends BaseShape {
   BaseShape rotate({double angle = 0.0, Offset? origin, AngleType angleType = AngleType.radian}) {
     if (angle != 0.0) {
       final center = origin ?? getMidpoint();
-      final newA = _rotatePoint(a.point, center, angle, angleType: angleType);
-      final newB = _rotatePoint(b.point, center, angle, angleType: angleType);
+      final newA = DragPoint.rotatePoint(a.point, center, angle, angleType: angleType);
+      final newB = DragPoint.rotatePoint(b.point, center, angle, angleType: angleType);
       return Line(
         a: DragPoint(point: newA, enableDragging: a.enableDragging),
         b: DragPoint(point: newB, enableDragging: b.enableDragging),
@@ -227,13 +227,5 @@ class Line extends BaseShape {
       return double.nan;
     }
     return (A * point.dx + B * point.dy + C).abs() / (A * A + B * B);
-  }
-
-  Offset _rotatePoint(Offset point, Offset center, double angle, {required AngleType angleType}) {
-    final targetAngle = angleType == AngleType.radian ? angle : Angle.toRadian(angle);
-    final origToCenter = point - center;
-    return Offset(
-      origToCenter.dx * cos(targetAngle) - origToCenter.dy * sin(targetAngle),
-      origToCenter.dx * sin(targetAngle) + origToCenter.dy * cos(targetAngle));
   }
 }

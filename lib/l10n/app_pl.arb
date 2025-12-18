@@ -44,6 +44,12 @@
   "angleCorresponding": "Kąty odpowiadających",
   "angleDouble": "Kąt podwójny",
 
+  "circleTheorems": "Circle theorems",
+  "circleProperties": "Circle properties",
+
+  "chord": "Cięciwa",
+  "radius": "Promień",
+  "diameter": "Średnica",
   "triangle": "Trójkąt",
   "angle": "Kąt",
   "sequencesPageTitle": "Ciągi",

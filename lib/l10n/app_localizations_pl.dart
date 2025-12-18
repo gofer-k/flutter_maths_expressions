@@ -132,6 +132,21 @@ class AppLocalizationsPl extends AppLocalizations {
   String get angleDouble => 'Kąt podwójny';
 
   @override
+  String get circleTheorems => 'Circle theorems';
+
+  @override
+  String get circleProperties => 'Circle properties';
+
+  @override
+  String get chord => 'Cięciwa';
+
+  @override
+  String get radius => 'Promień';
+
+  @override
+  String get diameter => 'Średnica';
+
+  @override
   String get angle => 'Kąt';
 
   @override

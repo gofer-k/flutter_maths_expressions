@@ -1,6 +1,9 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter_maths_expressions/models/planimetry/base_shape.dart';
+
+import 'angle.dart';
 
 class DragPoint extends BaseShape {
   final Offset point;
@@ -19,6 +22,13 @@ class DragPoint extends BaseShape {
   static DragPoint zero({drag = false}) => DragPoint(point: Offset(0.0, 0.0), enableDragging: drag);
   static DragPoint infinite({drag = false}) => DragPoint(point: Offset(0.0, 0.0), enableDragging: drag);
   static DragPoint fromOffset(Offset offset, {drag = false}) => DragPoint(point: offset, enableDragging: drag);
+  static Offset rotatePoint(Offset point, Offset center, double angle, {required AngleType angleType}) {
+    final targetAngle = angleType == AngleType.radian ? angle : Angle.toRadian(angle);
+    final origToCenter = point - center;
+    return Offset(
+        origToCenter.dx * cos(targetAngle) - origToCenter.dy * sin(targetAngle),
+        origToCenter.dx * sin(targetAngle) + origToCenter.dy * cos(targetAngle));
+  }
 
   @override
   DragPoint copyWith() {

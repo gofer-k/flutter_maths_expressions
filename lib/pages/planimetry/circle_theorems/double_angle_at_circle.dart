@@ -12,7 +12,7 @@ import '../../../painters/line_painter.dart';
 import '../../../widgets/background_container.dart';
 import '../../../widgets/display_expression.dart';
 import '../../../widgets/infinite_drawer.dart';
-import 'alternate_angles.dart';
+import '../angle_theorems/alternate_angles.dart';
 
 class DoubleAngleAtCircleTheorem extends StatefulWidget {
   final String title;

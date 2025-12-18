@@ -4,6 +4,7 @@ import 'package:flutter_maths_expressions/pages/planimetry/triangle_theorems/tri
 import '../../l10n/app_localizations.dart';
 import '../../widgets/background_container.dart';
 import 'angle_theorems/angles_theorems.dart';
+import 'circle_theorems/circle_theorems.dart';
 
 class PlanimetryPage extends StatefulWidget {
   final String title;
@@ -49,6 +50,7 @@ class _PlanimetryPageState extends State<PlanimetryPage> {
               context, null, l10n.triangleTheorems, TriangleTheoremsPage(title: l10n.triangleTheorems)),
             navigatingCard(
                 context, null, l10n.anglesTheorems, AnglesTheoremsPage(title: l10n.anglesTheorems)),
+            navigatingCard(context, null, l10n.circleTheorems, CircleTheoremsPage(title: l10n.circleTheorems))
           ],
         ),
       ),

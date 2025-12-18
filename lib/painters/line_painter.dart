@@ -11,6 +11,7 @@ class LinePainter extends FigurePainter {
   final Color color;
   final double widthLine;
   final List<ShowLineProperty> showProperties;
+  final bool showEnds;
 
   LinePainter(
     super.widthUnitInPixels,
@@ -21,6 +22,7 @@ class LinePainter extends FigurePainter {
     required super.viewportSize,
     this.color = Colors.blueGrey,
     this.widthLine = 1.0,
+    this.showEnds = false
   }) {
     minWidthUnitInPixels = 0.25 * widthUnitInPixels;
     minHeightUnitInPixels = 0.25 * heightUnitInPixels;
@@ -115,6 +117,14 @@ class LinePainter extends FigurePainter {
         dashSpace: 2.0,
         width: widthLine,
       );
+    }
+    if (showEnds) {
+      final Paint paint = Paint()
+        ..color = color
+        ..strokeWidth = widthLine
+        ..style = PaintingStyle.stroke;
+      canvas.drawCircle(aPos, 4.0, paint);
+      canvas.drawCircle(bPos, 4.0, paint);
     }
     // Restore the canvas to its state before canvas.save()
     canvas.restore();

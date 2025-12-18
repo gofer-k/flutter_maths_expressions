@@ -132,6 +132,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get angleDouble => 'Double ange theprem';
 
   @override
+  String get circleTheorems => 'Circle theorems';
+
+  @override
+  String get circleProperties => 'Circle properties';
+
+  @override
+  String get chord => 'Chord';
+
+  @override
+  String get radius => 'Radius';
+
+  @override
+  String get diameter => 'Diameter';
+
+  @override
   String get angle => 'Angle';
 
   @override

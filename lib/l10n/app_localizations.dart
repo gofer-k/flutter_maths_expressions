@@ -344,6 +344,36 @@ abstract class AppLocalizations {
   /// **'Double ange theprem'**
   String get angleDouble;
 
+  /// No description provided for @circleTheorems.
+  ///
+  /// In en, this message translates to:
+  /// **'Circle theorems'**
+  String get circleTheorems;
+
+  /// No description provided for @circleProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'Circle properties'**
+  String get circleProperties;
+
+  /// No description provided for @chord.
+  ///
+  /// In en, this message translates to:
+  /// **'Chord'**
+  String get chord;
+
+  /// No description provided for @radius.
+  ///
+  /// In en, this message translates to:
+  /// **'Radius'**
+  String get radius;
+
+  /// No description provided for @diameter.
+  ///
+  /// In en, this message translates to:
+  /// **'Diameter'**
+  String get diameter;
+
   /// No description provided for @angle.
   ///
   /// In en, this message translates to:

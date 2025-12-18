@@ -43,6 +43,11 @@
   "angleCorresponding": "Corresponding angles theorem",
   "angleDouble": "Double ange theprem",
 
+  "circleTheorems": "Circle theorems",
+  "circleProperties": "Circle properties",
+  "chord": "Chord",
+  "radius": "Radius",
+  "diameter": "Diameter",
   "angle": "Angle",
   "triangle": "Triangle",
   "sequencesPageTitle": "Sequences",
