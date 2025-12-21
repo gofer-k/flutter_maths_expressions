@@ -356,6 +356,12 @@ abstract class AppLocalizations {
   /// **'Circle properties'**
   String get circleProperties;
 
+  /// No description provided for @circularSegmentArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Circular segment area'**
+  String get circularSegmentArea;
+
   /// No description provided for @chord.
   ///
   /// In en, this message translates to:

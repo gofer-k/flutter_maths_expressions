@@ -86,7 +86,9 @@ class _CirclePropertiesPageState extends State<CirclePropertiesPage> {
     String szCircleArea =
         r"A = \pi \cdot r^2 ="" ${pi.toStringAsFixed(2)}"r"\cdot r^2 = ""${mutableCircle.getArea().toStringAsFixed(2)}";
     String szCircleCircumference =
-        r"c = 2 \cdot \pi \cdot r = ""${mutableCircle.getCircumference().toStringAsFixed(2)}";
+        r"C = 2 \cdot \pi \cdot r = ""${mutableCircle
+        .getCircumference()
+        .toStringAsFixed(2)}";
     String szCircleChordLength =
         r"c_l = 2 \cdot \sqrt{2 c_h \cdot r - c^2_h} = ""${mutableCircle.getChordDistanceByHeight(mutableChordHeight).toStringAsFixed(1)}";
     return BackgroundContainer(
@@ -117,21 +119,25 @@ class _CirclePropertiesPageState extends State<CirclePropertiesPage> {
                       expression: r"r = ""${mutableCircle.radius.toStringAsFixed(1)}",
                       scale: 2.0,
                     ),
+                    SizedBox(height: 4),
                     DisplayExpression(
                       context: context,
                       expression: r"d = 2 \cdot r = ""${(mutableCircle.radius*2.0).toStringAsFixed(1)}",
                       scale: 2.0,
                     ),
+                    SizedBox(height: 4),
                     DisplayExpression(
                       context: context,
                       expression: szCircleArea,
                       scale: 2.0,
                     ),
+                    SizedBox(height: 4),
                     DisplayExpression(
                       context: context,
                       expression: szCircleCircumference,
                       scale: 2.0,
                     ),
+                    SizedBox(height: 4),
                     DisplayExpression(
                       context: context,
                       expression: szCircleChordLength,
@@ -153,30 +159,7 @@ class _CirclePropertiesPageState extends State<CirclePropertiesPage> {
       drawableShapes: _drawablesShapes,
       enableCrossAxes: true,
       enablePinchAngle: false,
-      enablePanning: true,
-      onDragShape: (oldShapes, originPoint, targetPoint) {
-        setState(() {
-          // // Drag target point is stick to teh axes line
-          // if ((targetPoint.dx - originPoint.dx).abs() > 0.2
-          //     || (targetPoint.dy > circle.center.dy)
-          //     || (targetPoint.dy < circle.center.dy - circle.radius)
-          // ) {
-          //   return;
-          // }
-          //
-          // for (final oldShape in oldShapes) {
-          //   final index = _drawablesShapes.indexOf(
-          //       oldShape as DrawableShape<LinePainter>);
-          //   if (index != -1) {
-          //     final double newDy = (circle.center.dy - circle.radius - targetPoint.dy).abs();
-          //     final newChord = circle.buildChord(height: newDy, draggable: true);
-          //     if (changeProperties(newChord)) {
-          //       changeDrawableShapes();
-          //     }
-          //   }
-          // }
-        });
-      },
+      enablePanning: false,
     );
   }
 
@@ -211,6 +194,7 @@ class _CirclePropertiesPageState extends State<CirclePropertiesPage> {
                 widthUnitInPixels,
                 heightUnitInPixels,
                 [circle],
+                [ShowCircleProperty.circularSegment],
                 canvasTransform: canvasTransform,
                 viewportSize: viewportSize,
               );
@@ -239,7 +223,6 @@ class _CirclePropertiesPageState extends State<CirclePropertiesPage> {
         lineType: ShowLineProperty.dashed,
       ),
     );
-
   }
 
   DrawableLine changeDrawableLine({

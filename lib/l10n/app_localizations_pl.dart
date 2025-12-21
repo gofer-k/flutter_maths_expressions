@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -136,6 +137,9 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get circleProperties => 'Circle properties';
+
+  @override
+  String get circularSegmentArea => 'Powierzchnia segmentu koła';
 
   @override
   String get chord => 'Cięciwa';

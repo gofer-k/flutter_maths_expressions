@@ -147,6 +147,7 @@ class _DoubleAngleAtCircleTheoremState
           widthUnitInPixels,
           heightUnitInPixels,
           [circle],
+          [],
           canvasTransform: canvasTransform,
           viewportSize: viewportSize,
         );

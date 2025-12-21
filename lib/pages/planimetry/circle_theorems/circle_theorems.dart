@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/pages/planimetry/circle_theorems/circle_properties.dart';
+import 'package:flutter_maths_expressions/pages/planimetry/circle_theorems/circular_segment.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../widgets/background_container.dart';
 import 'double_angle_at_circle.dart';
@@ -36,6 +38,8 @@ class _CircleTheoremsPageState extends State<CircleTheoremsPage> {
             children: [
               navigatingTheoremPage(context, l10n.circleProperties, CirclePropertiesPage(title: l10n.circleProperties)),
               navigatingTheoremPage(context, l10n.angleDouble, DoubleAngleAtCircleTheorem(title: l10n.angleDouble)),
+              navigatingTheoremPage(context, l10n.circularSegmentArea,
+                  CircularSegment(title: l10n.circularSegmentArea)),
             ],
           )
       ),

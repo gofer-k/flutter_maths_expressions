@@ -1,9 +1,25 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_maths_expressions/models/planimetry/circle.dart';
+
 import 'figure_painter.dart';
 
+enum ShowCircleProperty { fullCircle, circularSegment }
+
 class CirclePainter extends FigurePainter {
-  CirclePainter(super.widthUnitInPixels, super.heightUnitInPixels, super.shapes, {required super.canvasTransform, required super.viewportSize});
+  final double? chordHeight;
+  final List<ShowCircleProperty> showCircleProperty;
+
+  CirclePainter(
+    super.widthUnitInPixels,
+    super.heightUnitInPixels,
+    super.shapes,
+    this.showCircleProperty, {
+    required super.canvasTransform,
+    required super.viewportSize,
+    this.chordHeight,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -30,5 +46,39 @@ class CirclePainter extends FigurePainter {
     final centerPoint = convertLocalToGlobal(circle.center);
     final radiusInGlobal = circle.radius * heightUnitInPixels;
     canvas.drawCircle(centerPoint, radiusInGlobal, paintCircle);
+
+    if (showCircleProperty.contains(ShowCircleProperty.circularSegment) &&
+        chordHeight != null) {
+      final Paint paintCircularSegment = Paint()
+        ..color = Colors.purpleAccent
+        ..strokeWidth = 1.0
+        ..style = PaintingStyle.fill;
+
+      final double theta =
+          2.0 * acos((circle.radius - chordHeight!) / circle.radius);
+      final double startAngle = -theta / 2 + pi / 2;
+      final double sweepAngle = theta;
+
+      // Compute end points of chord on the circle
+      final Offset p1 =
+          centerPoint +
+          Offset(
+            cos(startAngle) * radiusInGlobal,
+            sin(startAngle) * radiusInGlobal,
+          );
+      final Path path = Path()
+        ..moveTo(p1.dx, p1.dy)
+        // arc along the circle between p1 and p2
+        ..arcTo(
+          Rect.fromCircle(center: centerPoint, radius: radiusInGlobal),
+          startAngle,
+          sweepAngle,
+          false,
+        )
+        // close with the chord (straight line p2 -> p1)
+        ..lineTo(p1.dx, p1.dy)
+        ..close();
+      canvas.drawPath(path, paintCircularSegment);
+    }
   }
 }
