@@ -9,21 +9,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef9ec9d5-4238-48d0-8ec4-4a3d06cf6aab" name="Changes" comment="feat: add double angle at circle">
-      <change afterPath="$PROJECT_DIR$/lib/pages/planimetry/circle_theorems/circle_properties.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/pages/planimetry/circle_theorems/circle_theorems.dart" afterDir="false" />
+    <list default="true" id="ef9ec9d5-4238-48d0-8ec4-4a3d06cf6aab" name="Changes" comment="feat: add circe properties page">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/l10n/app_en.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_en.arb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_localizations.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations_en.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_localizations_en.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/l10n/app_localizations_pl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_localizations_pl.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/l10n/app_pl.arb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/l10n/app_pl.arb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/planimetry/drag_point.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/planimetry/drag_point.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/planimetry/line.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/planimetry/line.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/angles_theorems.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/angles_theorems.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/angle_theorems/double_angle_at_circle.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/circle_theorems/double_angle_at_circle.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/planimetry/planimetry_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/planimetry/planimetry_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/painters/line_painter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/painters/line_painter.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/block_shapes_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/block_shapes_page.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,6 +97,7 @@
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "main",
     "io.flutter.reload.alreadyRun": "true",
     "kotlin-language-version-configured": "true",
@@ -250,7 +239,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765973885727</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="feat: add circe properties page">
+      <option name="closed" value="true" />
+      <created>1766073646013</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1766073646013</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -270,7 +267,8 @@
     <MESSAGE value="feat: add alternate angles theorem" />
     <MESSAGE value="feat: add corresponding angles theorem" />
     <MESSAGE value="feat: add double angle at circle" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add double angle at circle" />
+    <MESSAGE value="feat: add circe properties page" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add circe properties page" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

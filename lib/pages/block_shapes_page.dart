@@ -52,6 +52,18 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
     ShapeType.saddle: ShapeModel(type: ShapeType.saddle, a: 200, b: 100, c: 25) // a - x-axis, b - y-axis, c - z-axis
   };
 
+  final _shapeColor = <String, Sp3dMaterial>{
+    "red": FSp3dMaterial.red,
+    "green": FSp3dMaterial.green,
+    "blue": FSp3dMaterial.blue,
+    "orange": FSp3dMaterial.orange,
+    "pink": FSp3dMaterial.pink,
+    "purple": FSp3dMaterial.purple,
+    "grey": FSp3dMaterial.grey,
+    "white": FSp3dMaterial.white,
+    "black": FSp3dMaterial.black,
+  };
+
   @override
   void initState() {
     super.initState();
@@ -219,21 +231,21 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
     _world = Sp3dWorld(_objs);
   }
 
-  void _renderShape(ShapeType selectedShape) {
+  void _renderShape(ShapeType selectedShape, {Sp3dMaterial? shapeColor}) {
     Sp3dObj? obj;
     switch (selectedShape) {
       case ShapeType.ellipsoid:
-        obj = _renderEllipsoid();
+        obj = _renderEllipsoid(shapeColor: shapeColor);
       case ShapeType.hyperboloidOneShell:
-        obj = _renderHyperboloid(twoShell: false);
+        obj = _renderHyperboloid(twoShell: false, shapeColor: shapeColor);
       case ShapeType.hyperboloidTwoShell:
-        obj = _renderHyperboloid(twoShell: true);
+        obj = _renderHyperboloid(twoShell: true, shapeColor: shapeColor);
         case ShapeType.saddle:
-          obj = _renderSaddle();
+          obj = _renderSaddle(shapeColor: shapeColor);
       case ShapeType.cone:
-        obj = _renderCone();
+        obj = _renderCone(shapeColor: shapeColor);
       case ShapeType.cylinder:
-        obj = _renderCylinder();
+        obj = _renderCylinder(shapeColor: shapeColor);
     }
     if (obj != null) {
       if (_objs.isNotEmpty) {
@@ -245,14 +257,14 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
     }
   }
 
-  Sp3dObj? _renderEllipsoid() {
+  Sp3dObj? _renderEllipsoid({Sp3dMaterial? shapeColor}) {
     final ShapeModel? model = _shapeModel[ShapeType.ellipsoid];
 
     if (model != null) {
       Sp3dObj obj = _shapeModel[ShapeType.ellipsoid]!.display();
       obj.materials.add(FSp3dMaterial.blue.deepCopy());
       obj.fragments[0].faces[0].materialIndex = 1;
-      obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+      obj.materials[0] = shapeColor ?? FSp3dMaterial.grey.deepCopy()
         ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
       obj.layerNum = -3;
 
@@ -261,14 +273,14 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
     return null;
   }
 
-  Sp3dObj? _renderHyperboloid({required bool twoShell}) {
+  Sp3dObj? _renderHyperboloid({required bool twoShell, Sp3dMaterial? shapeColor}) {
     final ShapeModel? model = _shapeModel[twoShell ? ShapeType.hyperboloidTwoShell : ShapeType.hyperboloidOneShell];
 
     if (model != null) {
       Sp3dObj? obj = model.display();
       obj.materials.add(FSp3dMaterial.red.deepCopy());
       obj.fragments[0].faces[0].materialIndex = 1;
-      obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+      obj.materials[0] = shapeColor ?? FSp3dMaterial.grey.deepCopy()
         ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
       obj.rotate(Sp3dV3D(1, 0, 0), 90 * pi / 180);
           return obj;
@@ -276,7 +288,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
     return null;
   }
 
-  Sp3dObj? _renderSaddle() {
+  Sp3dObj? _renderSaddle({Sp3dMaterial? shapeColor}) {
     final ShapeModel? model = _shapeModel[ShapeType.saddle];
 
     if (model != null) {
@@ -284,7 +296,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
       if (obj != null) {
         obj.materials.add(FSp3dMaterial.red.deepCopy());
         obj.fragments[0].faces[0].materialIndex = 1;
-        obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+        obj.materials[0] = shapeColor ??  FSp3dMaterial.grey.deepCopy()
           ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
         obj.rotate(Sp3dV3D(1, 0, 0), -90 * pi / 180);
       }
@@ -293,7 +305,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
     return null;
   }
 
-  Sp3dObj? _renderCone() {
+  Sp3dObj? _renderCone({Sp3dMaterial? shapeColor}) {
     final ShapeModel? model = _shapeModel[ShapeType.cone];
 
     if (model != null) {
@@ -302,7 +314,7 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
       if (obj != null) {
         obj.materials.add(FSp3dMaterial.red.deepCopy());
         obj.fragments[0].faces[0].materialIndex = 1;
-        obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+        obj.materials[0] = shapeColor ?? FSp3dMaterial.grey.deepCopy()
           ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
         obj.rotate(Sp3dV3D(-1, 0, 0).nor(), 90 * pi / 180);
       }
@@ -311,14 +323,14 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
     return null;
   }
 
-  Sp3dObj? _renderCylinder() {
+  Sp3dObj? _renderCylinder({Sp3dMaterial? shapeColor}) {
     final ShapeModel? model = _shapeModel[ShapeType.cylinder];
 
      if (model != null) {
        Sp3dObj? obj = model.display();
        obj.materials.add(FSp3dMaterial.red.deepCopy());
        obj.fragments[0].faces[0].materialIndex = 1;
-       obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+       obj.materials[0] = shapeColor ?? FSp3dMaterial.grey.deepCopy()
          ..strokeColor = const Color.fromARGB(0, 0, 0, 255);
        obj.rotate(Sp3dV3D(1, 0, 0), 90 * pi / 180);
        return obj;
@@ -419,11 +431,54 @@ class _BlockShapesPageState extends State<BlockShapesPage> with SingleTickerProv
   }
 
   Widget _editParameters({required double horizontalMargin, bool is3dParameters = true}) {
+    String? selectedColorName = _shapeColor.entries
+        .firstWhere((entry) => entry.value == _shapeModel[_currentShape]?.color,
+        orElse: () => _shapeColor.entries.first)
+        .key;
+
     return Padding(
       padding: EdgeInsetsGeometry.symmetric(horizontal: horizontalMargin),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Dropdown for selecting the shape's color
+          DropdownButton<String>(
+            value: selectedColorName,
+            isExpanded: true,
+            items: _shapeColor.keys.map((String colorName) {
+              final colorMaterial = _shapeColor[colorName];
+              return DropdownMenuItem<String>(
+                value: colorName,
+                child: Row(
+                  children: [
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                          color: colorMaterial?.bg,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.black54)
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(colorName),
+                  ],
+                ),
+              );
+            }).toList(),
+            onChanged: (String? newColorName) {
+              if (newColorName != null) {
+                setState(() {
+                  // Get the material from the color name
+                  final newColor = _shapeColor[newColorName];
+                  // Update the model
+                  _shapeModel[_currentShape]?.color = newColor;
+                  // Rerender the shape with the new color
+                  _renderShape(_currentShape, shapeColor: newColor);
+                });
+              }
+            },
+          ),
           FactorSlider(label: r'a', initialValue: _shapeModel[_currentShape]!.a, minValue: 20, maxValue: 200,
             onChanged: (double value) {
               if (_shapeModel[_currentShape]?.a != value) {

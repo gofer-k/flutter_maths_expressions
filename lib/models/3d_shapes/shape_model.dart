@@ -12,7 +12,8 @@ class ShapeModel {
   double b; // shape's extension through z - axis
   double c; // shape's extension through y - axis
   ShapeType type;
-  ShapeModel({required this.type, required this.a, required this.b, required this.c});
+  Sp3dMaterial? color;
+  ShapeModel({required this.type, required this.a, required this.b, required this.c, this.color});
 
   Sp3dObj display() {
     switch (type) {
