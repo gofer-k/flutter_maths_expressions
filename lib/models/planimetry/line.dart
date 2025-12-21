@@ -34,7 +34,7 @@ class Line extends BaseShape {
 
   @override
   BaseShape copyWith() {
-    return Line(a: a, b: b,);
+    return Line(a: a, b: b, enableDragging: enableDragging, enableRotate: enableRotate);
   }
 
   @override

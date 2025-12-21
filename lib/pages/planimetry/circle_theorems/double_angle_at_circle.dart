@@ -212,7 +212,7 @@ class _DoubleAngleAtCircleTheoremState
               canvasTransform: canvasTransform,
               viewportSize: viewportSize,
               widthLine: widthLine,
-              color: lineColor,
+              color: lineColor
             );
           },
     );

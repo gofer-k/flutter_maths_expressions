@@ -26,13 +26,13 @@ class _VerticalOppositeAngleState extends State<VerticalOppositeAngle> {
   DockSide dock = DockSide.leftTop;
   final List<Line> originLines = [
     Line(
-      a: DragPoint(point: Offset(-4.0, -4.0), enableDragging: true),
-      b: DragPoint(point: Offset(4.0, 4.0), enableDragging: true),
-        enableRotate: true),
+      a: DragPoint(point: Offset(-4.0, -4.0)),
+      b: DragPoint(point: Offset(4.0, 4.0)),
+      enableRotate: true),
     Line(
-      a: DragPoint(point: Offset(-4.0, 4.0), enableDragging: true),
-      b: DragPoint(point: Offset(4.0, -4.0), enableDragging: true),
-      enableDragging: true)];
+      a: DragPoint(point: Offset(-4.0, 4.0)),
+      b: DragPoint(point: Offset(4.0, -4.0)),
+      enableRotate: true)];
   final List<DrawableShape> _drawablesShapes = List.empty(growable: true);
   final List<Line> lines = List.empty(growable: true);
   late double alphaAngle = 90.0;
@@ -185,11 +185,11 @@ class _VerticalOppositeAngleState extends State<VerticalOppositeAngle> {
 
   void changeDrawableShapes() {
     _drawablesShapes.clear();
-    _drawablesShapes.add(changeDrawableLine(lines.first, true, Colors.greenAccent));
-    _drawablesShapes.add(changeDrawableLine(lines.last, false, Colors.redAccent));
+    _drawablesShapes.add(changeDrawableLine(lines.first, true, Colors.black54));
+    _drawablesShapes.add(changeDrawableLine(lines.last, false, Colors.black26));
     _drawablesShapes.add(changeDrawableAngle(angle: alphaAngles.first, color: Colors.green, widthLine: 3.0, arcRadius: 45.0));
     _drawablesShapes.add(changeDrawableAngle(angle: alphaAngles.last, color: Colors.green, widthLine: 3.0, arcRadius: 45.0));
-    _drawablesShapes.add(changeDrawableAngle(angle: betaAngles.first, color: Colors.blue, widthLine: 4.0, arcRadius: 60.0));
+    _drawablesShapes.add(changeDrawableAngle(angle: betaAngles.first, color: Colors.red, widthLine: 4.0, arcRadius: 60.0));
     _drawablesShapes.add(changeDrawableAngle(angle: betaAngles.last, color: Colors.red, widthLine: 4.0, arcRadius: 60.0));
   }
 

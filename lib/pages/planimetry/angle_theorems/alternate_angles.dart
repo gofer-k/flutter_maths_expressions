@@ -48,7 +48,7 @@ class _AlternateAnglesTheoremState extends State<AlternateAnglesTheorem> {
   final originLine = Line(
     a: DragPoint(point: Offset(-2.0, -4.0)),
     b: DragPoint(point: Offset(2.0, 4.0)),
-    enableDragging: true,
+    enableRotate: true,
   );
   late Line mutableLine;
   final List<DrawableShape> _drawablesShapes = List.empty(growable: true);

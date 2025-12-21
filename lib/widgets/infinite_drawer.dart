@@ -254,7 +254,7 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
     for (final shape in widget.drawableShapes.reversed) {
       if (shape.shape is Line) {
         final line = shape.shape as Line;
-        if (line.matchOnLine(localPoint, 0.25)) {
+        if (line.matchOnLine(localPoint, 0.25) && line.isRotate()) {
           setState(() {
             _rotatingShapes.add(shape);
             // _rotationOffset = 0.0;
@@ -267,6 +267,8 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
   }
 
   void _updateRotateShape(ScaleUpdateDetails details) {
+    if (!widget.enablePinchAngle || _rotatingShapes.isEmpty) return;
+
     setState(() {
       _rotationOffset += details.rotation;
       // Optional: pinch changes the angle between shapes
@@ -298,7 +300,7 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
         enableDragging: true);
     for (final shape in widget.drawableShapes.reversed) {
       final snapPoint = shape.matchPoint(localPoint, 0.25);
-      if (snapPoint != null) {
+      if (snapPoint != null && shape.shape.isDraggable()) {
         setState(() {
           _draggingShapes.add(shape);
           _draggingStartPoint = snapPoint;
@@ -309,7 +311,7 @@ class _InfiniteDrawerState extends State<InfiniteDrawer> {
   }
 
   void _updateDraggingShapes(DragUpdateDetails details) {
-    if (_draggingStartPoint.isFinite) {
+    if (_draggingShapes.isNotEmpty && _draggingStartPoint.isFinite) {
       final localPoint = DragPoint(
           point: _toLocal(_controller.toLocal(details.localPosition)),
           enableDragging: true);
